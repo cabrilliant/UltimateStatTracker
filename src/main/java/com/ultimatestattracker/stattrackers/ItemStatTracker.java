@@ -7,8 +7,7 @@ import net.runelite.api.events.*;
 
 import java.util.Objects;
 
-import static com.ultimatestattracker.StatKeys.EXAMINE;
-import static com.ultimatestattracker.StatKeys.ITEMS_DROPPED;
+import static com.ultimatestattracker.StatKeys.*;
 
 @Slf4j
 public class ItemStatTracker implements StatTracker{
@@ -32,6 +31,14 @@ public class ItemStatTracker implements StatTracker{
         {
             statStore.incrementStat(ITEMS_DROPPED);
             log.debug("Item drop clicked: {}", event.getMenuTarget());
+        }
+        else if (Objects.equals(event.getMenuOption(), "Bury")){
+            statStore.incrementStat(BONES_BURIED);
+            log.debug("Bones bury clicked: {}", event.getMenuTarget());
+        }
+        else if (Objects.equals(event.getMenuOption(), "Scatter")){
+            statStore.incrementStat(ASHES_SCATTERED);
+            log.debug("Ashses Scatered clicked: {}", event.getMenuTarget());
         }
     }
 

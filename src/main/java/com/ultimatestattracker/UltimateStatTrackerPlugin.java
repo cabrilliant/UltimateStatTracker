@@ -66,6 +66,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	private MagicStatTracker magicStatTracker;
 	private MovementStatTracker movementStatTracker;
 	private SkillingStatTracker skillingStatTracker;
+	private PlayerStatTracker playerStatTracker;
 
 	@Inject
 	private KeyManager keyManager;
@@ -84,6 +85,8 @@ public class UltimateStatTrackerPlugin extends Plugin
 		magicStatTracker = new MagicStatTracker(statStore, client);
 		movementStatTracker = new MovementStatTracker(statStore,client);
 		skillingStatTracker = new SkillingStatTracker(statStore, client, trackerService);
+		playerStatTracker = new PlayerStatTracker(statStore, client);
+
 		keyManager.registerKeyListener(movementStatTracker.ctrlKeyListner);
 	}
 
@@ -125,6 +128,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		magicStatTracker.onGameTick(event);
 		movementStatTracker.onGameTick(event);
 		skillingStatTracker.onGameTick(event);
+		playerStatTracker.onGameTick(event);
 	}
 
 

@@ -47,6 +47,7 @@ public class SkillingStatTracker implements StatTracker{
     public void onGameTick(GameTick event) {
         processActions(Skill.FISHING, FISH_CAUGHT);
         processActions(Skill.MINING, ROCKS_MINED);
+        processActions(Skill.FIREMAKING, LOGS_BURNED);
     }
 
     @Override

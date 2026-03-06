@@ -12,4 +12,12 @@ public class StatKeys {
      public static String FISH_CAUGHT = "fishCaught";
      public static String ROCKS_MINED = "rocksMined";
      public static String LOGS_CHOPPED = "logsChopped";
+     public static String BONES_BURIED = "bonesBuried";
+     public static String BONES_CRUSHED = "bonesCrushed";
+     public static String ASHES_SCATTERED = "ashesScattered";
+     public static String LOGS_BURNED = "logsBurned";
+     public static String TOTAL_DEATHS = "totalDeaths";
+     public static String FOOD_EATEN = "foodEaten";
+     //future ideas
+     // buy gf attempts
 }
