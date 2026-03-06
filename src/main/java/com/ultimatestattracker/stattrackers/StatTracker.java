@@ -10,5 +10,6 @@ public interface StatTracker {
     public void onWidgetClosed(WidgetClosed event);
     public void onGameTick(GameTick event);
     public void onGameStateChanged(GameStateChanged gameStateChanged);
+    public void onChatMessage(ChatMessage event);
 
 }

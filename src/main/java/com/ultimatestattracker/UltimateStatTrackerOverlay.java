@@ -131,6 +131,15 @@ public class UltimateStatTrackerOverlay extends Overlay
 
             int tilesRan = statStore.getStat(TILES_RAN);
             g.drawString("Tiles Ran: " + tilesRan, drawX + 12, drawY + 135);
+
+            int fishCaught = statStore.getStat(FISH_CAUGHT);
+            g.drawString("Fish Caught: " + fishCaught, drawX + 12, drawY + 150);
+
+            int rocksMined = statStore.getStat(ROCKS_MINED);
+            g.drawString("Rocks Mined: " + rocksMined, drawX + 12, drawY + 165);
+
+            int logsChopped = statStore.getStat(LOGS_CHOPPED);
+            g.drawString("Logs Chopped: " + logsChopped, drawX + 12, drawY + 180);
         }
 
         return null;

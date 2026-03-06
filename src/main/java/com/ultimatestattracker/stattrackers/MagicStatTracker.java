@@ -100,4 +100,9 @@ public class MagicStatTracker implements StatTracker{
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
 
     }
+
+    @Override
+    public void onChatMessage(ChatMessage event) {
+
+    }
 }

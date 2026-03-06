@@ -12,10 +12,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import java.awt.*;
 import java.awt.Point;
@@ -28,6 +31,7 @@ import net.runelite.api.ChatMessageType;
 import static com.ultimatestattracker.StatKeys.*;
 import com.ultimatestattracker.stattrackers.*;
 
+@PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 @PluginDescriptor(
 	name = "Ultimate Stat Tracker"
@@ -54,10 +58,14 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private XpTrackerService trackerService;
+
 	private GoldStatTracker goldStatTracker;
 	private ItemStatTracker itemStatTracker;
 	private MagicStatTracker magicStatTracker;
 	private MovementStatTracker movementStatTracker;
+	private SkillingStatTracker skillingStatTracker;
 
 	@Inject
 	private KeyManager keyManager;
@@ -75,7 +83,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		itemStatTracker = new ItemStatTracker(statStore, client);
 		magicStatTracker = new MagicStatTracker(statStore, client);
 		movementStatTracker = new MovementStatTracker(statStore,client);
-
+		skillingStatTracker = new SkillingStatTracker(statStore, client, trackerService);
 		keyManager.registerKeyListener(movementStatTracker.ctrlKeyListner);
 	}
 
@@ -116,6 +124,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		goldStatTracker.onGameTick(event);
 		magicStatTracker.onGameTick(event);
 		movementStatTracker.onGameTick(event);
+		skillingStatTracker.onGameTick(event);
 	}
 
 
@@ -144,6 +153,12 @@ public class UltimateStatTrackerPlugin extends Plugin
 		}
 
 		overlay.toggle();
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		skillingStatTracker.onChatMessage(event);
 	}
 
 	private final MouseListener mouseListener = new MouseAdapter()

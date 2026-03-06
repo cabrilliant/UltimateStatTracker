@@ -9,4 +9,7 @@ public class StatKeys {
      public static String TELEPORTS_CAST = "teleportsCast";
      public static String TILES_WALKED = "tilesWalked";
      public static String TILES_RAN = "tilesRan";
+     public static String FISH_CAUGHT = "fishCaught";
+     public static String ROCKS_MINED = "rocksMined";
+     public static String LOGS_CHOPPED = "logsChopped";
 }
