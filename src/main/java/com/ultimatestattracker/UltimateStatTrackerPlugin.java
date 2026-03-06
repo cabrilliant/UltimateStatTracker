@@ -10,6 +10,7 @@ import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.input.MouseAdapter;
@@ -56,6 +57,10 @@ public class UltimateStatTrackerPlugin extends Plugin
 	private GoldStatTracker goldStatTracker;
 	private ItemStatTracker itemStatTracker;
 	private MagicStatTracker magicStatTracker;
+	private MovementStatTracker movementStatTracker;
+
+	@Inject
+	private KeyManager keyManager;
 
 	@Override
 	protected void startUp() throws Exception
@@ -69,6 +74,9 @@ public class UltimateStatTrackerPlugin extends Plugin
 		goldStatTracker = new GoldStatTracker(statStore, client);
 		itemStatTracker = new ItemStatTracker(statStore, client);
 		magicStatTracker = new MagicStatTracker(statStore, client);
+		movementStatTracker = new MovementStatTracker(statStore,client);
+
+		keyManager.registerKeyListener(movementStatTracker.ctrlKeyListner);
 	}
 
 	@Override
@@ -76,6 +84,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		log.debug("Example stopped!");
+		keyManager.unregisterKeyListener(movementStatTracker.ctrlKeyListner);
 		mouseManager.unregisterMouseListener(mouseListener);
 	}
 
@@ -106,6 +115,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	public void onGameTick(GameTick event) {
 		goldStatTracker.onGameTick(event);
 		magicStatTracker.onGameTick(event);
+		movementStatTracker.onGameTick(event);
 	}
 
 

@@ -126,6 +126,11 @@ public class UltimateStatTrackerOverlay extends Overlay
             int spellsCast = statStore.getStat(SPELLS_CAST);
             g.drawString("Spells Cast: " + spellsCast, drawX + 12, drawY + 105);
 
+            int tilesWalked = statStore.getStat(TILES_WALKED);
+            g.drawString("Tiles Walked: " + tilesWalked, drawX + 12, drawY + 120);
+
+            int tilesRan = statStore.getStat(TILES_RAN);
+            g.drawString("Tiles Ran: " + tilesRan, drawX + 12, drawY + 135);
         }
 
         return null;
