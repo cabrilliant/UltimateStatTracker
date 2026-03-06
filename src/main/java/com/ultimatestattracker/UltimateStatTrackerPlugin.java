@@ -5,11 +5,8 @@ import javax.inject.Inject;
 import javax.swing.*;
 
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -19,7 +16,14 @@ import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import java.awt.*;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
+import net.runelite.api.widgets.WidgetInfo;
+
+import net.runelite.api.ChatMessageType;
+
+import static com.ultimatestattracker.StatKeys.*;
 
 @Slf4j
 @PluginDescriptor(
@@ -42,9 +46,19 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Inject
 	private MouseManager mouseManager;
 
+	private StatStore statStore;
+
+	@Inject
+	private ConfigManager configManager;
+
+	private boolean shopOpen = false;
+	private int lastShopGold = 0;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		statStore = new StatStore(configManager);
+		overlay.setStatStore(statStore);
 		overlayManager.add(overlay);
 		log.debug("Example started!");
 		mouseManager.registerMouseListener(mouseListener);
@@ -57,6 +71,77 @@ public class UltimateStatTrackerPlugin extends Plugin
 		log.debug("Example stopped!");
 		mouseManager.unregisterMouseListener(mouseListener);
 	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (Objects.equals(event.getMenuOption(), "Examine"))
+		{
+			statStore.incrementStat(EXAMINE);
+			log.debug("Item examine clicked: {}", event.getMenuTarget());
+		}
+		else if (Objects.equals(event.getMenuOption(), "Drop"))
+		{
+			statStore.incrementStat(ITEMS_DROPPED);
+			log.debug("Item drop clicked: {}", event.getMenuTarget());
+		}
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		log.debug(String.valueOf(event.getGroupId()));
+		//shop spent at gp tracking
+		if (event.getGroupId() == WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId())
+		{
+			shopOpen = true;
+			lastShopGold = client.getItemContainer(InventoryID.INVENTORY).count(ItemID.COINS_995);
+			log.debug("Shop opened, starting GP tracking. Current gold: {}", lastShopGold);
+		}
+	}
+
+	@Subscribe
+	public void onWidgetClosed(WidgetClosed event)
+	{
+		if (event.getGroupId() == WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId())
+		{
+			shopOpen = false;
+			lastShopGold = -1;
+			log.debug("Shop closed, stopping GP tracking.");
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event) {
+		if (!shopOpen)
+			return;
+
+		ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
+		if (inv == null){
+			 log.debug("Inventory is null, cannot track GP");
+			 return;
+		}
+
+		int currentGold = inv.count(ItemID.COINS_995);
+		if (lastShopGold == -1) {
+			lastShopGold = currentGold;
+			return;
+		}
+
+		if (currentGold < lastShopGold) {
+			int spent = lastShopGold - currentGold;
+			statStore.incrementStatBy(SHOP_GP_SPENT, spent);
+			log.debug("Spent {} gp, total: {}", spent, statStore.getStat(SHOP_GP_SPENT));
+		}
+		else if (currentGold > lastShopGold){
+			int gained = currentGold - lastShopGold;
+			statStore.incrementStatBy(SHOP_GP_GAINED, gained);
+			log.debug("Gained {} gp, total: {}", gained, statStore.getStat(SHOP_GP_GAINED));
+		}
+
+		lastShopGold = currentGold;
+	}
+
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)

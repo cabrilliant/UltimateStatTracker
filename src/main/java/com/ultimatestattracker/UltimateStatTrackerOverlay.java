@@ -6,7 +6,7 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-
+import static com.ultimatestattracker.StatKeys.*;
 import java.awt.*;
 
 public class UltimateStatTrackerOverlay extends Overlay
@@ -21,6 +21,13 @@ public class UltimateStatTrackerOverlay extends Overlay
     // Overlay dimensions
     private final int panelWidth = 300;
     private final int panelHeight = 200;
+
+    private StatStore statStore;
+
+    public void setStatStore(StatStore store)
+    {
+        this.statStore = store;
+    }
 
     @Inject
     public UltimateStatTrackerOverlay(Client client)
@@ -101,6 +108,22 @@ public class UltimateStatTrackerOverlay extends Overlay
         // Save bounds for click detection
         closeButtonBounds = new Rectangle(btnX, btnY, btnSize, btnSize);
 
+        if (statStore != null)
+        {
+            int itemsExamined = statStore.getStat(EXAMINE);
+            g.setColor(Color.WHITE);
+            g.drawString("Things Examined: " + itemsExamined, drawX + 12, drawY + 45);
+
+            int goldSpentAtShops = statStore.getStat(SHOP_GP_SPENT);
+            g.drawString("SHOP GP SPENT: " + goldSpentAtShops, drawX + 12, drawY + 60);
+
+            int goldGainedFromShops = statStore.getStat(SHOP_GP_GAINED);
+            g.drawString("SHOP GP GAINED: " + goldGainedFromShops, drawX + 12, drawY + 75);
+
+            int itemsDropped = statStore.getStat(ITEMS_DROPPED);
+            g.drawString("Items Dropped: " + itemsDropped, drawX + 12, drawY + 90);
+
+        }
 
         return null;
     }
