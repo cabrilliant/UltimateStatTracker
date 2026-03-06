@@ -25,6 +25,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.ChatMessageType;
 
 import static com.ultimatestattracker.StatKeys.*;
+import com.ultimatestattracker.stattrackers.*;
 
 @Slf4j
 @PluginDescriptor(
@@ -52,13 +53,9 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
-	private int lastMagicXp = -1;
-	private boolean pendingSpellPress = false;
-
-	private int pendingSpellTickCounter = 0;
-	private static final int SPELL_PRESS_TIMEOUT_TICKS = 17; // ~10 seconds
-
 	private GoldStatTracker goldStatTracker;
+	private ItemStatTracker itemStatTracker;
+	private MagicStatTracker magicStatTracker;
 
 	@Override
 	protected void startUp() throws Exception
@@ -70,6 +67,8 @@ public class UltimateStatTrackerPlugin extends Plugin
 		mouseManager.registerMouseListener(mouseListener);
 
 		goldStatTracker = new GoldStatTracker(statStore, client);
+		itemStatTracker = new ItemStatTracker(statStore, client);
+		magicStatTracker = new MagicStatTracker(statStore, client);
 	}
 
 	@Override
@@ -85,23 +84,10 @@ public class UltimateStatTrackerPlugin extends Plugin
 	{
 		log.debug(event.getMenuTarget());
 		log.debug(event.getMenuOption());
-		if (Objects.equals(event.getMenuOption(), "Examine"))
-		{
-			statStore.incrementStat(EXAMINE);
-			log.debug("Item examine clicked: {}", event.getMenuTarget());
-		}
-		else if (Objects.equals(event.getMenuOption(), "Drop"))
-		{
-			statStore.incrementStat(ITEMS_DROPPED);
-			log.debug("Item drop clicked: {}", event.getMenuTarget());
-		}
 
-		//-> is to ignore the second cast when an offensive spell is used on a target.  we just count the first spell click.
-		else if(event.getMenuOption().contains("Cast") && !event.getMenuOption().contains("->")){
-			pendingSpellPress = true;
-			pendingSpellTickCounter = 0;
-			log.debug("Spell cast clicked: {}", event.getMenuTarget());
-		}
+		itemStatTracker.onMenuOptionClicked(event);
+		magicStatTracker.onMenuOptionClicked(event);
+
 	}
 
 	@Subscribe
@@ -119,50 +105,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event) {
 		goldStatTracker.onGameTick(event);
-
-		Player local = client.getLocalPlayer();
-		NPC target = local.getInteracting() instanceof NPC ? (NPC) local.getInteracting() : null;
-		boolean playerInCombat = target != null;
-		int currentMagicXp = client.getSkillExperience(Skill.MAGIC);
-		if (lastMagicXp == -1){
-			lastMagicXp  = currentMagicXp;
-		}
-		if (currentMagicXp != lastMagicXp) {
-			if (pendingSpellPress || playerInCombat ) {
-				statStore.incrementStat(SPELLS_CAST);
-				log.debug("Gained magic xp");
-				lastMagicXp = currentMagicXp;
-				pendingSpellPress = false;
-			}
-		}
-
-		if (pendingSpellTickCounter >= SPELL_PRESS_TIMEOUT_TICKS && pendingSpellPress) {
-			MenuEntry[] entries = client.getMenuEntries();
-			boolean stillCasting = false;
-
-			if (entries != null && entries.length > 0) {
-				MenuEntry lastEntry = entries[entries.length - 1];
-				if (lastEntry.getOption() != null && lastEntry.getOption().contains("Cast")) {
-					log.debug("still casting after 10 seconds");
-					stillCasting = true;
-				}
-			}
-
-			if (stillCasting) {
-				pendingSpellTickCounter = 0;
-				log.debug("Pending spell press reset as we are still casting");
-			}
-
-			else{
-				pendingSpellPress = false;
-				log.debug("Pending spell press timed out, no longer waiting for magic xp gain");
-			}
-		}
-
-		if(pendingSpellPress){
-			pendingSpellTickCounter++;
-		}
-
+		magicStatTracker.onGameTick(event);
 	}
 
 

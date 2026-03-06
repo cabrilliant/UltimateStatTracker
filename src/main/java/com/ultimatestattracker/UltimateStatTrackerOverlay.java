@@ -124,7 +124,7 @@ public class UltimateStatTrackerOverlay extends Overlay
             g.drawString("Items Dropped: " + itemsDropped, drawX + 12, drawY + 90);
 
             int spellsCast = statStore.getStat(SPELLS_CAST);
-            g.drawString("Spells Cast: " + spellsCast, drawX + 12, drawY + 90);
+            g.drawString("Spells Cast: " + spellsCast, drawX + 12, drawY + 105);
 
         }
 
