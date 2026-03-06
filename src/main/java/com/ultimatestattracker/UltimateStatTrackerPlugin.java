@@ -4,6 +4,7 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import javax.swing.*;
 
+import com.ultimatestattracker.stattrackers.GoldStatTracker;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
@@ -51,11 +52,13 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
-	private boolean shopOpen = false;
-	private int lastShopGold = 0;
-
-	private int lastMagicXp = 0;
+	private int lastMagicXp = -1;
 	private boolean pendingSpellPress = false;
+
+	private int pendingSpellTickCounter = 0;
+	private static final int SPELL_PRESS_TIMEOUT_TICKS = 17; // ~10 seconds
+
+	private GoldStatTracker goldStatTracker;
 
 	@Override
 	protected void startUp() throws Exception
@@ -65,6 +68,8 @@ public class UltimateStatTrackerPlugin extends Plugin
 		overlayManager.add(overlay);
 		log.debug("Example started!");
 		mouseManager.registerMouseListener(mouseListener);
+
+		goldStatTracker = new GoldStatTracker(statStore, client);
 	}
 
 	@Override
@@ -91,9 +96,10 @@ public class UltimateStatTrackerPlugin extends Plugin
 			log.debug("Item drop clicked: {}", event.getMenuTarget());
 		}
 
-		//todo , this will still fire even if the player doesnt have the runes.
-		else if(event.getMenuOption().contains("Cast")){
+		//-> is to ignore the second cast when an offensive spell is used on a target.  we just count the first spell click.
+		else if(event.getMenuOption().contains("Cast") && !event.getMenuOption().contains("->")){
 			pendingSpellPress = true;
+			pendingSpellTickCounter = 0;
 			log.debug("Spell cast clicked: {}", event.getMenuTarget());
 		}
 	}
@@ -101,59 +107,26 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		log.debug(String.valueOf(event.getGroupId()));
-		//shop spent at gp tracking
-		if (event.getGroupId() == WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId())
-		{
-			shopOpen = true;
-			lastShopGold = client.getItemContainer(InventoryID.INVENTORY).count(ItemID.COINS_995);
-			log.debug("Shop opened, starting GP tracking. Current gold: {}", lastShopGold);
-		}
+		goldStatTracker.onWidgetLoaded(event);
 	}
 
 	@Subscribe
 	public void onWidgetClosed(WidgetClosed event)
 	{
-		if (event.getGroupId() == WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId())
-		{
-			shopOpen = false;
-			lastShopGold = -1;
-			log.debug("Shop closed, stopping GP tracking.");
-		}
+		goldStatTracker.onWidgetClosed(event);
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event) {
-		if (shopOpen) {
-			ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
-			if (inv == null) {
-				log.debug("Inventory is null, cannot track GP");
-				return;
-			}
-
-			int currentGold = inv.count(ItemID.COINS_995);
-			if (lastShopGold == -1) {
-				lastShopGold = currentGold;
-				return;
-			}
-
-			if (currentGold < lastShopGold) {
-				int spent = lastShopGold - currentGold;
-				statStore.incrementStatBy(SHOP_GP_SPENT, spent);
-				log.debug("Spent {} gp, total: {}", spent, statStore.getStat(SHOP_GP_SPENT));
-			} else if (currentGold > lastShopGold) {
-				int gained = currentGold - lastShopGold;
-				statStore.incrementStatBy(SHOP_GP_GAINED, gained);
-				log.debug("Gained {} gp, total: {}", gained, statStore.getStat(SHOP_GP_GAINED));
-			}
-
-			lastShopGold = currentGold;
-		}
+		goldStatTracker.onGameTick(event);
 
 		Player local = client.getLocalPlayer();
 		NPC target = local.getInteracting() instanceof NPC ? (NPC) local.getInteracting() : null;
 		boolean playerInCombat = target != null;
 		int currentMagicXp = client.getSkillExperience(Skill.MAGIC);
+		if (lastMagicXp == -1){
+			lastMagicXp  = currentMagicXp;
+		}
 		if (currentMagicXp != lastMagicXp) {
 			if (pendingSpellPress || playerInCombat ) {
 				statStore.incrementStat(SPELLS_CAST);
@@ -162,6 +135,34 @@ public class UltimateStatTrackerPlugin extends Plugin
 				pendingSpellPress = false;
 			}
 		}
+
+		if (pendingSpellTickCounter >= SPELL_PRESS_TIMEOUT_TICKS && pendingSpellPress) {
+			MenuEntry[] entries = client.getMenuEntries();
+			boolean stillCasting = false;
+
+			if (entries != null && entries.length > 0) {
+				MenuEntry lastEntry = entries[entries.length - 1];
+				if (lastEntry.getOption() != null && lastEntry.getOption().contains("Cast")) {
+					log.debug("still casting after 10 seconds");
+					stillCasting = true;
+				}
+			}
+
+			if (stillCasting) {
+				pendingSpellTickCounter = 0;
+				log.debug("Pending spell press reset as we are still casting");
+			}
+
+			else{
+				pendingSpellPress = false;
+				log.debug("Pending spell press timed out, no longer waiting for magic xp gain");
+			}
+		}
+
+		if(pendingSpellPress){
+			pendingSpellTickCounter++;
+		}
+
 	}
 
 
