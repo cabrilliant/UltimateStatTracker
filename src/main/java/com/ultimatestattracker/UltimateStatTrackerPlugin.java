@@ -54,6 +54,9 @@ public class UltimateStatTrackerPlugin extends Plugin
 	private boolean shopOpen = false;
 	private int lastShopGold = 0;
 
+	private int lastMagicXp = 0;
+	private boolean pendingSpellPress = false;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -75,6 +78,8 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		log.debug(event.getMenuTarget());
+		log.debug(event.getMenuOption());
 		if (Objects.equals(event.getMenuOption(), "Examine"))
 		{
 			statStore.incrementStat(EXAMINE);
@@ -84,6 +89,12 @@ public class UltimateStatTrackerPlugin extends Plugin
 		{
 			statStore.incrementStat(ITEMS_DROPPED);
 			log.debug("Item drop clicked: {}", event.getMenuTarget());
+		}
+
+		//todo , this will still fire even if the player doesnt have the runes.
+		else if(event.getMenuOption().contains("Cast")){
+			pendingSpellPress = true;
+			log.debug("Spell cast clicked: {}", event.getMenuTarget());
 		}
 	}
 
@@ -113,33 +124,44 @@ public class UltimateStatTrackerPlugin extends Plugin
 
 	@Subscribe
 	public void onGameTick(GameTick event) {
-		if (!shopOpen)
-			return;
+		if (shopOpen) {
+			ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
+			if (inv == null) {
+				log.debug("Inventory is null, cannot track GP");
+				return;
+			}
 
-		ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
-		if (inv == null){
-			 log.debug("Inventory is null, cannot track GP");
-			 return;
-		}
+			int currentGold = inv.count(ItemID.COINS_995);
+			if (lastShopGold == -1) {
+				lastShopGold = currentGold;
+				return;
+			}
 
-		int currentGold = inv.count(ItemID.COINS_995);
-		if (lastShopGold == -1) {
+			if (currentGold < lastShopGold) {
+				int spent = lastShopGold - currentGold;
+				statStore.incrementStatBy(SHOP_GP_SPENT, spent);
+				log.debug("Spent {} gp, total: {}", spent, statStore.getStat(SHOP_GP_SPENT));
+			} else if (currentGold > lastShopGold) {
+				int gained = currentGold - lastShopGold;
+				statStore.incrementStatBy(SHOP_GP_GAINED, gained);
+				log.debug("Gained {} gp, total: {}", gained, statStore.getStat(SHOP_GP_GAINED));
+			}
+
 			lastShopGold = currentGold;
-			return;
 		}
 
-		if (currentGold < lastShopGold) {
-			int spent = lastShopGold - currentGold;
-			statStore.incrementStatBy(SHOP_GP_SPENT, spent);
-			log.debug("Spent {} gp, total: {}", spent, statStore.getStat(SHOP_GP_SPENT));
+		Player local = client.getLocalPlayer();
+		NPC target = local.getInteracting() instanceof NPC ? (NPC) local.getInteracting() : null;
+		boolean playerInCombat = target != null;
+		int currentMagicXp = client.getSkillExperience(Skill.MAGIC);
+		if (currentMagicXp != lastMagicXp) {
+			if (pendingSpellPress || playerInCombat ) {
+				statStore.incrementStat(SPELLS_CAST);
+				log.debug("Gained magic xp");
+				lastMagicXp = currentMagicXp;
+				pendingSpellPress = false;
+			}
 		}
-		else if (currentGold > lastShopGold){
-			int gained = currentGold - lastShopGold;
-			statStore.incrementStatBy(SHOP_GP_GAINED, gained);
-			log.debug("Gained {} gp, total: {}", gained, statStore.getStat(SHOP_GP_GAINED));
-		}
-
-		lastShopGold = currentGold;
 	}
 
 
