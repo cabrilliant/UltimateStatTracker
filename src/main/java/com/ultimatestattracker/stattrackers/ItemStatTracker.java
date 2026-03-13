@@ -2,8 +2,11 @@ package com.ultimatestattracker.stattrackers;
 
 import com.ultimatestattracker.StatStore;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
 import net.runelite.api.events.*;
+import net.runelite.client.util.Text;
 
 import java.util.Objects;
 
@@ -13,6 +16,7 @@ import static com.ultimatestattracker.StatKeys.*;
 public class ItemStatTracker implements StatTracker{
     private StatStore statStore;
     private Client client;
+
 
     public ItemStatTracker(StatStore statStore, Client client)
     {
@@ -54,7 +58,8 @@ public class ItemStatTracker implements StatTracker{
 
     @Override
     public void onGameTick(GameTick event) {
-
+        int currentCabbageCount = client.getItemContainer(InventoryID.INVENTORY).count(1965);
+        int currentFlaxCount = client.getItemContainer(InventoryID.INVENTORY).count(1779);
     }
 
     @Override
@@ -64,6 +69,25 @@ public class ItemStatTracker implements StatTracker{
 
     @Override
     public void onChatMessage(ChatMessage event) {
+        if (event.getType() != ChatMessageType.SPAM
+                && event.getType() != ChatMessageType.GAMEMESSAGE
+                && event.getType() != ChatMessageType.MESBOX)
+        {
+            return;
+        }
 
+        String msg = event.getMessage();
+        if (msg.contains(("You pick a"))|| msg.contains("You pick some")){
+            //item name is last space to first period
+            String itemName = msg.substring(msg.lastIndexOf(" ") + 1, msg.indexOf("."));
+            if (itemName.equals("Cabbage")){
+                statStore.incrementStat(CABBAGE_PICKED);
+                log.debug("Cabbage picked message: {}", msg);
+            }
+            else if (itemName.equals("Flax")){
+                statStore.incrementStat(FLAX_PICKED);
+                log.debug("Flax picked message: {}", msg);
+            }
+        }
     }
 }

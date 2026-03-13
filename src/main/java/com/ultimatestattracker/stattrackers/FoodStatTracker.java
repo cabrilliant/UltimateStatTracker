@@ -2,19 +2,22 @@ package com.ultimatestattracker.stattrackers;
 
 import com.ultimatestattracker.StatStore;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
+import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.client.util.Text;
 
+import java.util.Arrays;
 import java.util.Objects;
 
-import static com.ultimatestattracker.StatKeys.FOOD_EATEN;
+import static com.ultimatestattracker.StatKeys.*;
 
 @Slf4j
 public class FoodStatTracker implements StatTracker{
     private StatStore statStore;
     private Client client;
     private String lastThingConsumed;
+    private int lastHp = -1;
+
 
     private String[] oneHPFood = {
             "Anchovies",
@@ -51,16 +54,12 @@ public class FoodStatTracker implements StatTracker{
     public void onMenuOptionClicked(MenuOptionClicked event) {
         if (Objects.equals(event.getMenuOption(), "Eat"))
         {
-            statStore.incrementStat(FOOD_EATEN);
-            log.debug("Item eat clicked: {}", event.getMenuTarget());
             lastThingConsumed = Text.removeTags(event.getMenuTarget());
         }
-        else if (Objects.equals(event.getMenuOption(), "Drink"))
-        {
-            //todo add some logic to tell if this was a potion or food
-            log.debug("Item drink clicked: {}", event.getMenuTarget());
+        else if (Objects.equals(event.getMenuOption(), "Drink")) {
             lastThingConsumed = event.getMenuTarget();
         }
+
     }
 
     @Override
@@ -78,6 +77,26 @@ public class FoodStatTracker implements StatTracker{
 
         //check if hp changed
         //if did by 1 and last thing consumed was not a one hp food then natural health regen +1
+        int currentHp = client.getBoostedSkillLevel(Skill.HITPOINTS);
+        if (lastHp != -1 && currentHp == lastHp + 1)
+        {
+            //then if we didnt eat a 1 hp food most recently, this was probably natural regen
+            //note if someone were to eat a more than 1 hp food at 98 and go to 99 (or any time they are 1 hp below their cap)
+            //this would mistakenly be counted as regen
+            //however i dont really think thats a huge problem as that should be rathar rare
+            //maybe todo to improve this to have better food tracking and thus be more accurate
+            if (lastThingConsumed == null)
+            {
+                statStore.incrementStat(HP_REGEN);
+            }
+            else if (Arrays.stream(oneHPFood).noneMatch(food -> Text.removeTags(lastThingConsumed).contains(food)))
+            {
+                statStore.incrementStat(HP_REGEN);
+            }
+        }
+
+        lastHp = currentHp;
+
     }
 
     @Override
@@ -88,5 +107,46 @@ public class FoodStatTracker implements StatTracker{
     @Override
     public void onChatMessage(ChatMessage event) {
 
+        if (event.getType() != ChatMessageType.SPAM
+                && event.getType() != ChatMessageType.GAMEMESSAGE
+                && event.getType() != ChatMessageType.MESBOX)
+        {
+            return;
+        }
+
+        if (event.getMessage().contains("You eat the")){
+            //get the food name from the message, which is from the first space after "you eat the"
+            //to the first period
+            statStore.incrementStat(FOOD_EATEN);
+            String foodName = event.getMessage()
+                    .substring(event.getMessage().indexOf("You eat the ") + "You eat the ".length()).trim();
+
+            if (foodName.equals("Trout")){
+                statStore.incrementStat(TROUT_EATEN);
+            }
+            else if (foodName.equals("Cabbage")){
+                statStore.incrementStat(CABBAGE_EATEN);
+            }
+        }
+
+        //for drinks it says "you drink the <x>"
+        //for potions it says "you drink some of the <x>"
+        else if (event.getMessage().contains("You drink")){
+            //food name in this case is everything from "the" to the first period.
+            String foodName = event.getMessage()
+                    .substring(event.getMessage().indexOf("the ") + "the ".length()).trim();
+
+            if (foodName.equals("Beer")){
+                statStore.incrementStat(BEER_DRANK);
+            }
+
+            if (event.getMessage().contains(("you drink some of the"))){
+                statStore.incrementStat(POTION_SIPS_DRANK);
+            }
+        }
+
+        if(event.getMessage().contains("You quickly smash the empty vial")){
+            statStore.incrementStat(VIALS_SMASHED);
+        }
     }
 }

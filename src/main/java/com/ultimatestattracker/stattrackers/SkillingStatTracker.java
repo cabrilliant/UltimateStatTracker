@@ -1,17 +1,18 @@
 package com.ultimatestattracker.stattrackers;
 
 import com.ultimatestattracker.StatStore;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.Skill;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import static com.ultimatestattracker.StatKeys.*;
 
+@Slf4j
 public class SkillingStatTracker implements StatTracker{
     private StatStore statStore;
     private Client client;
@@ -19,6 +20,8 @@ public class SkillingStatTracker implements StatTracker{
     HashMap<Skill,Integer> previousSkillActions = new HashMap<>();
     //from woodcutting plugin
     private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
+
+    private int prevWeedCount = 0;
 
 
     public SkillingStatTracker(StatStore statStore, Client client, XpTrackerService xpTrackerService)
@@ -48,6 +51,24 @@ public class SkillingStatTracker implements StatTracker{
         processActions(Skill.FISHING, FISH_CAUGHT);
         processActions(Skill.MINING, ROCKS_MINED);
         processActions(Skill.FIREMAKING, LOGS_BURNED);
+
+        ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
+        if (inv == null)
+        {
+            return;
+        }
+
+        int currentWeedCount = Arrays.stream(inv.getItems())
+                .filter(i -> i.getId() == ItemID.WEEDS)
+                .mapToInt(Item::getQuantity)
+                .sum();
+
+        if (currentWeedCount > prevWeedCount)
+        {
+            statStore.incrementStat(WEEDS_RAKED);
+        }
+
+        prevWeedCount = currentWeedCount;
     }
 
     @Override
@@ -70,6 +91,18 @@ public class SkillingStatTracker implements StatTracker{
         if (WOOD_CUT_PATTERN.matcher(msg).matches())
         {
             statStore.incrementStat(LOGS_CHOPPED);
+        }
+
+        if(msg.contains("You pick the") && msg.contains("pocket")){
+            statStore.incrementStat(PICK_POCKETS);
+        }
+
+        if(msg.contains("You steal a")){
+            statStore.incrementStat(STALLS_THIEVED);
+        }
+
+        if (msg.contains("You plant a")){
+            statStore.incrementStat(SEEDS_PLANTED);
         }
     }
 

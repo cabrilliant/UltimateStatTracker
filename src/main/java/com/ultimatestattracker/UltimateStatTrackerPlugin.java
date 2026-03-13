@@ -67,6 +67,9 @@ public class UltimateStatTrackerPlugin extends Plugin
 	private MovementStatTracker movementStatTracker;
 	private SkillingStatTracker skillingStatTracker;
 	private PlayerStatTracker playerStatTracker;
+	private FoodStatTracker foodStatTracker;
+	private NPCStatTracker npcStatTracker;
+	private CombatStatTracker combatStatTracker;
 
 	@Inject
 	private KeyManager keyManager;
@@ -86,6 +89,9 @@ public class UltimateStatTrackerPlugin extends Plugin
 		movementStatTracker = new MovementStatTracker(statStore,client);
 		skillingStatTracker = new SkillingStatTracker(statStore, client, trackerService);
 		playerStatTracker = new PlayerStatTracker(statStore, client);
+		foodStatTracker = new FoodStatTracker(statStore, client);
+		npcStatTracker = new NPCStatTracker(statStore, client);
+		combatStatTracker = new CombatStatTracker(statStore, client);
 
 		keyManager.registerKeyListener(movementStatTracker.ctrlKeyListner);
 	}
@@ -107,6 +113,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 
 		itemStatTracker.onMenuOptionClicked(event);
 		magicStatTracker.onMenuOptionClicked(event);
+		foodStatTracker.onMenuOptionClicked(event);
 
 	}
 
@@ -129,6 +136,8 @@ public class UltimateStatTrackerPlugin extends Plugin
 		movementStatTracker.onGameTick(event);
 		skillingStatTracker.onGameTick(event);
 		playerStatTracker.onGameTick(event);
+		itemStatTracker.onGameTick(event);
+		foodStatTracker.onGameTick(event);
 	}
 
 

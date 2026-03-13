@@ -18,6 +18,20 @@ public class StatKeys {
      public static String LOGS_BURNED = "logsBurned";
      public static String TOTAL_DEATHS = "totalDeaths";
      public static String FOOD_EATEN = "foodEaten";
+     public static String HP_REGEN = "hpRegen";
+     public static String BEER_DRANK = "beerDrank";
+     public static String CABBAGE_EATEN = "cabbageEaten";
+     public static String TROUT_EATEN = "troutEaten";
+     public static String FLAX_PICKED = "flaxPicked";
+     public static String CABBAGE_PICKED = "cabbagePicked";
+     public static String CRITTERS_PET = "crittersPet";
+     public static String POTION_SIPS_DRANK = "potionSips";
+     public static String VIALS_SMASHED = "vialsSmashed";
+     public static String PICK_POCKETS = "pickPockets";
+     public static String STALLS_THIEVED = "stallsThieved";
+     public static String WEEDS_RAKED = "weedsRaked";
+     public static String SEEDS_PLANTED = "seedsPlanted";
+     public static String MELEE_ATTACKS_LANDED = "meleeAttacksLanded";
      //future ideas
      // buy gf attempts
 }
