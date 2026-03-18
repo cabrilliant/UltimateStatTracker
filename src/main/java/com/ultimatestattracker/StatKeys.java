@@ -32,6 +32,12 @@ public class StatKeys {
      public static String WEEDS_RAKED = "weedsRaked";
      public static String SEEDS_PLANTED = "seedsPlanted";
      public static String MELEE_ATTACKS_LANDED = "meleeAttacksLanded";
-     //future ideas
-     // buy gf attempts
+     public static String ROOF_TOP_AGILITY = "rooftopAgilityLaps";
+     public static String NORMAL_AGILITY = "normalAgilityLaps";
+     public static String IMPLINGS_CAUGHT = "implingsCaught";
+     public static String FOOD_COOKED = "foodCooked";
+     public static String FOOD_BURNED = "foodBurned";
+     public static String FAILED_PICK_POCKETS = "failedPickPockets";
+     public static String UNFINISHED_POTIONS_MADE = "unfinishedPotionsMade";
+     public static String POTIONS_MADE = "potionsMade";
 }

@@ -58,8 +58,6 @@ public class ItemStatTracker implements StatTracker{
 
     @Override
     public void onGameTick(GameTick event) {
-        int currentCabbageCount = client.getItemContainer(InventoryID.INVENTORY).count(1965);
-        int currentFlaxCount = client.getItemContainer(InventoryID.INVENTORY).count(1779);
     }
 
     @Override

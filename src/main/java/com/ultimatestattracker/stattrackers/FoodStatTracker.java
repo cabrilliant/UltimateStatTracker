@@ -121,10 +121,11 @@ public class FoodStatTracker implements StatTracker{
             String foodName = event.getMessage()
                     .substring(event.getMessage().indexOf("You eat the ") + "You eat the ".length()).trim();
 
-            if (foodName.equals("Trout")){
+            //todo make case insensitive
+            if (foodName.equals("trout")){
                 statStore.incrementStat(TROUT_EATEN);
             }
-            else if (foodName.equals("Cabbage")){
+            else if (foodName.equals("cabbage")){
                 statStore.incrementStat(CABBAGE_EATEN);
             }
         }

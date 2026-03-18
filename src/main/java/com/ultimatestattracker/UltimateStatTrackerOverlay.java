@@ -6,8 +6,13 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
+
 import static com.ultimatestattracker.StatKeys.*;
 import java.awt.*;
+import java.util.Map;
 
 public class UltimateStatTrackerOverlay extends Overlay
 {
@@ -16,7 +21,48 @@ public class UltimateStatTrackerOverlay extends Overlay
     private boolean visible = false;
 
     private Rectangle closeButtonBounds = null;
-
+    private final PanelComponent panel = new PanelComponent();
+    private static final Map<String, String> STAT_LABELS = Map.ofEntries(
+            Map.entry(EXAMINE, "Things Examined"),
+            Map.entry(ITEMS_DROPPED, "Items Dropped"),
+            Map.entry(SHOP_GP_SPENT, "Shop GP Spent"),
+            Map.entry(SHOP_GP_GAINED, "Shop GP Gained"),
+            Map.entry(SPELLS_CAST, "Spells Cast"),
+            Map.entry(TELEPORTS_CAST, "Teleports Cast"),
+            Map.entry(TILES_WALKED, "Tiles Walked"),
+            Map.entry(TILES_RAN, "Tiles Ran"),
+            Map.entry(FISH_CAUGHT, "Fish Caught"),
+            Map.entry(ROCKS_MINED, "Rocks Mined"),
+            Map.entry(LOGS_CHOPPED, "Logs Chopped"),
+            Map.entry(BONES_BURIED, "Bones Buried"),
+            Map.entry(BONES_CRUSHED, "Bones Crushed"),
+            Map.entry(ASHES_SCATTERED, "Ashes Scattered"),
+            Map.entry(LOGS_BURNED, "Logs Burned"),
+            Map.entry(TOTAL_DEATHS, "Total Deaths"),
+            Map.entry(FOOD_EATEN, "Food Eaten"),
+            Map.entry(HP_REGEN, "HP Regen"),
+            Map.entry(BEER_DRANK, "Beer Drank"),
+            Map.entry(CABBAGE_EATEN, "Cabbage Eaten"),
+            Map.entry(TROUT_EATEN, "Trout Eaten"),
+            Map.entry(FLAX_PICKED, "Flax Picked"),
+            Map.entry(CABBAGE_PICKED, "Cabbage Picked"),
+            Map.entry(CRITTERS_PET, "Critters Pet"),
+            Map.entry(POTION_SIPS_DRANK, "Potion Sips"),
+            Map.entry(VIALS_SMASHED, "Vials Smashed"),
+            Map.entry(PICK_POCKETS, "Pickpockets"),
+            Map.entry(STALLS_THIEVED, "Stalls Thieved"),
+            Map.entry(WEEDS_RAKED, "Weeds Raked"),
+            Map.entry(SEEDS_PLANTED, "Seeds Planted"),
+            Map.entry(MELEE_ATTACKS_LANDED, "Melee Hits"),
+            Map.entry(ROOF_TOP_AGILITY, "Rooftop Laps"),
+            Map.entry(NORMAL_AGILITY, "Agility Laps"),
+            Map.entry(IMPLINGS_CAUGHT, "Implings Caught"),
+            Map.entry(FOOD_COOKED, "Food Cooked"),
+            Map.entry(FOOD_BURNED, "Food Burned"),
+            Map.entry(FAILED_PICK_POCKETS, "Failed Pickpockets"),
+            Map.entry(UNFINISHED_POTIONS_MADE, "Unfinished Potions"),
+            Map.entry(POTIONS_MADE, "Potions Made")
+    );
 
     // Overlay dimensions
     private final int panelWidth = 300;
@@ -71,77 +117,33 @@ public class UltimateStatTrackerOverlay extends Overlay
     @Override
     public Dimension render(Graphics2D g)
     {
-        if (!visible)
+        if (!visible || statStore == null)
         {
             return null;
         }
 
-        int x = client.getViewportXOffset();
-        int y = client.getViewportYOffset();
-        int w = client.getViewportWidth();
+        panel.getChildren().clear();
 
-        int panelWidth = 300;
-        int panelHeight = 200;
+        panel.setPreferredSize(new Dimension(300, 0)); // height auto
+        panel.setBackgroundColor(new Color(40, 35, 30, 230));
 
-        int drawX = x + (w / 2) - (panelWidth / 2);
-        int drawY = y + 40;
+        // Title
+        panel.getChildren().add(TitleComponent.builder()
+                .text("Ultimate Stat Tracker")
+                .color(Color.ORANGE)
+                .build());
 
-        g.setColor(new Color(40, 35, 30, 230));
-        g.fillRoundRect(drawX, drawY, panelWidth, panelHeight, 12, 12);
-
-        g.setColor(Color.ORANGE);
-        g.drawString("Ultimate Stat Tracker", drawX + 12, drawY + 20);
-
-        // Close button (top-right)
-        int btnSize = 16;
-        int btnX = drawX + panelWidth - btnSize - 8;
-        int btnY = drawY + 8;
-
-        g.setColor(Color.RED);
-        g.fillOval(btnX, btnY, btnSize, btnSize);
-
-        g.setColor(Color.WHITE);
-        g.setStroke(new BasicStroke(2));
-        g.drawLine(btnX + 4, btnY + 4, btnX + btnSize - 4, btnY + btnSize - 4);
-        g.drawLine(btnX + btnSize - 4, btnY + 4, btnX + 4, btnY + btnSize - 4);
-
-        // Save bounds for click detection
-        closeButtonBounds = new Rectangle(btnX, btnY, btnSize, btnSize);
-
-        if (statStore != null)
+        // Stats
+        for (Map.Entry<String, String> entry : STAT_LABELS.entrySet())
         {
-            int itemsExamined = statStore.getStat(EXAMINE);
-            g.setColor(Color.WHITE);
-            g.drawString("Things Examined: " + itemsExamined, drawX + 12, drawY + 45);
+            int value = statStore.getStat(entry.getKey());
 
-            int goldSpentAtShops = statStore.getStat(SHOP_GP_SPENT);
-            g.drawString("SHOP GP SPENT: " + goldSpentAtShops, drawX + 12, drawY + 60);
-
-            int goldGainedFromShops = statStore.getStat(SHOP_GP_GAINED);
-            g.drawString("SHOP GP GAINED: " + goldGainedFromShops, drawX + 12, drawY + 75);
-
-            int itemsDropped = statStore.getStat(ITEMS_DROPPED);
-            g.drawString("Items Dropped: " + itemsDropped, drawX + 12, drawY + 90);
-
-            int spellsCast = statStore.getStat(SPELLS_CAST);
-            g.drawString("Spells Cast: " + spellsCast, drawX + 12, drawY + 105);
-
-            int tilesWalked = statStore.getStat(TILES_WALKED);
-            g.drawString("Tiles Walked: " + tilesWalked, drawX + 12, drawY + 120);
-
-            int tilesRan = statStore.getStat(TILES_RAN);
-            g.drawString("Tiles Ran: " + tilesRan, drawX + 12, drawY + 135);
-
-            int fishCaught = statStore.getStat(FISH_CAUGHT);
-            g.drawString("Fish Caught: " + fishCaught, drawX + 12, drawY + 150);
-
-            int rocksMined = statStore.getStat(ROCKS_MINED);
-            g.drawString("Rocks Mined: " + rocksMined, drawX + 12, drawY + 165);
-
-            int logsChopped = statStore.getStat(LOGS_CHOPPED);
-            g.drawString("Logs Chopped: " + logsChopped, drawX + 12, drawY + 180);
+            panel.getChildren().add(LineComponent.builder()
+                    .left(entry.getValue())
+                    .right(String.valueOf(value))
+                    .build());
         }
 
-        return null;
+        return panel.render(g);
     }
 }

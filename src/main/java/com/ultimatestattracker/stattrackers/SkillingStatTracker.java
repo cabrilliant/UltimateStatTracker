@@ -78,7 +78,6 @@ public class SkillingStatTracker implements StatTracker{
 
     @Override
     public void onChatMessage(ChatMessage event) {
-        //from woodcutting plugin
         if (event.getType() != ChatMessageType.SPAM
                 && event.getType() != ChatMessageType.GAMEMESSAGE
                 && event.getType() != ChatMessageType.MESBOX)
@@ -88,22 +87,58 @@ public class SkillingStatTracker implements StatTracker{
 
         final var msg = event.getMessage();
 
+        //from woodcutting plugin
         if (WOOD_CUT_PATTERN.matcher(msg).matches())
         {
             statStore.incrementStat(LOGS_CHOPPED);
         }
 
-        if(msg.contains("You pick the") && msg.contains("pocket")){
+        else if(msg.contains("You pick the") && msg.contains("pocket") && !msg.contains("attempt")){
             statStore.incrementStat(PICK_POCKETS);
         }
 
-        if(msg.contains("You steal a")){
+        else if(msg.contains("You fail to pick the") && msg.contains("pocket")){
+            statStore.incrementStat(FAILED_PICK_POCKETS);
+        }
+
+        else if(msg.contains("You steal a")){
             statStore.incrementStat(STALLS_THIEVED);
         }
 
-        if (msg.contains("You plant a")){
+        else if (msg.contains("You plant a")){
             statStore.incrementStat(SEEDS_PLANTED);
         }
+
+        else if (msg.contains("Rooftop lap")){
+            statStore.incrementStat(ROOF_TOP_AGILITY);
+        }
+
+        else if (msg.contains("Agility lap")){
+            statStore.incrementStat(NORMAL_AGILITY);
+        }
+
+        //todo this msg was barehanded catch with no jar in inventory. ensure works for nets and when jar is in inv
+        else if (msg.contains("You manage to catch the impling")){
+            statStore.incrementStat(IMPLINGS_CAUGHT);
+        }
+
+        else if (msg.contains("You successfully cook")){
+            statStore.incrementStat(FOOD_COOKED);
+        }
+
+        else if (msg.contains("You accidentally burn")){
+            statStore.incrementStat(FOOD_BURNED);
+        }
+
+        else if (msg.contains("You put the") && msg.contains("vial")){
+            statStore.incrementStat(UNFINISHED_POTIONS_MADE);
+        }
+
+        else if (msg.contains("You mix the") && msg.contains("potion")){
+            statStore.incrementStat(POTIONS_MADE);
+        }
+
+
     }
 
     private void processActions(Skill skill, String statKey){
