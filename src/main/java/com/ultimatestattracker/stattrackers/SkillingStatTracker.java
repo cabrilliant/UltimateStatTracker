@@ -88,10 +88,13 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStat(WEEDS_RAKED);
         }
 
-        if (prevRuneCount < getCurrentRuneCount()){
-            if (runecraftXpGainedThisTick) statStore.incrementStatBy(RUNES_CRAFTED, getCurrentRuneCount() - prevRuneCount);
+        int currentRuneCount = getCurrentRuneCount();
+        if (prevRuneCount < currentRuneCount){
+            if (runecraftXpGainedThisTick) statStore.incrementStatBy(RUNES_CRAFTED, currentRuneCount - prevRuneCount);
         }
 
+        prevRuneCount = currentRuneCount;
+        runecraftXpGainedThisTick = false;
         prevWeedCount = currentWeedCount;
     }
 
@@ -203,6 +206,10 @@ public class SkillingStatTracker implements StatTracker{
 
         else if (msg.contains("You've caught a")){
             statStore.incrementStat(CREATURES_TRAPPED);
+        }
+
+        else if (msg.contains("You bury the")){
+            statStore.incrementStat(BONES_BURIED);
         }
     }
 

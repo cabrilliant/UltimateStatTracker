@@ -137,7 +137,8 @@ public class FoodStatTracker implements StatTracker{
             String foodName = event.getMessage()
                     .substring(event.getMessage().indexOf("the ") + "the ".length()).trim();
 
-            if (foodName.equals("Beer")){
+            log.debug("Suspected food name is {}",foodName);
+            if (foodName.equals("beer")){
                 statStore.incrementStat(BEER_DRANK);
             }
 

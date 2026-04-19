@@ -1,6 +1,6 @@
 // --- Items ---
-EXAMINE = "itemsExamined";
-ITEMS_DROPPED = "itemsDropped";
+EXAMINE = "itemsExamined";    TESTED 2026-04-19
+ITEMS_DROPPED = "itemsDropped"; TESTED 2026-04-19
 VIALS_SMASHED = "vialsSmashed";
 
 // --- Shops ---
@@ -8,17 +8,17 @@ SHOP_GP_SPENT = "shopGpSpent";
 SHOP_GP_GAINED = "shopGpGained";
 
 // --- Magic ---
-SPELLS_CAST = "spellsCast";
-TELEPORTS_CAST = "teleportsCast";
+SPELLS_CAST = "spellsCast";   NOT WORKING  2026-04-19
+TELEPORTS_CAST = "teleportsCast"; TESTED 2026-04-19
 
 // --- Movement ---
-TILES_WALKED = "tilesWalked";
-TILES_RAN = "tilesRan";
+TILES_WALKED = "tilesWalked"; TESTED 2026-04-19
+TILES_RAN = "tilesRan"; TESTED 2026-04-19
 
 // --- Gathering ---
 FISH_CAUGHT = "fishCaught";
 ROCKS_MINED = "rocksMined";
-LOGS_CHOPPED = "logsChopped";
+LOGS_CHOPPED = "logsChopped"; TESTED 2026-04-19
 FLAX_PICKED = "flaxPicked";
 CABBAGE_PICKED = "cabbagePicked";
 
@@ -30,17 +30,17 @@ SEEDS_PLANTED = "seedsPlanted";
 public static String CRITTERS_PET = "crittersPet";
 
 // --- Prayer ---
-BONES_BURIED = "bonesBuried";
+BONES_BURIED = "bonesBuried";  TESTED 2026-04-19
 BONES_CRUSHED = "bonesCrushed";
 ASHES_SCATTERED = "ashesScattered";
 
 // --- Firemaking ---
-LOGS_BURNED = "logsBurned";
+LOGS_BURNED = "logsBurned"; TESTED 2026-04-19
 
 // --- Food & Healing ---
-FOOD_EATEN = "foodEaten";
-HP_REGEN = "hpRegen";
-BEER_DRANK = "beerDrank";
+FOOD_EATEN = "foodEaten"; TESTED 2026-04-19
+HP_REGEN = "hpRegen"; TESTED 2026-04-19
+BEER_DRANK = "beerDrank"; NOT WORKING 2026-04-19
 CABBAGE_EATEN = "cabbageEaten";
 TROUT_EATEN = "troutEaten";
 FOOD_COOKED = "foodCooked";
@@ -48,8 +48,8 @@ FOOD_BURNED = "foodBurned";
 POTION_SIPS_DRANK = "potionSips";
 
 // --- Thieving ---
-PICK_POCKETS = "pickPockets";
-FAILED_PICK_POCKETS = "failedPickPockets";
+PICK_POCKETS = "pickPockets"; TESTED 2026-04-19
+FAILED_PICK_POCKETS = "failedPickPockets"; TESTED 2026-04-19
 STALLS_THIEVED = "stallsThieved";
 
 // --- Agility ---
