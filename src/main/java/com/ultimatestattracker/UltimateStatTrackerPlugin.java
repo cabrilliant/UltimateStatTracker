@@ -174,6 +174,13 @@ public class UltimateStatTrackerPlugin extends Plugin
 		skillingStatTracker.onChatMessage(event);
 	}
 
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		playerStatTracker.onHitsplatApplied(event);
+		combatStatTracker.onHitsplatApplied(event);
+	}
+
 	private final MouseListener mouseListener = new MouseAdapter()
 	{
 		@Override

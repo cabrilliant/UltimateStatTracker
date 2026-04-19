@@ -105,4 +105,9 @@ public class MagicStatTracker implements StatTracker{
     public void onChatMessage(ChatMessage event) {
 
     }
+
+    @Override
+    public void onHitsplatApplied(HitsplatApplied event) {
+
+    }
 }

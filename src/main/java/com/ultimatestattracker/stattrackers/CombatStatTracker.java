@@ -1,13 +1,12 @@
 package com.ultimatestattracker.stattrackers;
 
 import com.ultimatestattracker.StatStore;
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
+import net.runelite.api.*;
 import net.runelite.api.events.*;
-import net.runelite.api.Skill;
+import net.runelite.client.eventbus.Subscribe;
 
 import static com.ultimatestattracker.StatKeys.MELEE_ATTACKS_LANDED;
+import static com.ultimatestattracker.StatKeys.TOTAL_DAMAGE_DONE;
 
 public class CombatStatTracker implements StatTracker{
     private StatStore statStore;
@@ -37,6 +36,23 @@ public class CombatStatTracker implements StatTracker{
     @Override
     public void onWidgetClosed(WidgetClosed event) {
 
+    }
+
+    @Override
+    public void onHitsplatApplied(HitsplatApplied event)
+    {
+        Actor target = event.getActor(); // who got hit
+        Hitsplat hitsplat = event.getHitsplat();
+
+        // Only count damage hitsplats
+        if (hitsplat.getHitsplatType() == HitsplatID.DAMAGE_OTHER)
+        {
+            // Check if YOU are the attacker
+            if (target.getInteracting() == client.getLocalPlayer())
+            {
+                statStore.incrementStatBy(TOTAL_DAMAGE_DONE, hitsplat.getAmount());
+            }
+        }
     }
 
     @Override

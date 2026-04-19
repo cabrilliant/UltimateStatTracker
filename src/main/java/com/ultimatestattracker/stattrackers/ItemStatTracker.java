@@ -88,4 +88,9 @@ public class ItemStatTracker implements StatTracker{
             }
         }
     }
+
+    @Override
+    public void onHitsplatApplied(HitsplatApplied event) {
+
+    }
 }
