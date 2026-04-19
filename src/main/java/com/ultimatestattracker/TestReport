@@ -27,7 +27,7 @@ WEEDS_RAKED = "weedsRaked";
 SEEDS_PLANTED = "seedsPlanted";
 
 // -- Misc --
-public static String CRITTERS_PET = "crittersPet";
+public static String CRITTERS_PET = "crittersPet"; TESTED 2026-04-19
 
 // --- Prayer ---
 BONES_BURIED = "bonesBuried";  TESTED 2026-04-19
@@ -40,12 +40,12 @@ LOGS_BURNED = "logsBurned"; TESTED 2026-04-19
 // --- Food & Healing ---
 FOOD_EATEN = "foodEaten"; TESTED 2026-04-19
 HP_REGEN = "hpRegen"; TESTED 2026-04-19
-BEER_DRANK = "beerDrank"; NOT WORKING 2026-04-19
+BEER_DRANK = "beerDrank"; TESTED 2026-04-19
 CABBAGE_EATEN = "cabbageEaten";
-TROUT_EATEN = "troutEaten";
-FOOD_COOKED = "foodCooked";
-FOOD_BURNED = "foodBurned";
-POTION_SIPS_DRANK = "potionSips";
+TROUT_EATEN = "troutEaten"; TESTED 2026-04-19
+FOOD_COOKED = "foodCooked"; TESTED 2026-04-19
+FOOD_BURNED = "foodBurned"; TESTED 2026-04-19
+POTION_SIPS_DRANK = "potionSips"; NOT WORKING 2026-04-19
 
 // --- Thieving ---
 PICK_POCKETS = "pickPockets"; TESTED 2026-04-19
@@ -57,9 +57,9 @@ ROOF_TOP_AGILITY = "rooftopAgilityLaps";
 NORMAL_AGILITY = "normalAgilityLaps";
 
 // --- Herblore ---
-UNFINISHED_POTIONS_MADE = "unfinishedPotionsMade";
-POTIONS_MADE = "potionsMade";
-HERBS_CLEANED = "herbsCleaned";
+UNFINISHED_POTIONS_MADE = "unfinishedPotionsMade"; TESTED 2026-04-19
+POTIONS_MADE = "potionsMade"; TESTED 2026-04-19
+HERBS_CLEANED = "herbsCleaned"; TESTED 2026-04-19
 
 // --- Combat ---
 MELEE_ATTACKS_LANDED = "meleeAttacksLanded";

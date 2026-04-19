@@ -61,7 +61,20 @@ public class UltimateStatTrackerOverlay extends Overlay
             Map.entry(FOOD_BURNED, "Food Burned"),
             Map.entry(FAILED_PICK_POCKETS, "Failed Pickpockets"),
             Map.entry(UNFINISHED_POTIONS_MADE, "Unfinished Potions"),
-            Map.entry(POTIONS_MADE, "Potions Made")
+            Map.entry(POTIONS_MADE, "Potions Made"),
+            Map.entry(HERBS_CLEANED, "Herbs Cleaned"),
+            Map.entry(SPECIAL_ATTACKS_PREFORMED, "Special Attacks Performed"),
+            Map.entry(TOTAL_DAMAGE_DONE, "Total Damage Done"),
+            Map.entry(BIGGEST_HITSPLAT, "Biggest Hitsplat"),
+            Map.entry(RUNES_CRAFTED, "Runes Crafted"),
+            Map.entry(GEMS_CUT, "Gems Cut"),
+            Map.entry(GLASS_BLOWN, "Glass Blown"),
+            Map.entry(BOWS_FLECTHED, "Bows Fletched"),
+            Map.entry(BOWS_STRUNG, "Bows Strung"),
+            Map.entry(DARTS_FLECTHED, "Darts Fletched"),
+            Map.entry(CREATURES_TRAPPED, "Creatures Trapped"),
+            Map.entry(BARS_SMELTED, "Bars Smelted"),
+            Map.entry(ITEMS_SMITHED, "Items Smithed")
     );
 
     // Overlay dimensions

@@ -119,8 +119,9 @@ public class FoodStatTracker implements StatTracker{
             //to the first period
             statStore.incrementStat(FOOD_EATEN);
             String foodName = event.getMessage()
-                    .substring(event.getMessage().indexOf("You eat the ") + "You eat the ".length()).trim();
+                    .substring(event.getMessage().indexOf("the ") + "the ".length(),event.getMessage().indexOf(".")).trim();
 
+            log.debug("Suspected food name is {}",foodName);
             //todo make case insensitive
             if (foodName.equals("trout")){
                 statStore.incrementStat(TROUT_EATEN);
@@ -135,7 +136,7 @@ public class FoodStatTracker implements StatTracker{
         else if (event.getMessage().contains("You drink")){
             //food name in this case is everything from "the" to the first period.
             String foodName = event.getMessage()
-                    .substring(event.getMessage().indexOf("the ") + "the ".length()).trim();
+                    .substring(event.getMessage().indexOf("the ") + "the ".length(),event.getMessage().indexOf(".")).trim(); //todo bad repeated code ugly
 
             log.debug("Suspected food name is {}",foodName);
             if (foodName.equals("beer")){
