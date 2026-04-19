@@ -36,4 +36,8 @@ public class StatStore {
         log.debug("increment by called");
         storeStat(key,getStat(key) +value);
     }
+
+    public void setStat(String key, int value){
+        storeStat(key, value);
+    }
 }

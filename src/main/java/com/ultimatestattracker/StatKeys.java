@@ -29,6 +29,7 @@ public class StatKeys {
      public static String WEEDS_RAKED = "weedsRaked";
      public static String SEEDS_PLANTED = "seedsPlanted";
 
+     // -- Misc --
      public static String CRITTERS_PET = "crittersPet";
 
      // --- Prayer ---
@@ -64,6 +65,7 @@ public class StatKeys {
      public static String HERBS_CLEANED = "herbsCleaned";
 
      // --- Ranged ---
+     //need to push, no great way to detect right now
      public static String AMMO_SHOT = "ammoShot";
      public static String AMMO_SAVED = "ammoSaved";
      public static String AMMO_CONSUMED = "ammoConsumed";
@@ -71,14 +73,16 @@ public class StatKeys {
      // --- Combat ---
      public static String MELEE_ATTACKS_LANDED = "meleeAttacksLanded";
      public static String SPECIAL_ATTACKS_PREFORMED = "specialAttacksPreformed";
+     //cannon and stuff like alching in combat makes this difficult to determine, leave for now and plan for future.
      public static String MELEE_DAMAGE_DONE = "meleeDamageDone";
      public static String RANGED_DAMAGE_DONE = "rangedDamageDone";
      public static String MAGIC_DAMAGE_DONE = "magicDamageDone";
      public static String TOTAL_DAMAGE_DONE = "totalDamageDone";
      public static String TOTAL_DEATHS = "totalDeaths";
+     public static String BIGGEST_HITSPLAT = "biggestHitsplat";
 
      // -- Construction --
-     public static String FURNITURE_CONSTRUCTED = "furnitureConstructed";
+     public static String FURNITURE_CONSTRUCTED = "furnitureConstructed"; //todo, no chat message so this might be tricky, especially with the introduction of sailing con training, cant simply use xp drops either.
 
      // --  Runecraft --
      public static String RUNES_CRAFTED = "runesCrafted";

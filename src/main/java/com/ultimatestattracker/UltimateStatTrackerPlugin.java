@@ -114,6 +114,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		itemStatTracker.onMenuOptionClicked(event);
 		magicStatTracker.onMenuOptionClicked(event);
 		foodStatTracker.onMenuOptionClicked(event);
+		npcStatTracker.onMenuOptionClicked(event);
 
 	}
 
@@ -138,6 +139,8 @@ public class UltimateStatTrackerPlugin extends Plugin
 		playerStatTracker.onGameTick(event);
 		itemStatTracker.onGameTick(event);
 		foodStatTracker.onGameTick(event);
+		combatStatTracker.onGameTick(event);
+		npcStatTracker.onGameTick(event);
 	}
 
 
@@ -172,6 +175,8 @@ public class UltimateStatTrackerPlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		skillingStatTracker.onChatMessage(event);
+		foodStatTracker.onChatMessage(event);
+		itemStatTracker.onChatMessage(event);
 	}
 
 	@Subscribe

@@ -1,0 +1,89 @@
+// --- Items ---
+EXAMINE = "itemsExamined";
+ITEMS_DROPPED = "itemsDropped";
+VIALS_SMASHED = "vialsSmashed";
+
+// --- Shops ---
+SHOP_GP_SPENT = "shopGpSpent";
+SHOP_GP_GAINED = "shopGpGained";
+
+// --- Magic ---
+SPELLS_CAST = "spellsCast";
+TELEPORTS_CAST = "teleportsCast";
+
+// --- Movement ---
+TILES_WALKED = "tilesWalked";
+TILES_RAN = "tilesRan";
+
+// --- Gathering ---
+FISH_CAUGHT = "fishCaught";
+ROCKS_MINED = "rocksMined";
+LOGS_CHOPPED = "logsChopped";
+FLAX_PICKED = "flaxPicked";
+CABBAGE_PICKED = "cabbagePicked";
+
+// -- Farming --
+WEEDS_RAKED = "weedsRaked";
+SEEDS_PLANTED = "seedsPlanted";
+
+// -- Misc --
+public static String CRITTERS_PET = "crittersPet";
+
+// --- Prayer ---
+BONES_BURIED = "bonesBuried";
+BONES_CRUSHED = "bonesCrushed";
+ASHES_SCATTERED = "ashesScattered";
+
+// --- Firemaking ---
+LOGS_BURNED = "logsBurned";
+
+// --- Food & Healing ---
+FOOD_EATEN = "foodEaten";
+HP_REGEN = "hpRegen";
+BEER_DRANK = "beerDrank";
+CABBAGE_EATEN = "cabbageEaten";
+TROUT_EATEN = "troutEaten";
+FOOD_COOKED = "foodCooked";
+FOOD_BURNED = "foodBurned";
+POTION_SIPS_DRANK = "potionSips";
+
+// --- Thieving ---
+PICK_POCKETS = "pickPockets";
+FAILED_PICK_POCKETS = "failedPickPockets";
+STALLS_THIEVED = "stallsThieved";
+
+// --- Agility ---
+ROOF_TOP_AGILITY = "rooftopAgilityLaps";
+NORMAL_AGILITY = "normalAgilityLaps";
+
+// --- Herblore ---
+UNFINISHED_POTIONS_MADE = "unfinishedPotionsMade";
+POTIONS_MADE = "potionsMade";
+HERBS_CLEANED = "herbsCleaned";
+
+// --- Combat ---
+MELEE_ATTACKS_LANDED = "meleeAttacksLanded";
+SPECIAL_ATTACKS_PREFORMED = "specialAttacksPreformed";
+TOTAL_DAMAGE_DONE = "totalDamageDone";
+TOTAL_DEATHS = "totalDeaths";
+BIGGEST_HITSPLAT = "biggestHitsplat";
+
+// --  Runecraft --
+RUNES_CRAFTED = "runesCrafted";
+
+// -- Crafting --
+GEMS_CUT = "gemsCut";
+GLASS_BLOWN = "glassBlown";
+
+//-- Fletching --
+BOWS_FLECTHED = "bowsFletched";
+BOWS_STRUNG = "bowsStrung";
+DARTS_FLECTHED = "dartsFletched";
+
+//-- Hunter --
+CREATURES_TRAPPED = "creaturesTrapped";
+IMPLINGS_CAUGHT = "implingsCaught";
+
+//-- Smithing --
+BARS_SMELTED = "barsSmelted";
+ITEMS_SMITHED = "itemsSmithed";

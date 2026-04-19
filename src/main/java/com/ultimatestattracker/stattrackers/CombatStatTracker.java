@@ -3,10 +3,8 @@ package com.ultimatestattracker.stattrackers;
 import com.ultimatestattracker.StatStore;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
-import net.runelite.client.eventbus.Subscribe;
 
-import static com.ultimatestattracker.StatKeys.MELEE_ATTACKS_LANDED;
-import static com.ultimatestattracker.StatKeys.TOTAL_DAMAGE_DONE;
+import static com.ultimatestattracker.StatKeys.*;
 
 public class CombatStatTracker implements StatTracker{
     private StatStore statStore;
@@ -16,6 +14,8 @@ public class CombatStatTracker implements StatTracker{
     private int prevStrengthXp;
     private int prevDefenceXp;
     private int prevHpXp;
+
+    private int prevSpecialAttackPercent = -1;
 
     public CombatStatTracker(StatStore statStore, Client client)
     {
@@ -33,6 +33,7 @@ public class CombatStatTracker implements StatTracker{
 
     }
 
+
     @Override
     public void onWidgetClosed(WidgetClosed event) {
 
@@ -41,16 +42,17 @@ public class CombatStatTracker implements StatTracker{
     @Override
     public void onHitsplatApplied(HitsplatApplied event)
     {
-        Actor target = event.getActor(); // who got hit
         Hitsplat hitsplat = event.getHitsplat();
 
-        // Only count damage hitsplats
         if (hitsplat.getHitsplatType() == HitsplatID.DAMAGE_OTHER)
         {
-            // Check if YOU are the attacker
-            if (target.getInteracting() == client.getLocalPlayer())
+            if (hitsplat.isMine())
             {
                 statStore.incrementStatBy(TOTAL_DAMAGE_DONE, hitsplat.getAmount());
+                if (statStore.getStat(BIGGEST_HITSPLAT) < hitsplat.getAmount())
+                {
+                    statStore.setStat(BIGGEST_HITSPLAT, hitsplat.getAmount());
+                }
             }
         }
     }
@@ -82,6 +84,13 @@ public class CombatStatTracker implements StatTracker{
         prevStrengthXp = strengthXp;
         prevDefenceXp = defenceXp;
         prevHpXp = hpXp;
+
+        int currentSpecialAttackEnergy = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
+        if (prevSpecialAttackPercent != -1 && prevSpecialAttackPercent > currentSpecialAttackEnergy){
+            //if we lost special attack energy we used a special attack
+            statStore.incrementStat(SPECIAL_ATTACKS_PREFORMED);
+        }
+        prevSpecialAttackPercent = currentSpecialAttackEnergy;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ultimatestattracker.stattrackers;
 
 import com.ultimatestattracker.StatStore;
+import com.ultimatestattracker.support.RuneList;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
@@ -8,6 +9,7 @@ import net.runelite.client.plugins.xptracker.XpTrackerService;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static com.ultimatestattracker.StatKeys.*;
@@ -23,6 +25,22 @@ public class SkillingStatTracker implements StatTracker{
 
     private int prevWeedCount = 0;
 
+    private int prevRuneCount = 0;
+
+    private boolean runecraftXpGainedThisTick = false;
+    private int prevRunecraftXp = 0;
+    private int currentRunecraftXp = 0;
+
+    private String[] glassItems = {
+            "light orb",
+            "lantern lens",
+            "orb",
+            "fishbowl",
+            "vial",
+            "oil lamp",
+            "candle lantern",
+            "beer glass"
+    };
 
     public SkillingStatTracker(StatStore statStore, Client client, XpTrackerService xpTrackerService)
     {
@@ -51,7 +69,9 @@ public class SkillingStatTracker implements StatTracker{
         processActions(Skill.FISHING, FISH_CAUGHT);
         processActions(Skill.MINING, ROCKS_MINED);
         processActions(Skill.FIREMAKING, LOGS_BURNED);
-
+        prevRunecraftXp = currentRunecraftXp;
+        currentRunecraftXp = client.getSkillExperience(Skill.RUNECRAFT);
+        if (currentRunecraftXp > prevRunecraftXp) runecraftXpGainedThisTick = true;
         ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
         if (inv == null)
         {
@@ -66,6 +86,10 @@ public class SkillingStatTracker implements StatTracker{
         if (currentWeedCount > prevWeedCount)
         {
             statStore.incrementStat(WEEDS_RAKED);
+        }
+
+        if (prevRuneCount < getCurrentRuneCount()){
+            if (runecraftXpGainedThisTick) statStore.incrementStatBy(RUNES_CRAFTED, getCurrentRuneCount() - prevRuneCount);
         }
 
         prevWeedCount = currentWeedCount;
@@ -138,6 +162,46 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStat(POTIONS_MADE);
         }
 
+        else if (msg.contains("You clean the Grimy")){
+            statStore.incrementStat(HERBS_CLEANED);
+        }
+
+        else if (msg.contains("You carefully cut the")){
+            statStore.incrementStat(BOWS_FLECTHED);
+        }
+
+        else if (msg.contains("You cut the")){ //todo probably make this more robust, could be prone to false matches
+            statStore.incrementStat(GEMS_CUT);
+        }
+
+        else if (msg.contains("You smelt the")){
+            statStore.incrementStat(BARS_SMELTED);
+        }
+
+        else if (msg.contains("You hammer the")){
+            statStore.incrementStat(ITEMS_SMITHED);
+        }
+
+        else if (msg.contains("You add a string to the bow")){
+            statStore.incrementStat(BOWS_STRUNG);
+        }
+
+        else if (msg.contains("You make a") && Arrays.stream(glassItems).anyMatch(msg.toLowerCase()::contains)){
+            statStore.incrementStat(GLASS_BLOWN);
+        }
+
+        else if (msg.contains("You finish making") &&msg.contains("darts")){
+            //parse the number of darts made. it will be in between the words making and darts
+                String numberStr = msg.substring(msg.indexOf("making ") + "making ".length(), msg.indexOf(" darts")).trim();
+                try {
+                    int number = Integer.parseInt(numberStr);
+                    statStore.incrementStatBy(DARTS_FLECTHED, number);
+                } catch (NumberFormatException e) {
+                    log.warn("Failed to parse number of darts fletched from message: {}", msg);
+                }
+        }
+
+
 
     }
 
@@ -159,5 +223,34 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStatBy(statKey, actionsGained);
         }
         previousSkillActions.put(skill,currentActions);
+    }
+
+    private int getCurrentRuneCount()
+    {
+        ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+        if (inventory == null)
+        {
+            return 0;
+        }
+
+        int total = 0;
+
+        for (Item item : inventory.getItems())
+        {
+            if (item == null)
+            {
+                continue;
+            }
+
+            String name = client.getItemDefinition(item.getId()).getName();
+
+            if (name.endsWith("rune"))
+            {
+                total += item.getQuantity();
+            }
+        }
+
+        return total;
     }
 }
