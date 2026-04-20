@@ -11,5 +11,4 @@ public interface StatTracker {
     public void onGameTick(GameTick event);
     public void onGameStateChanged(GameStateChanged gameStateChanged);
     public void onChatMessage(ChatMessage event);
-    public void onHitsplatApplied(HitsplatApplied event);
 }

@@ -10,10 +10,6 @@ public class StatKeys {
      public static String SHOP_GP_SPENT = "shopGpSpent";
      public static String SHOP_GP_GAINED = "shopGpGained";
 
-     // --- Magic ---
-     public static String SPELLS_CAST = "spellsCast";
-     public static String TELEPORTS_CAST = "teleportsCast";
-
      // --- Movement ---
      public static String TILES_WALKED = "tilesWalked";
      public static String TILES_RAN = "tilesRan";
@@ -68,17 +64,6 @@ public class StatKeys {
      public static String AMMO_SHOT = "ammoShot";
      public static String AMMO_SAVED = "ammoSaved";
      public static String AMMO_CONSUMED = "ammoConsumed";
-
-     // --- Combat ---
-     public static String MELEE_ATTACKS_LANDED = "meleeAttacksLanded";
-     public static String SPECIAL_ATTACKS_PREFORMED = "specialAttacksPreformed";
-     //cannon and stuff like alching in combat makes this difficult to determine, leave for now and plan for future.
-     public static String MELEE_DAMAGE_DONE = "meleeDamageDone";
-     public static String RANGED_DAMAGE_DONE = "rangedDamageDone";
-     public static String MAGIC_DAMAGE_DONE = "magicDamageDone";
-     public static String TOTAL_DAMAGE_DONE = "totalDamageDone";
-     public static String TOTAL_DEATHS = "totalDeaths";
-     public static String BIGGEST_HITSPLAT = "biggestHitsplat";
 
      // -- Construction --
      public static String FURNITURE_CONSTRUCTED = "furnitureConstructed"; //todo, no chat message so this might be tricky, especially with the introduction of sailing con training, cant simply use xp drops either.

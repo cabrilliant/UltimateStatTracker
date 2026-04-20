@@ -19,10 +19,13 @@ import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import java.awt.*;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -30,6 +33,7 @@ import net.runelite.api.ChatMessageType;
 
 import static com.ultimatestattracker.StatKeys.*;
 import com.ultimatestattracker.stattrackers.*;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDependency(XpTrackerPlugin.class)
 @Slf4j
@@ -44,6 +48,12 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Inject
+	private ClientToolbar clientToolbar;
+
+	private NavigationButton navButton;
+
+	private UltimateStatTrackerPanel panel;
 	@Inject
 	private UltimateStatTrackerOverlay overlay;
 
@@ -65,7 +75,6 @@ public class UltimateStatTrackerPlugin extends Plugin
 	private ItemStatTracker itemStatTracker;
 	private MovementStatTracker movementStatTracker;
 	private SkillingStatTracker skillingStatTracker;
-	private PlayerStatTracker playerStatTracker;
 	private FoodStatTracker foodStatTracker;
 	private NPCStatTracker npcStatTracker;
 
@@ -84,11 +93,24 @@ public class UltimateStatTrackerPlugin extends Plugin
 		itemStatTracker = new ItemStatTracker(statStore, client);
 		movementStatTracker = new MovementStatTracker(statStore,client);
 		skillingStatTracker = new SkillingStatTracker(statStore, client, trackerService);
-		playerStatTracker = new PlayerStatTracker(statStore, client);
 		foodStatTracker = new FoodStatTracker(statStore, client);
 		npcStatTracker = new NPCStatTracker(statStore, client);
 
 		keyManager.registerKeyListener(movementStatTracker.ctrlKeyListner);
+
+		BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+
+		panel = new UltimateStatTrackerPanel();
+		panel.setStatStore(statStore);
+
+		navButton = NavigationButton.builder()
+				.tooltip("Ultimate Stats")
+				.icon(icon)
+				.priority(5)
+				.panel(panel)
+				.build();
+
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
@@ -97,6 +119,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(movementStatTracker.ctrlKeyListner);
 		mouseManager.unregisterMouseListener(mouseListener);
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe
@@ -128,7 +151,6 @@ public class UltimateStatTrackerPlugin extends Plugin
 		goldStatTracker.onGameTick(event);
 		movementStatTracker.onGameTick(event);
 		skillingStatTracker.onGameTick(event);
-		playerStatTracker.onGameTick(event);
 		itemStatTracker.onGameTick(event);
 		foodStatTracker.onGameTick(event);
 		npcStatTracker.onGameTick(event);
@@ -158,12 +180,6 @@ public class UltimateStatTrackerPlugin extends Plugin
 		skillingStatTracker.onChatMessage(event);
 		foodStatTracker.onChatMessage(event);
 		itemStatTracker.onChatMessage(event);
-	}
-
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied event)
-	{
-		playerStatTracker.onHitsplatApplied(event);
 	}
 
 	private final MouseListener mouseListener = new MouseAdapter()

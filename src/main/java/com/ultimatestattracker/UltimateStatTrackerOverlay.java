@@ -27,8 +27,6 @@ public class UltimateStatTrackerOverlay extends Overlay
             Map.entry(ITEMS_DROPPED, "Items Dropped"),
             Map.entry(SHOP_GP_SPENT, "Shop GP Spent"),
             Map.entry(SHOP_GP_GAINED, "Shop GP Gained"),
-            Map.entry(SPELLS_CAST, "Spells Cast"),
-            Map.entry(TELEPORTS_CAST, "Teleports Cast"),
             Map.entry(TILES_WALKED, "Tiles Walked"),
             Map.entry(TILES_RAN, "Tiles Ran"),
             Map.entry(FISH_CAUGHT, "Fish Caught"),
@@ -37,7 +35,6 @@ public class UltimateStatTrackerOverlay extends Overlay
             Map.entry(BONES_BURIED, "Bones Buried"),
             Map.entry(ASHES_SCATTERED, "Ashes Scattered"),
             Map.entry(LOGS_BURNED, "Logs Burned"),
-            Map.entry(TOTAL_DEATHS, "Total Deaths"),
             Map.entry(FOOD_EATEN, "Food Eaten"),
             Map.entry(HP_REGEN, "HP Regen"),
             Map.entry(BEER_DRANK, "Beer Drank"),
@@ -52,7 +49,6 @@ public class UltimateStatTrackerOverlay extends Overlay
             Map.entry(STALLS_THIEVED, "Stalls Thieved"),
             Map.entry(WEEDS_RAKED, "Weeds Raked"),
             Map.entry(SEEDS_PLANTED, "Seeds Planted"),
-            Map.entry(MELEE_ATTACKS_LANDED, "Melee Hits"),
             Map.entry(ROOF_TOP_AGILITY, "Rooftop Laps"),
             Map.entry(NORMAL_AGILITY, "Agility Laps"),
             Map.entry(IMPLINGS_CAUGHT, "Implings Caught"),
@@ -62,9 +58,6 @@ public class UltimateStatTrackerOverlay extends Overlay
             Map.entry(UNFINISHED_POTIONS_MADE, "Unfinished Potions"),
             Map.entry(POTIONS_MADE, "Potions Made"),
             Map.entry(HERBS_CLEANED, "Herbs Cleaned"),
-            Map.entry(SPECIAL_ATTACKS_PREFORMED, "Special Attacks Performed"),
-            Map.entry(TOTAL_DAMAGE_DONE, "Total Damage Done"),
-            Map.entry(BIGGEST_HITSPLAT, "Biggest Hitsplat"),
             Map.entry(RUNES_CRAFTED, "Runes Crafted"),
             Map.entry(GEMS_CUT, "Gems Cut"),
             Map.entry(GLASS_BLOWN, "Glass Blown"),
@@ -92,7 +85,7 @@ public class UltimateStatTrackerOverlay extends Overlay
     {
         this.client = client;
         setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.ABOVE_WIDGETS);
+        setLayer(OverlayLayer.UNDER_WIDGETS);
     }
 
     public void open()

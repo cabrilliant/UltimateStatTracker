@@ -114,9 +114,4 @@ public class MovementStatTracker implements StatTracker{
     public void onChatMessage(ChatMessage event) {
 
     }
-
-    @Override
-    public void onHitsplatApplied(HitsplatApplied event) {
-
-    }
 }
