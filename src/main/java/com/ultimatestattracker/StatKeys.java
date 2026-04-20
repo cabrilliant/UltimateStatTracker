@@ -1,5 +1,10 @@
 package com.ultimatestattracker;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class StatKeys {
      // --- Items ---
      public static String EXAMINE = "itemsExamined";
@@ -134,4 +139,28 @@ public class StatKeys {
      public static String BIGGEST_HITSPLAT = "biggestHitsplat";
      public static String ATTACKS_BLOCKED = "attacksBlocked";
      public static String ATTACKS_MISSED = "attacksMissed";
+
+     public static final String[] ALL_KEYS = discoverStatKeys();
+
+     private static String[] discoverStatKeys()
+     {
+         return Arrays.stream(StatKeys.class.getDeclaredFields())
+                 .filter(f -> Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()))
+                 .filter(f -> f.getType() == String.class)
+                 .sorted(Comparator.comparing(Field::getName))
+                 .map(StatKeys::readStaticStringField)
+                 .toArray(String[]::new);
+     }
+
+     private static String readStaticStringField(Field f)
+     {
+         try
+         {
+             return (String) f.get(null);
+         }
+         catch (IllegalAccessException e)
+         {
+             throw new ExceptionInInitializerError(e);
+         }
+     }
 }

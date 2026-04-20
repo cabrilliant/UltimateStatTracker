@@ -201,7 +201,20 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 row.setBackground(content.getBackground());
                 row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+                JPanel leftPanel = new JPanel();
+                leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.X_AXIS));
+                leftPanel.setBackground(content.getBackground());
+
                 JLabel left = new JLabel(label);
+                left.setForeground(Color.WHITE);
+
+                JLabel info = new JLabel(" ⓘ");
+                info.setForeground(Color.GRAY);
+                String date = statStore.getStatTrackingDate(key);
+                info.setToolTipText(date != null ? "Tracking since: "+ date : "No data");
+
+                leftPanel.add(left);
+                leftPanel.add(info);
 
                 String formatted;
                 if (value == Integer.MAX_VALUE)
@@ -215,9 +228,6 @@ public class UltimateStatTrackerPanel extends PluginPanel
 
                 JLabel right = new JLabel(formatted);
 
-                left.setForeground(Color.WHITE);
-
-                // Color logic
                 if (value == Integer.MAX_VALUE || formatted.contains("M"))
                 {
                     right.setForeground(Color.GREEN);
@@ -227,7 +237,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
                     right.setForeground(Color.WHITE);
                 }
 
-                row.add(left, BorderLayout.WEST);
+                row.add(leftPanel, BorderLayout.WEST);
                 row.add(right, BorderLayout.EAST);
 
                 // ---------------- RIGHT CLICK MENU ----------------
@@ -280,7 +290,6 @@ public class UltimateStatTrackerPanel extends PluginPanel
         revalidate();
         repaint();
     }
-
 
     public static String formatStack(int amount)
     {

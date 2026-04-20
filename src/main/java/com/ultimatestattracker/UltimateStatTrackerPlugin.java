@@ -105,6 +105,17 @@ public class UltimateStatTrackerPlugin extends Plugin
 				.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		for (String key : ALL_KEYS)
+		{
+			if ("0".equals(statStore.getStatTrackingDate(key)))
+			{
+				String formattedDate = java.time.Instant.ofEpochMilli(System.currentTimeMillis())
+						.atZone(java.time.ZoneId.systemDefault())
+						.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				statStore.setStatTrackingDate(key,formattedDate);
+			}
+		}
 	}
 
 	@Override
