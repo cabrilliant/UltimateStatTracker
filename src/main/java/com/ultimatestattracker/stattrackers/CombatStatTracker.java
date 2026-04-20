@@ -12,13 +12,6 @@ public class CombatStatTracker implements StatTracker{
     private StatStore statStore;
     private Client client;
 
-    private int prevAttackXp;
-    private int prevStrengthXp;
-    private int prevDefenceXp;
-    private int prevHpXp;
-
-    private int prevSpecialAttackPercent = -1;
-
     public CombatStatTracker(StatStore statStore, Client client)
     {
         this.statStore = statStore;

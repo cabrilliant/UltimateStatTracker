@@ -79,7 +79,6 @@ ITEMS_SMITHED = "itemsSmithed"; TESTED 2026-04-19
 
 
 // -- Combat --
-ENEMIES_KILLED = "enemiesKilled";
 DAMAGE_DONE = "damageDone"; TESTED 2026-04-20
 DAMAGE_RECEIVED = "damageReceived"; TESTED 2026-04-20
 BIGGEST_HITSPLAT = "biggestHitsplat"; TESTED 2026-04-20

@@ -80,7 +80,6 @@ public class StatKeys {
      public static String ITEMS_SMITHED = "itemsSmithed";
 
      // -- Combat --
-     public static String ENEMIES_KILLED = "enemiesKilled";
      public static String DAMAGE_DONE = "damageDone";
      public static String DAMAGE_RECEIVED = "damageReceived";
      public static String BIGGEST_HITSPLAT = "biggestHitsplat";
