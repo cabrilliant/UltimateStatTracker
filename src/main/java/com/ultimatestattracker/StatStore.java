@@ -21,20 +21,24 @@ public class StatStore {
     public int getStat(String key)
     {
         Integer value = cfg.getRSProfileConfiguration(CONFIG_GROUP, key, Integer.class);
-        //log.debug("Retrieved stat value for {}: {}", key, value);
         return value == null ? 0 : value;
     }
 
     public void incrementStat(String key)
     {
         log.debug("increment called");
-        storeStat(key,getStat(key) +1);
+        incrementStatBy(key,1);
     }
 
     public void incrementStatBy(String key, int value)
     {
         log.debug("increment by called");
-        storeStat(key,getStat(key) +value);
+        int current=getStat(key);
+        if(current>Integer.MAX_VALUE-value){ //overflow protection
+            storeStat(key,Integer.MAX_VALUE);
+            return;
+        }
+        storeStat(key,current+value);
     }
 
     public void setStat(String key, int value){

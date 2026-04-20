@@ -123,6 +123,8 @@ public class UltimateStatTrackerPanel extends PluginPanel
 
     public void rebuild()
     {
+        //test code for formatting
+        //statStore.setStat(LOGS_CHOPPED,Integer.MAX_VALUE);
         content.removeAll();
 
         JLabel title = new JLabel("Ultimate Stat Tracker");
@@ -151,10 +153,30 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
                 JLabel left = new JLabel(label);
-                JLabel right = new JLabel(String.valueOf(value));
+
+                String formatted;
+                if (value == Integer.MAX_VALUE)
+                {
+                    formatted = "Lots!";
+                }
+                else
+                {
+                    formatted = formatStack(value);
+                }
+
+                JLabel right = new JLabel(formatted);
 
                 left.setForeground(Color.WHITE);
-                right.setForeground(Color.WHITE);
+
+                // Color logic
+                if (value == Integer.MAX_VALUE || formatted.contains("M"))
+                {
+                    right.setForeground(Color.GREEN);
+                }
+                else
+                {
+                    right.setForeground(Color.WHITE);
+                }
 
                 row.add(left, BorderLayout.WEST);
                 row.add(right, BorderLayout.EAST);
@@ -208,5 +230,35 @@ public class UltimateStatTrackerPanel extends PluginPanel
 
         revalidate();
         repaint();
+    }
+
+
+    public static String formatStack(int amount)
+    {
+        if (amount < 100_000)
+        {
+            return String.valueOf(amount);
+        }
+        else if (amount < 10_000_000)
+        {
+            // Thousands (k)
+            int thousands = amount / 1_000;
+            return thousands + "k";
+        }
+        else
+        {
+            // Millions (M) with 1 decimal place
+            double millions = amount / 1_000_000.0;
+
+            // Keep one decimal only when needed
+            if (amount % 1_000_000 == 0)
+            {
+                return String.format("%dM", (int) millions);
+            }
+            else
+            {
+                return String.format("%.1fM", millions);
+            }
+        }
     }
 }
