@@ -31,7 +31,7 @@ public class SkillingStatTracker implements StatTracker{
     private int prevRuneCount = 0;
 
     private boolean runecraftXpGainedThisTick = false;
-    private int prevRunecraftXp = 0;
+    private int prevRunecraftXp = -1;
     private int currentRunecraftXp = 0;
 
     private String[] glassItems = {
@@ -73,7 +73,7 @@ public class SkillingStatTracker implements StatTracker{
         processActions(Skill.FIREMAKING, LOGS_BURNED);
         prevRunecraftXp = currentRunecraftXp;
         currentRunecraftXp = client.getSkillExperience(Skill.RUNECRAFT);
-        if (currentRunecraftXp > prevRunecraftXp) runecraftXpGainedThisTick = true;
+        if (currentRunecraftXp > prevRunecraftXp && prevRunecraftXp != -1) runecraftXpGainedThisTick = true;
         ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
         if (inv == null)
         {
