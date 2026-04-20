@@ -76,3 +76,12 @@ IMPLINGS_CAUGHT = "implingsCaught"; TESTED 2026-04-19
 //-- Smithing --
 BARS_SMELTED = "barsSmelted"; TESTED 2026-04-19
 ITEMS_SMITHED = "itemsSmithed"; TESTED 2026-04-19
+
+
+// -- Combat --
+ENEMIES_KILLED = "enemiesKilled";
+DAMAGE_DONE = "damageDone"; TESTED 2026-04-20
+DAMAGE_RECEIVED = "damageReceived"; TESTED 2026-04-20
+BIGGEST_HITSPLAT = "biggestHitsplat"; TESTED 2026-04-20
+ATTACKS_BLOCKED = "attacksBlocked"; TESTED 2026-04-20
+ATTACKS_MISSED = "attacksMissed"; TESTED 2026-04-20

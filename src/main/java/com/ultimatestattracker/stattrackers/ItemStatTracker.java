@@ -84,4 +84,9 @@ public class ItemStatTracker implements StatTracker{
             statStore.incrementStat(ASHES_SCATTERED);
         }
     }
+
+    @Override
+    public void onHitsplatApplied(HitsplatApplied event) {
+
+    }
 }

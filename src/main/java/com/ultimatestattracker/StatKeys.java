@@ -78,4 +78,12 @@ public class StatKeys {
      //-- Smithing --
      public static String BARS_SMELTED = "barsSmelted";
      public static String ITEMS_SMITHED = "itemsSmithed";
+
+     // -- Combat --
+     public static String ENEMIES_KILLED = "enemiesKilled";
+     public static String DAMAGE_DONE = "damageDone";
+     public static String DAMAGE_RECEIVED = "damageReceived";
+     public static String BIGGEST_HITSPLAT = "biggestHitsplat";
+     public static String ATTACKS_BLOCKED = "attacksBlocked";
+     public static String ATTACKS_MISSED = "attacksMissed";
 }

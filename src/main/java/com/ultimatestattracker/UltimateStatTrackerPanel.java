@@ -60,7 +60,13 @@ public class UltimateStatTrackerPanel extends PluginPanel
             Map.entry(DARTS_FLECTHED, "Darts Fletched"),
             Map.entry(CREATURES_TRAPPED, "Creatures Trapped"),
             Map.entry(BARS_SMELTED, "Bars Smelted"),
-            Map.entry(ITEMS_SMITHED, "Items Smithed")
+            Map.entry(ITEMS_SMITHED, "Items Smithed"),
+            Map.entry(ENEMIES_KILLED, "Enemies Killed"),
+            Map.entry(DAMAGE_DONE, "Damage Done"),
+            Map.entry(DAMAGE_RECEIVED, "Damage Received"),
+            Map.entry(BIGGEST_HITSPLAT, "Biggest Hit"),
+            Map.entry(ATTACKS_BLOCKED, "Attacks Blocked"),
+            Map.entry(ATTACKS_MISSED, "Attacks Missed")
     );
 
     public UltimateStatTrackerPanel()

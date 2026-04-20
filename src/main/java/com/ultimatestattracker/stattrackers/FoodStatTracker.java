@@ -152,4 +152,9 @@ public class FoodStatTracker implements StatTracker{
             statStore.incrementStat(VIALS_SMASHED);
         }
     }
+
+    @Override
+    public void onHitsplatApplied(HitsplatApplied event) {
+
+    }
 }

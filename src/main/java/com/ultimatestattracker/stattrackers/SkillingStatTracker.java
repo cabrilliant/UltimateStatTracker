@@ -213,6 +213,11 @@ public class SkillingStatTracker implements StatTracker{
         }
     }
 
+    @Override
+    public void onHitsplatApplied(HitsplatApplied event) {
+
+    }
+
     private void processActions(Skill skill, String statKey){
         int currentActions = xpService.getActions(skill);
         if (!previousSkillActions.containsKey(skill)){
