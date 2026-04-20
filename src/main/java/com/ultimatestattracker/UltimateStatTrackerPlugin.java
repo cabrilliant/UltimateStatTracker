@@ -46,16 +46,11 @@ public class UltimateStatTrackerPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
 	private ClientToolbar clientToolbar;
 
 	private NavigationButton navButton;
 
 	private UltimateStatTrackerPanel panel;
-	@Inject
-	private UltimateStatTrackerOverlay overlay;
 
 	@Inject
 	private UltimateStatTrackerConfig config;
@@ -85,9 +80,6 @@ public class UltimateStatTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		statStore = new StatStore(configManager);
-		overlay.setStatStore(statStore);
-		overlayManager.add(overlay);
-		mouseManager.registerMouseListener(mouseListener);
 
 		goldStatTracker = new GoldStatTracker(statStore, client);
 		itemStatTracker = new ItemStatTracker(statStore, client);
@@ -116,9 +108,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(movementStatTracker.ctrlKeyListner);
-		mouseManager.unregisterMouseListener(mouseListener);
 		clientToolbar.removeNavigation(navButton);
 	}
 
@@ -163,57 +153,10 @@ public class UltimateStatTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommandExecuted(CommandExecuted event)
-	{
-		log.info("Command executed: {}", event.getCommand());
-		if (!event.getCommand().equalsIgnoreCase("ust"))
-		{
-			return;
-		}
-
-		overlay.toggle();
-	}
-
-	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		skillingStatTracker.onChatMessage(event);
 		foodStatTracker.onChatMessage(event);
 		itemStatTracker.onChatMessage(event);
 	}
-
-	private final MouseListener mouseListener = new MouseAdapter()
-	{
-		@Override
-		public MouseEvent mousePressed(MouseEvent event)
-		{
-			if (!overlay.isVisible() || !SwingUtilities.isLeftMouseButton(event))
-			{
-				return event;
-			}
-
-			Point mouse = event.getPoint();
-
-			// Clicked on the close button
-			if (overlay.isInCloseButtonBounds(mouse))
-			{
-				log.info("close clicekd");
-				overlay.close();
-				event.consume();
-				return event;
-			}
-
-			// Clicked inside overlay (can add more interactions later)
-			if (overlay.isInBounds(mouse))
-			{
-				log.info("overlay clicekd");
-				event.consume();
-				return event;
-			}
-
-			// Clicked outside overlay (optional: dismiss)
-			return event;
-		}
-	};
-
 }
