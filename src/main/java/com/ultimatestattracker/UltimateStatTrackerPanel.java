@@ -76,17 +76,6 @@ public class UltimateStatTrackerPanel extends PluginPanel
         JPanel topBar = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
 
-        // Refresh button
-        JButton refreshButton = new JButton("Refresh");
-        refreshButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        refreshButton.addActionListener(e -> rebuild());
-
-        // Search label
-        JLabel searchLabel = new JLabel("Search");
-        searchLabel.setForeground(Color.WHITE);
-        searchLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        // Search field
         searchField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
         searchField.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -103,10 +92,12 @@ public class UltimateStatTrackerPanel extends PluginPanel
             @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { update(); }
         });
 
-        topBar.add(refreshButton);
-        topBar.add(Box.createVerticalStrut(5));
-        topBar.add(searchLabel);
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        refreshButton.addActionListener(e -> rebuild());
+
         topBar.add(searchField);
+        topBar.add(refreshButton);
 
         add(topBar, BorderLayout.NORTH);
 
