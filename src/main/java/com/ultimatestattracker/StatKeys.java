@@ -18,6 +18,15 @@ public class StatKeys {
      public static String FISH_CAUGHT = "fishCaught";
      public static String ROCKS_MINED = "rocksMined";
      public static String LOGS_CHOPPED = "logsChopped";
+     public static String NORMAL_LOGS_CHOPPED = "normalLogsChopped";
+     public static String OAK_LOGS_CHOPPED = "oakLogsChopped";
+     public static String WILLOW_LOGS_CHOPPED = "willowLogsChopped";
+     public static String TEAK_LOGS_CHOPPED = "teakLogsChopped";
+     public static String MAPLE_LOGS_CHOPPED = "mapleLogsChopped";
+     public static String MAHOGANY_LOGS_CHOPPED = "mahoganyLogsChopped";
+     public static String YEW_LOGS_CHOPPED = "yewLogsChopped";
+     public static String MAGIC_LOGS_CHOPPED = "magicLogsChopped";
+     public static String REDWOOD_LOGS_CHOPPED = "redwoodLogsChopped";
      public static String FLAX_PICKED = "flaxPicked";
      public static String CABBAGE_PICKED = "cabbagePicked";
 

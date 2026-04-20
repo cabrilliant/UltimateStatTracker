@@ -59,6 +59,7 @@ HERBS_CLEANED = "herbsCleaned"; TESTED 2026-04-19
 
 // --  Runecraft --
 RUNES_CRAFTED = "runesCrafted"; TESTED 2026-04-19(BUT DOESNT WORK WITH RUNE POUCH)
+BUG: on startup, all runes in inventory are added to this count incorrectly
 
 // -- Crafting --
 GEMS_CUT = "gemsCut"; TESTED 2026-04-19
@@ -84,3 +85,12 @@ DAMAGE_RECEIVED = "damageReceived"; TESTED 2026-04-20
 BIGGEST_HITSPLAT = "biggestHitsplat"; TESTED 2026-04-20
 ATTACKS_BLOCKED = "attacksBlocked"; TESTED 2026-04-20
 ATTACKS_MISSED = "attacksMissed"; TESTED 2026-04-20
+
+
+trees:
+maple tested
+willow tested
+yew tested
+magic tested
+oak tested
+normal logs tested

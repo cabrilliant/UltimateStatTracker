@@ -10,6 +10,7 @@ import net.runelite.client.plugins.xptracker.XpTrackerService;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.ultimatestattracker.StatKeys.*;
@@ -21,7 +22,7 @@ public class SkillingStatTracker implements StatTracker{
     private XpTrackerService xpService;
     HashMap<Skill,Integer> previousSkillActions = new HashMap<>();
     //from woodcutting plugin
-    private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
+    private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)\\s+(?:([\\w ]+?)\\s+)?(logs?|mushrooms)\\.");
 
     private int prevWeedCount = 0;
 
@@ -115,9 +116,14 @@ public class SkillingStatTracker implements StatTracker{
         final var msg = event.getMessage();
 
         //from woodcutting plugin
-        if (WOOD_CUT_PATTERN.matcher(msg).matches())
+        final Matcher woodCutMatcher = WOOD_CUT_PATTERN.matcher(msg);
+        if (woodCutMatcher.matches())
         {
             statStore.incrementStat(LOGS_CHOPPED);
+            if (woodCutMatcher.group(2).startsWith("log"))
+            {
+                incrementTypedLogs(woodCutMatcher.group(1));
+            }
         }
 
         else if(msg.contains("You pick the") && msg.contains("pocket") && !msg.contains("attempt")){
@@ -260,5 +266,58 @@ public class SkillingStatTracker implements StatTracker{
         }
 
         return total;
+    }
+
+    private void incrementTypedLogs(String logType)
+    {
+        if (logType == null)
+        {
+            statStore.incrementStat(NORMAL_LOGS_CHOPPED);
+            return;
+        }
+
+        String t = logType.trim().toLowerCase();
+
+        if (t.isEmpty() || t.equals("normal"))
+        {
+            statStore.incrementStat(NORMAL_LOGS_CHOPPED);
+        }
+        else if (t.equals("oak"))
+        {
+            statStore.incrementStat(OAK_LOGS_CHOPPED);
+        }
+        else if (t.equals("willow"))
+        {
+            statStore.incrementStat(WILLOW_LOGS_CHOPPED);
+        }
+        else if (t.equals("teak"))
+        {
+            statStore.incrementStat(TEAK_LOGS_CHOPPED);
+        }
+        else if (t.equals("maple"))
+        {
+            statStore.incrementStat(MAPLE_LOGS_CHOPPED);
+        }
+        else if (t.equals("mahogany"))
+        {
+            statStore.incrementStat(MAHOGANY_LOGS_CHOPPED);
+        }
+        else if (t.equals("yew"))
+        {
+            statStore.incrementStat(YEW_LOGS_CHOPPED);
+        }
+        else if (t.equals("magic"))
+        {
+            statStore.incrementStat(MAGIC_LOGS_CHOPPED);
+        }
+        else if (t.equals("redwood"))
+        {
+            statStore.incrementStat(REDWOOD_LOGS_CHOPPED);
+        }
+        else
+        {
+            //unknown logs type
+            
+        }
     }
 }
