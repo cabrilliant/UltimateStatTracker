@@ -47,24 +47,17 @@ public class StatStore {
 
     public void setStatTrackingDate(String key,String value){
         log.debug("setting stat tracking date for key {} to value {}", key, value);
-        String dateKey = key + "_date";
+        String dateKey = key + "date";
         cfg.setRSProfileConfiguration(CONFIG_GROUP, dateKey, value);
     }
 
     public String getStatTrackingDate(String key)
     {
-        String dateKey = key + "_date";
+        String dateKey = key + "date";
         String value = cfg.getRSProfileConfiguration(CONFIG_GROUP, dateKey);
         if (value == null || value.isEmpty())
         {
-            String formattedDate = java.time.Instant.ofEpochMilli(System.currentTimeMillis())
-                    .atZone(java.time.ZoneId.systemDefault())
-                    .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            setStatTrackingDate(key,formattedDate);
-            value = cfg.getRSProfileConfiguration(CONFIG_GROUP, dateKey);
-            if (value == null || value.isEmpty()) {
-                return "0";
-            }
+            return "0";
         }
         return value;
     }

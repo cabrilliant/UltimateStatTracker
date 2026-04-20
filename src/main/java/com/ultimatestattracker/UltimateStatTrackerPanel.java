@@ -4,7 +4,9 @@ import net.runelite.client.ui.PluginPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ultimatestattracker.StatKeys.*;
 
@@ -12,113 +14,121 @@ public class UltimateStatTrackerPanel extends PluginPanel
 {
     private final JPanel content = new JPanel();
     private final JTextField searchField = new JTextField();
+    private final JComboBox<String> sortBox = new JComboBox<>(new String[]{"Alphabetical", "Numeric"});
 
     private StatStore statStore;
     private String filter = "";
 
-    private static final Map<String, String> STAT_LABELS = Map.ofEntries(
-            Map.entry(EXAMINE, "Things Examined"),
-            Map.entry(ITEMS_DROPPED, "Items Dropped"),
-            Map.entry(SHOP_GP_SPENT, "Shop GP Spent"),
-            Map.entry(SHOP_GP_GAINED, "Shop GP Gained"),
-            Map.entry(TILES_WALKED, "Tiles Walked"),
-            Map.entry(TILES_RAN, "Tiles Ran"),
-            Map.entry(FISH_CAUGHT, "Fish Caught"),
-            Map.entry(SHRIMP_CAUGHT, "Shrimp Caught"),
-            Map.entry(ANCHOVIES_CAUGHT, "Anchovies Caught"),
-            Map.entry(SARDINE_CAUGHT, "Sardines Caught"),
-            Map.entry(HERRING_CAUGHT, "Herring Caught"),
-            Map.entry(TROUT_CAUGHT, "Trout Caught"),
-            Map.entry(SALMON_CAUGHT, "Salmon Caught"),
-            Map.entry(PIKE_CAUGHT, "Pike Caught"),
-            Map.entry(COD_CAUGHT, "Cod Caught"),
-            Map.entry(BASS_CAUGHT, "Bass Caught"),
-            Map.entry(TUNA_CAUGHT, "Tuna Caught"),
-            Map.entry(LOBSTER_CAUGHT, "Lobsters Caught"),
-            Map.entry(SWORDFISH_CAUGHT, "Swordfish Caught"),
-            Map.entry(MONKFISH_CAUGHT, "Monkfish Caught"),
-            Map.entry(SHARK_CAUGHT, "Sharks Caught"),
-            Map.entry(SEA_TURTLE_CAUGHT, "Sea Turtles Caught"),
-            Map.entry(MANTA_RAY_CAUGHT, "Manta Rays Caught"),
-            Map.entry(ANGLERFISH_CAUGHT, "Anglerfish Caught"),
-            Map.entry(KARAMBWAN_CAUGHT, "Karambwans Caught"),
-            Map.entry(DARK_CRAB_CAUGHT, "Dark Crabs Caught"),
-            Map.entry(MINNOW_CAUGHT, "Minnows Caught"),
-            Map.entry(SACRED_EEL_CAUGHT, "Sacred Eels Caught"),
-            Map.entry(LEAPING_TROUT_CAUGHT, "Leaping Trout Caught"),
-            Map.entry(LEAPING_SALMON_CAUGHT, "Leaping Salmon Caught"),
-            Map.entry(LEAPING_STURGEON_CAUGHT, "Leaping Sturgeon Caught"),
-            Map.entry(ROCKS_MINED, "Rocks Mined"),
-            Map.entry(CLAY_MINED, "Clay Mined"),
-            Map.entry(COPPER_ORE_MINED, "Copper Ore Mined"),
-            Map.entry(TIN_ORE_MINED, "Tin Ore Mined"),
-            Map.entry(LIMESTONE_MINED, "Limestone Mined"),
-            Map.entry(IRON_ORE_MINED, "Iron Ore Mined"),
-            Map.entry(SILVER_ORE_MINED, "Silver Ore Mined"),
-            Map.entry(COAL_MINED, "Coal Mined"),
-            Map.entry(GOLD_ORE_MINED, "Gold Ore Mined"),
-            Map.entry(MITHRIL_ORE_MINED, "Mithril Ore Mined"),
-            Map.entry(ADAMANTITE_ORE_MINED, "Adamantite Ore Mined"),
-            Map.entry(RUNITE_ORE_MINED, "Runite Ore Mined"),
-            Map.entry(GRANITE_MINED, "Granite Mined"),
-            Map.entry(SANDSTONE_MINED, "Sandstone Mined"),
-            Map.entry(PAY_DIRT_MINED, "Pay-dirt Mined"),
-            Map.entry(AMETHYST_MINED, "Amethyst Mined"),
-            Map.entry(PURE_ESSENCE_MINED, "Pure Essence Mined"),
-            Map.entry(LOGS_CHOPPED, "Logs Chopped"),
-            Map.entry(NORMAL_LOGS_CHOPPED, "Normal Logs Chopped"),
-            Map.entry(OAK_LOGS_CHOPPED, "Oak Logs Chopped"),
-            Map.entry(WILLOW_LOGS_CHOPPED, "Willow Logs Chopped"),
-            Map.entry(TEAK_LOGS_CHOPPED, "Teak Logs Chopped"),
-            Map.entry(MAPLE_LOGS_CHOPPED, "Maple Logs Chopped"),
-            Map.entry(MAHOGANY_LOGS_CHOPPED, "Mahogany Logs Chopped"),
-            Map.entry(YEW_LOGS_CHOPPED, "Yew Logs Chopped"),
-            Map.entry(MAGIC_LOGS_CHOPPED, "Magic Logs Chopped"),
-            Map.entry(REDWOOD_LOGS_CHOPPED, "Redwood Logs Chopped"),
-            Map.entry(BONES_BURIED, "Bones Buried"),
-            Map.entry(ASHES_SCATTERED, "Ashes Scattered"),
-            Map.entry(LOGS_BURNED, "Logs Burned"),
-            Map.entry(FOOD_EATEN, "Food Eaten"),
-            Map.entry(HP_REGEN, "HP Regen"),
-            Map.entry(BEER_DRANK, "Beer Drank"),
-            Map.entry(CABBAGE_EATEN, "Cabbage Eaten"),
-            Map.entry(TROUT_EATEN, "Trout Eaten"),
-            Map.entry(FLAX_PICKED, "Flax Picked"),
-            Map.entry(CABBAGE_PICKED, "Cabbage Picked"),
-            Map.entry(CRITTERS_PET, "Critters Pet"),
-            Map.entry(POTION_SIPS_DRANK, "Potion Sips"),
-            Map.entry(VIALS_SMASHED, "Vials Smashed"),
-            Map.entry(PICK_POCKETS, "Pickpockets"),
-            Map.entry(STALLS_THIEVED, "Stalls Thieved"),
-            Map.entry(WEEDS_RAKED, "Weeds Raked"),
-            Map.entry(SEEDS_PLANTED, "Seeds Planted"),
-            Map.entry(ROOF_TOP_AGILITY, "Rooftop Laps"),
-            Map.entry(NORMAL_AGILITY, "Agility Laps"),
-            Map.entry(IMPLINGS_CAUGHT, "Implings Caught"),
-            Map.entry(FOOD_COOKED, "Food Cooked"),
-            Map.entry(FOOD_BURNED, "Food Burned"),
-            Map.entry(FAILED_PICK_POCKETS, "Failed Pickpockets"),
-            Map.entry(UNFINISHED_POTIONS_MADE, "Unfinished Potions"),
-            Map.entry(POTIONS_MADE, "Potions Made"),
-            Map.entry(HERBS_CLEANED, "Herbs Cleaned"),
-            Map.entry(RUNES_CRAFTED, "Runes Crafted"),
-            Map.entry(GEMS_CUT, "Gems Cut"),
-            Map.entry(GLASS_BLOWN, "Glass Blown"),
-            Map.entry(BOWS_FLECTHED, "Bows Fletched"),
-            Map.entry(BOWS_STRUNG, "Bows Strung"),
-            Map.entry(DARTS_FLECTHED, "Darts Fletched"),
-            Map.entry(CREATURES_TRAPPED, "Creatures Trapped"),
-            Map.entry(BARS_SMELTED, "Bars Smelted"),
-            Map.entry(ITEMS_SMITHED, "Items Smithed"),
-            Map.entry(DAMAGE_DONE, "Damage Done"),
-            Map.entry(DAMAGE_RECEIVED, "Damage Received"),
-            Map.entry(BIGGEST_HITSPLAT, "Biggest Hit"),
-            Map.entry(ATTACKS_BLOCKED, "Attacks Blocked"),
-            Map.entry(ATTACKS_MISSED, "Attacks Missed")
-    );
+    public JScrollPane scrollPane;
 
-    public UltimateStatTrackerPanel()
+    private static final Map<String, String> STAT_LABELS = new LinkedHashMap<>();
+
+    private UltimateStatTrackerPlugin plugin;
+    static
     {
+        STAT_LABELS.put(EXAMINE, "Things Examined");
+        STAT_LABELS.put(ITEMS_DROPPED, "Items Dropped");
+        STAT_LABELS.put(SHOP_GP_SPENT, "Shop GP Spent");
+        STAT_LABELS.put(SHOP_GP_GAINED, "Shop GP Gained");
+        STAT_LABELS.put(TILES_WALKED, "Tiles Walked");
+        STAT_LABELS.put(TILES_RAN, "Tiles Ran");
+        STAT_LABELS.put(FISH_CAUGHT, "Fish Caught");
+        STAT_LABELS.put(SHRIMP_CAUGHT, "Shrimp Caught");
+        STAT_LABELS.put(ANCHOVIES_CAUGHT, "Anchovies Caught");
+        STAT_LABELS.put(SARDINE_CAUGHT, "Sardines Caught");
+        STAT_LABELS.put(HERRING_CAUGHT, "Herring Caught");
+        STAT_LABELS.put(TROUT_CAUGHT, "Trout Caught");
+        STAT_LABELS.put(SALMON_CAUGHT, "Salmon Caught");
+        STAT_LABELS.put(PIKE_CAUGHT, "Pike Caught");
+        STAT_LABELS.put(COD_CAUGHT, "Cod Caught");
+        STAT_LABELS.put(BASS_CAUGHT, "Bass Caught");
+        STAT_LABELS.put(TUNA_CAUGHT, "Tuna Caught");
+        STAT_LABELS.put(LOBSTER_CAUGHT, "Lobsters Caught");
+        STAT_LABELS.put(SWORDFISH_CAUGHT, "Swordfish Caught");
+        STAT_LABELS.put(MONKFISH_CAUGHT, "Monkfish Caught");
+        STAT_LABELS.put(SHARK_CAUGHT, "Sharks Caught");
+        STAT_LABELS.put(SEA_TURTLE_CAUGHT, "Sea Turtles Caught");
+        STAT_LABELS.put(MANTA_RAY_CAUGHT, "Manta Rays Caught");
+        STAT_LABELS.put(ANGLERFISH_CAUGHT, "Anglerfish Caught");
+        STAT_LABELS.put(KARAMBWAN_CAUGHT, "Karambwans Caught");
+        STAT_LABELS.put(DARK_CRAB_CAUGHT, "Dark Crabs Caught");
+        STAT_LABELS.put(MINNOW_CAUGHT, "Minnows Caught");
+        STAT_LABELS.put(SACRED_EEL_CAUGHT, "Sacred Eels Caught");
+        STAT_LABELS.put(LEAPING_TROUT_CAUGHT, "Leaping Trout Caught");
+        STAT_LABELS.put(LEAPING_SALMON_CAUGHT, "Leaping Salmon Caught");
+        STAT_LABELS.put(LEAPING_STURGEON_CAUGHT, "Leaping Sturgeon Caught");
+        STAT_LABELS.put(ROCKS_MINED, "Rocks Mined");
+        STAT_LABELS.put(CLAY_MINED, "Clay Mined");
+        STAT_LABELS.put(COPPER_ORE_MINED, "Copper Ore Mined");
+        STAT_LABELS.put(TIN_ORE_MINED, "Tin Ore Mined");
+        STAT_LABELS.put(LIMESTONE_MINED, "Limestone Mined");
+        STAT_LABELS.put(IRON_ORE_MINED, "Iron Ore Mined");
+        STAT_LABELS.put(SILVER_ORE_MINED, "Silver Ore Mined");
+        STAT_LABELS.put(COAL_MINED, "Coal Mined");
+        STAT_LABELS.put(GOLD_ORE_MINED, "Gold Ore Mined");
+        STAT_LABELS.put(MITHRIL_ORE_MINED, "Mithril Ore Mined");
+        STAT_LABELS.put(ADAMANTITE_ORE_MINED, "Adamantite Ore Mined");
+        STAT_LABELS.put(RUNITE_ORE_MINED, "Runite Ore Mined");
+        STAT_LABELS.put(GRANITE_MINED, "Granite Mined");
+        STAT_LABELS.put(SANDSTONE_MINED, "Sandstone Mined");
+        STAT_LABELS.put(PAY_DIRT_MINED, "Pay-dirt Mined");
+        STAT_LABELS.put(AMETHYST_MINED, "Amethyst Mined");
+        STAT_LABELS.put(PURE_ESSENCE_MINED, "Pure Essence Mined");
+        STAT_LABELS.put(LOGS_CHOPPED, "Logs Chopped");
+        STAT_LABELS.put(NORMAL_LOGS_CHOPPED, "Normal Logs Chopped");
+        STAT_LABELS.put(OAK_LOGS_CHOPPED, "Oak Logs Chopped");
+        STAT_LABELS.put(WILLOW_LOGS_CHOPPED, "Willow Logs Chopped");
+        STAT_LABELS.put(TEAK_LOGS_CHOPPED, "Teak Logs Chopped");
+        STAT_LABELS.put(MAPLE_LOGS_CHOPPED, "Maple Logs Chopped");
+        STAT_LABELS.put(MAHOGANY_LOGS_CHOPPED, "Mahogany Logs Chopped");
+        STAT_LABELS.put(YEW_LOGS_CHOPPED, "Yew Logs Chopped");
+        STAT_LABELS.put(MAGIC_LOGS_CHOPPED, "Magic Logs Chopped");
+        STAT_LABELS.put(REDWOOD_LOGS_CHOPPED, "Redwood Logs Chopped");
+        STAT_LABELS.put(BONES_BURIED, "Bones Buried");
+        STAT_LABELS.put(ASHES_SCATTERED, "Ashes Scattered");
+        STAT_LABELS.put(LOGS_BURNED, "Logs Burned");
+        STAT_LABELS.put(FOOD_EATEN, "Food Eaten");
+        STAT_LABELS.put(HP_REGEN, "HP Regen");
+        STAT_LABELS.put(BEER_DRANK, "Beer Drank");
+        STAT_LABELS.put(CABBAGE_EATEN, "Cabbage Eaten");
+        STAT_LABELS.put(TROUT_EATEN, "Trout Eaten");
+        STAT_LABELS.put(FLAX_PICKED, "Flax Picked");
+        STAT_LABELS.put(CABBAGE_PICKED, "Cabbage Picked");
+        STAT_LABELS.put(CRITTERS_PET, "Critters Pet");
+        STAT_LABELS.put(POTION_SIPS_DRANK, "Potion Sips");
+        STAT_LABELS.put(VIALS_SMASHED, "Vials Smashed");
+        STAT_LABELS.put(PICK_POCKETS, "Pickpockets");
+        STAT_LABELS.put(STALLS_THIEVED, "Stalls Thieved");
+        STAT_LABELS.put(WEEDS_RAKED, "Weeds Raked");
+        STAT_LABELS.put(SEEDS_PLANTED, "Seeds Planted");
+        STAT_LABELS.put(ROOF_TOP_AGILITY, "Rooftop Laps");
+        STAT_LABELS.put(NORMAL_AGILITY, "Agility Laps");
+        STAT_LABELS.put(IMPLINGS_CAUGHT, "Implings Caught");
+        STAT_LABELS.put(FOOD_COOKED, "Food Cooked");
+        STAT_LABELS.put(FOOD_BURNED, "Food Burned");
+        STAT_LABELS.put(FAILED_PICK_POCKETS, "Failed Pickpockets");
+        STAT_LABELS.put(UNFINISHED_POTIONS_MADE, "Unfinished Potions");
+        STAT_LABELS.put(POTIONS_MADE, "Potions Made");
+        STAT_LABELS.put(HERBS_CLEANED, "Herbs Cleaned");
+        STAT_LABELS.put(RUNES_CRAFTED, "Runes Crafted");
+        STAT_LABELS.put(GEMS_CUT, "Gems Cut");
+        STAT_LABELS.put(GLASS_BLOWN, "Glass Blown");
+        STAT_LABELS.put(BOWS_FLECTHED, "Bows Fletched");
+        STAT_LABELS.put(BOWS_STRUNG, "Bows Strung");
+        STAT_LABELS.put(DARTS_FLECTHED, "Darts Fletched");
+        STAT_LABELS.put(CREATURES_TRAPPED, "Creatures Trapped");
+        STAT_LABELS.put(BARS_SMELTED, "Bars Smelted");
+        STAT_LABELS.put(ITEMS_SMITHED, "Items Smithed");
+        STAT_LABELS.put(DAMAGE_DONE, "Damage Done");
+        STAT_LABELS.put(DAMAGE_RECEIVED, "Damage Received");
+        STAT_LABELS.put(BIGGEST_HITSPLAT, "Biggest Hit");
+        STAT_LABELS.put(ATTACKS_BLOCKED, "Attacks Blocked");
+        STAT_LABELS.put(ATTACKS_MISSED, "Attacks Missed");
+    }
+
+    public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin)
+    {
+        this.plugin = plugin;
         setLayout(new BorderLayout());
 
         // ---- TOP BAR ----
@@ -145,8 +155,13 @@ public class UltimateStatTrackerPanel extends PluginPanel
         refreshButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         refreshButton.addActionListener(e -> rebuild());
 
+        sortBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+        sortBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        sortBox.addActionListener(e -> rebuild());
+
         topBar.add(searchField);
         topBar.add(refreshButton);
+        topBar.add(sortBox);
 
         add(topBar, BorderLayout.NORTH);
 
@@ -154,7 +169,14 @@ public class UltimateStatTrackerPanel extends PluginPanel
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBackground(new Color(40, 35, 30));
 
-        JScrollPane scrollPane = new JScrollPane(content);
+        scrollPane = new JScrollPane(content);
+        scrollPane.setWheelScrollingEnabled(true);
+
+        scrollPane.getViewport().addMouseWheelListener(e -> {
+            JScrollBar bar = scrollPane.getVerticalScrollBar();
+            bar.setValue(bar.getValue() + (e.getWheelRotation() * bar.getUnitIncrement() * 3));
+        });
+
         add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -170,10 +192,29 @@ public class UltimateStatTrackerPanel extends PluginPanel
         rebuild();
     }
 
+    private List<Map.Entry<String, String>> getSortedEntries()
+    {
+        String selected = (String) sortBox.getSelectedItem();
+
+        List<Map.Entry<String, String>> entries = new ArrayList<>(STAT_LABELS.entrySet());
+
+        if ("Alphabetical".equals(selected))
+        {
+            entries.sort(Comparator.comparing(e -> e.getValue().toLowerCase()));
+        }
+        else if ("Numeric".equals(selected) && statStore != null)
+        {
+            entries.sort((a, b) -> Integer.compare(
+                    statStore.getStat(b.getKey()),
+                    statStore.getStat(a.getKey())
+            ));
+        }
+
+        return entries;
+    }
+
     public void rebuild()
     {
-        //test code for formatting
-        //statStore.setStat(LOGS_CHOPPED,Integer.MAX_VALUE);
         content.removeAll();
 
         JLabel title = new JLabel("Ultimate Stat Tracker");
@@ -183,9 +224,19 @@ public class UltimateStatTrackerPanel extends PluginPanel
 
         content.add(Box.createVerticalStrut(10));
 
+        if (!plugin.loggedIn){
+            JLabel notLoggedIn = new JLabel("Please log in to see your stats.");
+            notLoggedIn.setForeground(Color.GRAY);
+            notLoggedIn.setAlignmentX(Component.LEFT_ALIGNMENT);
+            content.add(notLoggedIn);
+            revalidate();
+            repaint();
+            return;
+        }
+
         if (statStore != null)
         {
-            for (Map.Entry<String, String> entry : STAT_LABELS.entrySet())
+            for (Map.Entry<String, String> entry : getSortedEntries())
             {
                 String key = entry.getKey();
                 String label = entry.getValue();
@@ -211,7 +262,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 JLabel info = new JLabel(" ⓘ");
                 info.setForeground(Color.GRAY);
                 String date = statStore.getStatTrackingDate(key);
-                info.setToolTipText(date != null ? "Tracking since: "+ date : "No data");
+                info.setToolTipText(date != null ? "Tracking since: " + date : "No data");
 
                 leftPanel.add(left);
                 leftPanel.add(info);
@@ -299,16 +350,13 @@ public class UltimateStatTrackerPanel extends PluginPanel
         }
         else if (amount < 10_000_000)
         {
-            // Thousands (k)
             int thousands = amount / 1_000;
             return thousands + "k";
         }
         else
         {
-            // Millions (M) with 1 decimal place
             double millions = amount / 1_000_000.0;
 
-            // Keep one decimal only when needed
             if (amount % 1_000_000 == 0)
             {
                 return String.format("%dM", (int) millions);

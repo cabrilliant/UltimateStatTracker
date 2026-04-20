@@ -30,7 +30,7 @@ public class SkillingStatTracker implements StatTracker{
 
     private int prevWeedCount = 0;
 
-    private int prevRuneCount = 0;
+    private int prevRuneCount = -1;
 
     private boolean runecraftXpGainedThisTick = false;
     private int prevRunecraftXp = -1;
@@ -92,7 +92,7 @@ public class SkillingStatTracker implements StatTracker{
         }
 
         int currentRuneCount = getCurrentRuneCount();
-        if (prevRuneCount < currentRuneCount){
+        if (prevRuneCount != -1 && prevRuneCount < currentRuneCount){
             if (runecraftXpGainedThisTick) statStore.incrementStatBy(RUNES_CRAFTED, currentRuneCount - prevRuneCount);
         }
 

@@ -77,6 +77,8 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	public boolean loggedIn;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -94,7 +96,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 
 		BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 
-		panel = new UltimateStatTrackerPanel();
+		panel = new UltimateStatTrackerPanel(this);
 		panel.setStatStore(statStore);
 
 		navButton = NavigationButton.builder()
@@ -105,17 +107,6 @@ public class UltimateStatTrackerPlugin extends Plugin
 				.build();
 
 		clientToolbar.addNavigation(navButton);
-
-		for (String key : ALL_KEYS)
-		{
-			if ("0".equals(statStore.getStatTrackingDate(key)))
-			{
-				String formattedDate = java.time.Instant.ofEpochMilli(System.currentTimeMillis())
-						.atZone(java.time.ZoneId.systemDefault())
-						.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-				statStore.setStatTrackingDate(key,formattedDate);
-			}
-		}
 	}
 
 	@Override
@@ -123,6 +114,27 @@ public class UltimateStatTrackerPlugin extends Plugin
 	{
 		keyManager.unregisterKeyListener(movementStatTracker.ctrlKeyListner);
 		clientToolbar.removeNavigation(navButton);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			for (String key : ALL_KEYS)
+			{
+				if ("0".equals(statStore.getStatTrackingDate(key)))
+				{
+					String formattedDate = java.time.Instant.ofEpochMilli(System.currentTimeMillis())
+							.atZone(java.time.ZoneId.systemDefault())
+							.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					statStore.setStatTrackingDate(key,formattedDate);
+				}
+				loggedIn = true;
+				panel.rebuild();
+			}
+		}
+		//we dont need to set it to false because the tracker will have some data as long as one login was done this session.
 	}
 
 	@Subscribe
