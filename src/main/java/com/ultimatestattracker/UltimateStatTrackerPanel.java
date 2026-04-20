@@ -11,8 +11,9 @@ import static com.ultimatestattracker.StatKeys.*;
 public class UltimateStatTrackerPanel extends PluginPanel
 {
     private final JPanel content = new JPanel();
-    private StatStore statStore;
+    private final JTextField searchField = new JTextField();
 
+    private StatStore statStore;
     private String filter = "";
 
     private static final Map<String, String> STAT_LABELS = Map.ofEntries(
@@ -62,43 +63,14 @@ public class UltimateStatTrackerPanel extends PluginPanel
             Map.entry(ITEMS_SMITHED, "Items Smithed")
     );
 
-    @Override
-    public void onActivate()
-    {
-        rebuild();
-    }
-
     public UltimateStatTrackerPanel()
     {
         setLayout(new BorderLayout());
 
-        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        content.setBackground(new Color(40, 35, 30));
+        // ---- TOP BAR ----
+        JPanel topBar = new JPanel();
+        topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
 
-        JScrollPane scrollPane = new JScrollPane(content);
-        add(scrollPane, BorderLayout.CENTER);
-    }
-
-    public void setStatStore(StatStore store)
-    {
-        this.statStore = store;
-        rebuild();
-    }
-
-    public void rebuild()
-    {
-        content.removeAll();
-
-
-        JButton refreshButton = new JButton("Refresh");
-        refreshButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        refreshButton.addActionListener(e -> rebuild());
-
-        content.add(refreshButton);
-        content.add(Box.createVerticalStrut(10));
-
-        JTextField searchField = new JTextField();
         searchField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
         searchField.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -114,7 +86,40 @@ public class UltimateStatTrackerPanel extends PluginPanel
             @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { update(); }
             @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { update(); }
         });
-        add(searchField, BorderLayout.NORTH);
+
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        refreshButton.addActionListener(e -> rebuild());
+
+        topBar.add(searchField);
+        topBar.add(refreshButton);
+
+        add(topBar, BorderLayout.NORTH);
+
+        // ---- MAIN CONTENT ----
+        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+        content.setBackground(new Color(40, 35, 30));
+
+        JScrollPane scrollPane = new JScrollPane(content);
+        add(scrollPane, BorderLayout.CENTER);
+    }
+
+    public void setStatStore(StatStore store)
+    {
+        this.statStore = store;
+        rebuild();
+    }
+
+    @Override
+    public void onActivate()
+    {
+        rebuild();
+    }
+
+    public void rebuild()
+    {
+        content.removeAll();
+
         JLabel title = new JLabel("Ultimate Stat Tracker");
         title.setForeground(Color.ORANGE);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -126,6 +131,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
         {
             for (Map.Entry<String, String> entry : STAT_LABELS.entrySet())
             {
+                String key = entry.getKey();
                 String label = entry.getValue();
 
                 if (!filter.isEmpty() && !label.toLowerCase().contains(filter))
@@ -133,10 +139,11 @@ public class UltimateStatTrackerPanel extends PluginPanel
                     continue;
                 }
 
-                int value = statStore.getStat(entry.getKey());
+                int value = statStore.getStat(key);
 
                 JPanel row = new JPanel(new BorderLayout());
                 row.setBackground(content.getBackground());
+                row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
                 JLabel left = new JLabel(label);
                 JLabel right = new JLabel(String.valueOf(value));
@@ -147,7 +154,49 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 row.add(left, BorderLayout.WEST);
                 row.add(right, BorderLayout.EAST);
 
-                row.setAlignmentX(Component.LEFT_ALIGNMENT);
+                // ---------------- RIGHT CLICK MENU ----------------
+                JPopupMenu menu = new JPopupMenu();
+                JMenuItem resetItem = new JMenuItem("Reset stat");
+                menu.add(resetItem);
+
+                resetItem.addActionListener(e ->
+                {
+                    int result = JOptionPane.showConfirmDialog(
+                            this,
+                            "Reset \"" + label + "\"?",
+                            "Confirm Reset",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE
+                    );
+
+                    if (result == JOptionPane.YES_OPTION)
+                    {
+                        statStore.setStat(key, 0);
+                        rebuild();
+                    }
+                });
+
+                row.addMouseListener(new java.awt.event.MouseAdapter()
+                {
+                    @Override
+                    public void mousePressed(java.awt.event.MouseEvent e)
+                    {
+                        if (e.isPopupTrigger())
+                        {
+                            menu.show(row, e.getX(), e.getY());
+                        }
+                    }
+
+                    @Override
+                    public void mouseReleased(java.awt.event.MouseEvent e)
+                    {
+                        if (e.isPopupTrigger())
+                        {
+                            menu.show(row, e.getX(), e.getY());
+                        }
+                    }
+                });
+
                 content.add(row);
             }
         }
