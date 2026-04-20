@@ -143,7 +143,7 @@ public class FoodStatTracker implements StatTracker{
                 statStore.incrementStat(BEER_DRANK);
             }
 
-            if (event.getMessage().contains(("you drink some of the"))){
+            if (event.getMessage().contains(("You drink some of the")) || event.getMessage().contains(("You drink some of your"))){
                 statStore.incrementStat(POTION_SIPS_DRANK);
             }
         }

@@ -59,15 +59,6 @@ public class StatKeys {
      public static String POTIONS_MADE = "potionsMade";
      public static String HERBS_CLEANED = "herbsCleaned";
 
-     // --- Ranged ---
-     //need to push, no great way to detect right now
-     public static String AMMO_SHOT = "ammoShot";
-     public static String AMMO_SAVED = "ammoSaved";
-     public static String AMMO_CONSUMED = "ammoConsumed";
-
-     // -- Construction --
-     public static String FURNITURE_CONSTRUCTED = "furnitureConstructed"; //todo, no chat message so this might be tricky, especially with the introduction of sailing con training, cant simply use xp drops either.
-
      // --  Runecraft --
      public static String RUNES_CRAFTED = "runesCrafted";
 

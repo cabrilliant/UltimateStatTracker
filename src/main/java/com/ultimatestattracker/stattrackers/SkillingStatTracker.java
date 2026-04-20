@@ -140,7 +140,7 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStat(ROOF_TOP_AGILITY);
         }
 
-        else if (msg.contains("Agility lap")){
+        else if (msg.contains("lap count") &&  !msg.contains("Rooftop")){
             statStore.incrementStat(NORMAL_AGILITY);
         }
 

@@ -7,10 +7,6 @@ VIALS_SMASHED = "vialsSmashed";  TESTED 2026-04-19
 SHOP_GP_SPENT = "shopGpSpent"; TESTED 2026-04-19
 SHOP_GP_GAINED = "shopGpGained"; TESTED 2026-04-19
 
-// --- Magic ---
-SPELLS_CAST = "spellsCast";   NOT WORKING  2026-04-19
-TELEPORTS_CAST = "teleportsCast"; TESTED 2026-04-19
-
 // --- Movement ---
 TILES_WALKED = "tilesWalked"; TESTED 2026-04-19
 TILES_RAN = "tilesRan"; TESTED 2026-04-19
@@ -45,31 +41,24 @@ CABBAGE_EATEN = "cabbageEaten"; TESTED 2026-04-19
 TROUT_EATEN = "troutEaten"; TESTED 2026-04-19
 FOOD_COOKED = "foodCooked"; TESTED 2026-04-19
 FOOD_BURNED = "foodBurned"; TESTED 2026-04-19
-POTION_SIPS_DRANK = "potionSips"; NOT WORKING 2026-04-19
+POTION_SIPS_DRANK = "potionSips"; TESTED 2026-04-19
 
 // --- Thieving ---
 PICK_POCKETS = "pickPockets"; TESTED 2026-04-19
 FAILED_PICK_POCKETS = "failedPickPockets"; TESTED 2026-04-19
-STALLS_THIEVED = "stallsThieved";
+STALLS_THIEVED = "stallsThieved"; TESTED 2026-04-19
 
 // --- Agility ---
 ROOF_TOP_AGILITY = "rooftopAgilityLaps"; TESTED 2026-04-19
-NORMAL_AGILITY = "normalAgilityLaps";
+NORMAL_AGILITY = "normalAgilityLaps"; TESTED 2026-04-19
 
 // --- Herblore ---
 UNFINISHED_POTIONS_MADE = "unfinishedPotionsMade"; TESTED 2026-04-19
 POTIONS_MADE = "potionsMade"; TESTED 2026-04-19
 HERBS_CLEANED = "herbsCleaned"; TESTED 2026-04-19
 
-// --- Combat ---
-MELEE_ATTACKS_LANDED = "meleeAttacksLanded"; TESTED 2026-04-19
-SPECIAL_ATTACKS_PREFORMED = "specialAttacksPreformed"; NOT WORKING 2026-04-19
-TOTAL_DAMAGE_DONE = "totalDamageDone"; NOT WORKING 2026-04-19
-TOTAL_DEATHS = "totalDeaths";
-BIGGEST_HITSPLAT = "biggestHitsplat"; NOT WORKING 2026-04-19
-
 // --  Runecraft --
-RUNES_CRAFTED = "runesCrafted";
+RUNES_CRAFTED = "runesCrafted"; TESTED 2026-04-19(BUT DOESNT WORK WITH RUNE POUCH)
 
 // -- Crafting --
 GEMS_CUT = "gemsCut"; TESTED 2026-04-19
@@ -82,7 +71,7 @@ DARTS_FLECTHED = "dartsFletched";  TESTED 2026-04-19
 
 //-- Hunter --
 CREATURES_TRAPPED = "creaturesTrapped";  TESTED 2026-04-19
-IMPLINGS_CAUGHT = "implingsCaught";
+IMPLINGS_CAUGHT = "implingsCaught"; TESTED 2026-04-19
 
 //-- Smithing --
 BARS_SMELTED = "barsSmelted"; TESTED 2026-04-19
