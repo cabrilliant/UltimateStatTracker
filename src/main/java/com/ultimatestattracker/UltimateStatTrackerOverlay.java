@@ -35,7 +35,6 @@ public class UltimateStatTrackerOverlay extends Overlay
             Map.entry(ROCKS_MINED, "Rocks Mined"),
             Map.entry(LOGS_CHOPPED, "Logs Chopped"),
             Map.entry(BONES_BURIED, "Bones Buried"),
-            Map.entry(BONES_CRUSHED, "Bones Crushed"),
             Map.entry(ASHES_SCATTERED, "Ashes Scattered"),
             Map.entry(LOGS_BURNED, "Logs Burned"),
             Map.entry(TOTAL_DEATHS, "Total Deaths"),

@@ -34,7 +34,6 @@ public class StatKeys {
 
      // --- Prayer ---
      public static String BONES_BURIED = "bonesBuried";
-     public static String BONES_CRUSHED = "bonesCrushed";
      public static String ASHES_SCATTERED = "ashesScattered";
 
      // --- Firemaking ---

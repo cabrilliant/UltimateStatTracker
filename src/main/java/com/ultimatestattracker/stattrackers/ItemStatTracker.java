@@ -36,10 +36,6 @@ public class ItemStatTracker implements StatTracker{
             statStore.incrementStat(ITEMS_DROPPED);
             log.debug("Item drop clicked: {}", event.getMenuTarget());
         }
-        else if (Objects.equals(event.getMenuOption(), "Scatter")){
-            statStore.incrementStat(ASHES_SCATTERED);
-            log.debug("Ashses Scatered clicked: {}", event.getMenuTarget());
-        }
     }
 
     @Override
@@ -74,6 +70,7 @@ public class ItemStatTracker implements StatTracker{
         if (msg.contains(("You pick a"))|| msg.contains("You pick some")){
             //item name is last space to first period
             String itemName = msg.substring(msg.lastIndexOf(" ") + 1, msg.indexOf("."));
+            log.debug("suspected picked item name is {}", itemName);
             if (itemName.equals("Cabbage")){
                 statStore.incrementStat(CABBAGE_PICKED);
                 log.debug("Cabbage picked message: {}", msg);
@@ -82,6 +79,9 @@ public class ItemStatTracker implements StatTracker{
                 statStore.incrementStat(FLAX_PICKED);
                 log.debug("Flax picked message: {}", msg);
             }
+        }
+        else if (msg.contains("You scatter the")){
+            statStore.incrementStat(ASHES_SCATTERED);
         }
     }
 

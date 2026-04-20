@@ -1,7 +1,7 @@
 // --- Items ---
 EXAMINE = "itemsExamined";    TESTED 2026-04-19
 ITEMS_DROPPED = "itemsDropped"; TESTED 2026-04-19
-VIALS_SMASHED = "vialsSmashed";
+VIALS_SMASHED = "vialsSmashed";  TESTED 2026-04-19
 
 // --- Shops ---
 SHOP_GP_SPENT = "shopGpSpent";
@@ -16,23 +16,23 @@ TILES_WALKED = "tilesWalked"; TESTED 2026-04-19
 TILES_RAN = "tilesRan"; TESTED 2026-04-19
 
 // --- Gathering ---
-FISH_CAUGHT = "fishCaught";
-ROCKS_MINED = "rocksMined";
+FISH_CAUGHT = "fishCaught"; TESTED 2026-04-19
+ROCKS_MINED = "rocksMined"; TESTED 2026-04-19
 LOGS_CHOPPED = "logsChopped"; TESTED 2026-04-19
-FLAX_PICKED = "flaxPicked";
-CABBAGE_PICKED = "cabbagePicked";
+FLAX_PICKED = "flaxPicked"; NOT WORKING 2026-04-19
+CABBAGE_PICKED = "cabbagePicked"; NOT WORKING 2026-04-19
 
 // -- Farming --
-WEEDS_RAKED = "weedsRaked";
-SEEDS_PLANTED = "seedsPlanted";
+WEEDS_RAKED = "weedsRaked"; TESTED 2026-04-19
+SEEDS_PLANTED = "seedsPlanted"; TESTED 2026-04-19
+
 
 // -- Misc --
 public static String CRITTERS_PET = "crittersPet"; TESTED 2026-04-19
 
 // --- Prayer ---
 BONES_BURIED = "bonesBuried";  TESTED 2026-04-19
-BONES_CRUSHED = "bonesCrushed";
-ASHES_SCATTERED = "ashesScattered";
+ASHES_SCATTERED = "ashesScattered";  TESTED 2026-04-19
 
 // --- Firemaking ---
 LOGS_BURNED = "logsBurned"; TESTED 2026-04-19
@@ -41,7 +41,7 @@ LOGS_BURNED = "logsBurned"; TESTED 2026-04-19
 FOOD_EATEN = "foodEaten"; TESTED 2026-04-19
 HP_REGEN = "hpRegen"; TESTED 2026-04-19
 BEER_DRANK = "beerDrank"; TESTED 2026-04-19
-CABBAGE_EATEN = "cabbageEaten";
+CABBAGE_EATEN = "cabbageEaten"; TESTED 2026-04-19
 TROUT_EATEN = "troutEaten"; TESTED 2026-04-19
 FOOD_COOKED = "foodCooked"; TESTED 2026-04-19
 FOOD_BURNED = "foodBurned"; TESTED 2026-04-19
@@ -53,7 +53,7 @@ FAILED_PICK_POCKETS = "failedPickPockets"; TESTED 2026-04-19
 STALLS_THIEVED = "stallsThieved";
 
 // --- Agility ---
-ROOF_TOP_AGILITY = "rooftopAgilityLaps";
+ROOF_TOP_AGILITY = "rooftopAgilityLaps"; TESTED 2026-04-19
 NORMAL_AGILITY = "normalAgilityLaps";
 
 // --- Herblore ---
@@ -62,28 +62,28 @@ POTIONS_MADE = "potionsMade"; TESTED 2026-04-19
 HERBS_CLEANED = "herbsCleaned"; TESTED 2026-04-19
 
 // --- Combat ---
-MELEE_ATTACKS_LANDED = "meleeAttacksLanded";
-SPECIAL_ATTACKS_PREFORMED = "specialAttacksPreformed";
-TOTAL_DAMAGE_DONE = "totalDamageDone";
+MELEE_ATTACKS_LANDED = "meleeAttacksLanded"; TESTED 2026-04-19
+SPECIAL_ATTACKS_PREFORMED = "specialAttacksPreformed"; NOT WORKING 2026-04-19
+TOTAL_DAMAGE_DONE = "totalDamageDone"; NOT WORKING 2026-04-19
 TOTAL_DEATHS = "totalDeaths";
-BIGGEST_HITSPLAT = "biggestHitsplat";
+BIGGEST_HITSPLAT = "biggestHitsplat"; NOT WORKING 2026-04-19
 
 // --  Runecraft --
 RUNES_CRAFTED = "runesCrafted";
 
 // -- Crafting --
-GEMS_CUT = "gemsCut";
-GLASS_BLOWN = "glassBlown";
+GEMS_CUT = "gemsCut"; TESTED 2026-04-19
+GLASS_BLOWN = "glassBlown"; TESTED 2026-04-19
 
 //-- Fletching --
-BOWS_FLECTHED = "bowsFletched";
-BOWS_STRUNG = "bowsStrung";
-DARTS_FLECTHED = "dartsFletched";
+BOWS_FLECTHED = "bowsFletched"; TESTED 2026-04-19
+BOWS_STRUNG = "bowsStrung"; TESTED 2026-04-19
+DARTS_FLECTHED = "dartsFletched";  TESTED 2026-04-19
 
 //-- Hunter --
 CREATURES_TRAPPED = "creaturesTrapped";
 IMPLINGS_CAUGHT = "implingsCaught";
 
 //-- Smithing --
-BARS_SMELTED = "barsSmelted";
-ITEMS_SMITHED = "itemsSmithed";
+BARS_SMELTED = "barsSmelted"; TESTED 2026-04-19
+ITEMS_SMITHED = "itemsSmithed"; TESTED 2026-04-19
