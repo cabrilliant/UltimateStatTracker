@@ -63,13 +63,11 @@ public class UltimateStatTrackerPlugin extends Plugin
 
 	private GoldStatTracker goldStatTracker;
 	private ItemStatTracker itemStatTracker;
-	private MagicStatTracker magicStatTracker;
 	private MovementStatTracker movementStatTracker;
 	private SkillingStatTracker skillingStatTracker;
 	private PlayerStatTracker playerStatTracker;
 	private FoodStatTracker foodStatTracker;
 	private NPCStatTracker npcStatTracker;
-	private CombatStatTracker combatStatTracker;
 
 	@Inject
 	private KeyManager keyManager;
@@ -80,18 +78,15 @@ public class UltimateStatTrackerPlugin extends Plugin
 		statStore = new StatStore(configManager);
 		overlay.setStatStore(statStore);
 		overlayManager.add(overlay);
-		log.debug("Example started!");
 		mouseManager.registerMouseListener(mouseListener);
 
 		goldStatTracker = new GoldStatTracker(statStore, client);
 		itemStatTracker = new ItemStatTracker(statStore, client);
-		magicStatTracker = new MagicStatTracker(statStore, client);
 		movementStatTracker = new MovementStatTracker(statStore,client);
 		skillingStatTracker = new SkillingStatTracker(statStore, client, trackerService);
 		playerStatTracker = new PlayerStatTracker(statStore, client);
 		foodStatTracker = new FoodStatTracker(statStore, client);
 		npcStatTracker = new NPCStatTracker(statStore, client);
-		combatStatTracker = new CombatStatTracker(statStore, client);
 
 		keyManager.registerKeyListener(movementStatTracker.ctrlKeyListner);
 	}
@@ -100,7 +95,6 @@ public class UltimateStatTrackerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		log.debug("Example stopped!");
 		keyManager.unregisterKeyListener(movementStatTracker.ctrlKeyListner);
 		mouseManager.unregisterMouseListener(mouseListener);
 	}
@@ -112,7 +106,6 @@ public class UltimateStatTrackerPlugin extends Plugin
 		log.debug(event.getMenuOption());
 
 		itemStatTracker.onMenuOptionClicked(event);
-		magicStatTracker.onMenuOptionClicked(event);
 		foodStatTracker.onMenuOptionClicked(event);
 		npcStatTracker.onMenuOptionClicked(event);
 
@@ -133,24 +126,12 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event) {
 		goldStatTracker.onGameTick(event);
-		magicStatTracker.onGameTick(event);
 		movementStatTracker.onGameTick(event);
 		skillingStatTracker.onGameTick(event);
 		playerStatTracker.onGameTick(event);
 		itemStatTracker.onGameTick(event);
 		foodStatTracker.onGameTick(event);
-		combatStatTracker.onGameTick(event);
 		npcStatTracker.onGameTick(event);
-	}
-
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
-		}
 	}
 
 	@Provides
@@ -183,7 +164,6 @@ public class UltimateStatTrackerPlugin extends Plugin
 	public void onHitsplatApplied(HitsplatApplied event)
 	{
 		playerStatTracker.onHitsplatApplied(event);
-		combatStatTracker.onHitsplatApplied(event);
 	}
 
 	private final MouseListener mouseListener = new MouseAdapter()

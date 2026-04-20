@@ -71,11 +71,11 @@ public class ItemStatTracker implements StatTracker{
             //item name is last space to first period
             String itemName = msg.substring(msg.lastIndexOf(" ") + 1, msg.indexOf("."));
             log.debug("suspected picked item name is {}", itemName);
-            if (itemName.equals("Cabbage")){
+            if (itemName.equals("cabbage")){
                 statStore.incrementStat(CABBAGE_PICKED);
                 log.debug("Cabbage picked message: {}", msg);
             }
-            else if (itemName.equals("Flax")){
+            else if (itemName.equals("flax")){
                 statStore.incrementStat(FLAX_PICKED);
                 log.debug("Flax picked message: {}", msg);
             }

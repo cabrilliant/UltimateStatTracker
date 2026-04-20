@@ -4,8 +4,8 @@ ITEMS_DROPPED = "itemsDropped"; TESTED 2026-04-19
 VIALS_SMASHED = "vialsSmashed";  TESTED 2026-04-19
 
 // --- Shops ---
-SHOP_GP_SPENT = "shopGpSpent";
-SHOP_GP_GAINED = "shopGpGained";
+SHOP_GP_SPENT = "shopGpSpent"; TESTED 2026-04-19
+SHOP_GP_GAINED = "shopGpGained"; TESTED 2026-04-19
 
 // --- Magic ---
 SPELLS_CAST = "spellsCast";   NOT WORKING  2026-04-19
@@ -19,8 +19,8 @@ TILES_RAN = "tilesRan"; TESTED 2026-04-19
 FISH_CAUGHT = "fishCaught"; TESTED 2026-04-19
 ROCKS_MINED = "rocksMined"; TESTED 2026-04-19
 LOGS_CHOPPED = "logsChopped"; TESTED 2026-04-19
-FLAX_PICKED = "flaxPicked"; NOT WORKING 2026-04-19
-CABBAGE_PICKED = "cabbagePicked"; NOT WORKING 2026-04-19
+FLAX_PICKED = "flaxPicked"; TESTED 2026-04-19
+CABBAGE_PICKED = "cabbagePicked"; TESTED 2026-04-19
 
 // -- Farming --
 WEEDS_RAKED = "weedsRaked"; TESTED 2026-04-19
@@ -81,7 +81,7 @@ BOWS_STRUNG = "bowsStrung"; TESTED 2026-04-19
 DARTS_FLECTHED = "dartsFletched";  TESTED 2026-04-19
 
 //-- Hunter --
-CREATURES_TRAPPED = "creaturesTrapped";
+CREATURES_TRAPPED = "creaturesTrapped";  TESTED 2026-04-19
 IMPLINGS_CAUGHT = "implingsCaught";
 
 //-- Smithing --

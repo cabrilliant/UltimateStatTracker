@@ -204,7 +204,7 @@ public class SkillingStatTracker implements StatTracker{
                 }
         }
 
-        else if (msg.contains("You've caught a")){
+        else if (msg.contains("You've caught a") || msg.contains("You manage to catch") ){
             statStore.incrementStat(CREATURES_TRAPPED);
         }
 
