@@ -16,6 +16,30 @@ public class StatKeys {
 
      // --- Gathering ---
      public static String FISH_CAUGHT = "fishCaught";
+     public static String SHRIMP_CAUGHT = "shrimpCaught";
+     public static String ANCHOVIES_CAUGHT = "anchoviesCaught";
+     public static String SARDINE_CAUGHT = "sardineCaught";
+     public static String HERRING_CAUGHT = "herringCaught";
+     public static String TROUT_CAUGHT = "troutCaught";
+     public static String SALMON_CAUGHT = "salmonCaught";
+     public static String PIKE_CAUGHT = "pikeCaught";
+     public static String COD_CAUGHT = "codCaught";
+     public static String BASS_CAUGHT = "bassCaught";
+     public static String TUNA_CAUGHT = "tunaCaught";
+     public static String LOBSTER_CAUGHT = "lobsterCaught";
+     public static String SWORDFISH_CAUGHT = "swordfishCaught";
+     public static String MONKFISH_CAUGHT = "monkfishCaught";
+     public static String SHARK_CAUGHT = "sharkCaught";
+     public static String SEA_TURTLE_CAUGHT = "seaTurtleCaught";
+     public static String MANTA_RAY_CAUGHT = "mantaRayCaught";
+     public static String ANGLERFISH_CAUGHT = "anglerfishCaught";
+     public static String KARAMBWAN_CAUGHT = "karambwanCaught";
+     public static String DARK_CRAB_CAUGHT = "darkCrabCaught";
+     public static String MINNOW_CAUGHT = "minnowCaught";
+     public static String SACRED_EEL_CAUGHT = "sacredEelCaught";
+     public static String LEAPING_TROUT_CAUGHT = "leapingTroutCaught";
+     public static String LEAPING_SALMON_CAUGHT = "leapingSalmonCaught";
+     public static String LEAPING_STURGEON_CAUGHT = "leapingSturgeonCaught";
      public static String ROCKS_MINED = "rocksMined";
      public static String LOGS_CHOPPED = "logsChopped";
      public static String NORMAL_LOGS_CHOPPED = "normalLogsChopped";

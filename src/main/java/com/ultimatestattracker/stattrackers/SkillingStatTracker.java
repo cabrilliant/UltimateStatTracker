@@ -23,6 +23,8 @@ public class SkillingStatTracker implements StatTracker{
     HashMap<Skill,Integer> previousSkillActions = new HashMap<>();
     //from woodcutting plugin
     private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)\\s+(?:([\\w ]+?)\\s+)?(logs?|mushrooms)\\.");
+    private static final Pattern FISH_CATCH_PATTERN =
+            Pattern.compile("You catch (?:a|an|some) ([\\w'\\- ]+)\\.?");
 
     private int prevWeedCount = 0;
 
@@ -67,7 +69,6 @@ public class SkillingStatTracker implements StatTracker{
 
     @Override
     public void onGameTick(GameTick event) {
-        processActions(Skill.FISHING, FISH_CAUGHT);
         processActions(Skill.MINING, ROCKS_MINED);
         processActions(Skill.FIREMAKING, LOGS_BURNED);
         prevRunecraftXp = currentRunecraftXp;
@@ -117,6 +118,7 @@ public class SkillingStatTracker implements StatTracker{
 
         //from woodcutting plugin
         final Matcher woodCutMatcher = WOOD_CUT_PATTERN.matcher(msg);
+        final Matcher fishMatcher = FISH_CATCH_PATTERN.matcher(msg);
         if (woodCutMatcher.matches())
         {
             statStore.incrementStat(LOGS_CHOPPED);
@@ -124,6 +126,12 @@ public class SkillingStatTracker implements StatTracker{
             {
                 incrementTypedLogs(woodCutMatcher.group(1));
             }
+        }
+
+        else if (fishMatcher.matches())
+        {
+            statStore.incrementStat(FISH_CAUGHT);
+            incrementTypedFish(fishMatcher.group(1));
         }
 
         else if(msg.contains("You pick the") && msg.contains("pocket") && !msg.contains("attempt")){
@@ -318,6 +326,100 @@ public class SkillingStatTracker implements StatTracker{
         {
             //unknown logs type
             
+        }
+    }
+
+    private void incrementTypedFish(String fishType)
+    {
+        log.debug("detected fish message with type {}", fishType );
+        if (fishType == null)
+        {
+            return;
+        }
+
+        String t = fishType.trim().toLowerCase();
+        if (t.startsWith("raw "))
+        {
+            t = t.substring("raw ".length()).trim();
+        }
+
+        switch (t)
+        {
+            case "shrimps":
+            case "shrimp":
+                statStore.incrementStat(SHRIMP_CAUGHT);
+                break;
+            case "anchovies":
+            case "anchovy":
+                statStore.incrementStat(ANCHOVIES_CAUGHT);
+                break;
+            case "sardine":
+                statStore.incrementStat(SARDINE_CAUGHT);
+                break;
+            case "herring":
+                statStore.incrementStat(HERRING_CAUGHT);
+                break;
+            case "trout":
+                statStore.incrementStat(TROUT_CAUGHT);
+                break;
+            case "salmon":
+                statStore.incrementStat(SALMON_CAUGHT);
+                break;
+            case "pike":
+                statStore.incrementStat(PIKE_CAUGHT);
+                break;
+            case "cod":
+                statStore.incrementStat(COD_CAUGHT);
+                break;
+            case "bass":
+                statStore.incrementStat(BASS_CAUGHT);
+                break;
+            case "tuna":
+                statStore.incrementStat(TUNA_CAUGHT);
+                break;
+            case "lobster":
+                statStore.incrementStat(LOBSTER_CAUGHT);
+                break;
+            case "swordfish":
+                statStore.incrementStat(SWORDFISH_CAUGHT);
+                break;
+            case "monkfish":
+                statStore.incrementStat(MONKFISH_CAUGHT);
+                break;
+            case "shark":
+                statStore.incrementStat(SHARK_CAUGHT);
+                break;
+            case "sea turtle":
+                statStore.incrementStat(SEA_TURTLE_CAUGHT);
+                break;
+            case "manta ray":
+                statStore.incrementStat(MANTA_RAY_CAUGHT);
+                break;
+            case "anglerfish":
+                statStore.incrementStat(ANGLERFISH_CAUGHT);
+                break;
+            case "karambwan":
+                statStore.incrementStat(KARAMBWAN_CAUGHT);
+                break;
+            case "dark crab":
+                statStore.incrementStat(DARK_CRAB_CAUGHT);
+                break;
+            case "minnow":
+            case "minnows":
+                statStore.incrementStat(MINNOW_CAUGHT);
+                break;
+            case "sacred eel":
+                statStore.incrementStat(SACRED_EEL_CAUGHT);
+                break;
+            case "leaping trout":
+                statStore.incrementStat(LEAPING_TROUT_CAUGHT);
+                break;
+            case "leaping salmon":
+                statStore.incrementStat(LEAPING_SALMON_CAUGHT);
+                break;
+            case "leaping sturgeon":
+                statStore.incrementStat(LEAPING_STURGEON_CAUGHT);
+                break;
         }
     }
 }
