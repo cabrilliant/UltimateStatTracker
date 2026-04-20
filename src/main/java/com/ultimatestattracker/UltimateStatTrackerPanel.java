@@ -309,6 +309,10 @@ public class UltimateStatTrackerPanel extends PluginPanel
                     if (result == JOptionPane.YES_OPTION)
                     {
                         statStore.setStat(key, 0);
+                        String formattedDate = java.time.Instant.ofEpochMilli(System.currentTimeMillis())
+                                .atZone(java.time.ZoneId.systemDefault())
+                                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        statStore.setStatTrackingDate(key,formattedDate);
                         rebuild();
                     }
                 });
