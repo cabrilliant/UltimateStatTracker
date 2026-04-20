@@ -44,4 +44,9 @@ public class StatStore {
     public void setStat(String key, int value){
         storeStat(key, value);
     }
+
+    public void setStatTrackingDate(String key,int value){
+        String dateKey = key + "_date";
+        storeStat(dateKey, value);
+    }
 }

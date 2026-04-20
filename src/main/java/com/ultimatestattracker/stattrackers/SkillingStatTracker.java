@@ -25,6 +25,8 @@ public class SkillingStatTracker implements StatTracker{
     private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)\\s+(?:([\\w ]+?)\\s+)?(logs?|mushrooms)\\.");
     private static final Pattern FISH_CATCH_PATTERN =
             Pattern.compile("You catch (?:a|an|some) ([\\w'\\- ]+)\\.?");
+    private static final Pattern MINE_OR_QUARRY_SOME_PATTERN =
+            Pattern.compile("You manage to (?:mine|quarry) some (.+)\\.");
 
     private int prevWeedCount = 0;
 
@@ -69,7 +71,6 @@ public class SkillingStatTracker implements StatTracker{
 
     @Override
     public void onGameTick(GameTick event) {
-        processActions(Skill.MINING, ROCKS_MINED);
         processActions(Skill.FIREMAKING, LOGS_BURNED);
         prevRunecraftXp = currentRunecraftXp;
         currentRunecraftXp = client.getSkillExperience(Skill.RUNECRAFT);
@@ -119,6 +120,7 @@ public class SkillingStatTracker implements StatTracker{
         //from woodcutting plugin
         final Matcher woodCutMatcher = WOOD_CUT_PATTERN.matcher(msg);
         final Matcher fishMatcher = FISH_CATCH_PATTERN.matcher(msg);
+        final Matcher mineOrQuarrySomeMatcher = MINE_OR_QUARRY_SOME_PATTERN.matcher(msg);
         if (woodCutMatcher.matches())
         {
             statStore.incrementStat(LOGS_CHOPPED);
@@ -132,6 +134,12 @@ public class SkillingStatTracker implements StatTracker{
         {
             statStore.incrementStat(FISH_CAUGHT);
             incrementTypedFish(fishMatcher.group(1));
+        }
+
+        else if (mineOrQuarrySomeMatcher.matches())
+        {
+            statStore.incrementStat(ROCKS_MINED);
+            incrementTypedMined(mineOrQuarrySomeMatcher.group(1));
         }
 
         else if(msg.contains("You pick the") && msg.contains("pocket") && !msg.contains("attempt")){
@@ -419,6 +427,72 @@ public class SkillingStatTracker implements StatTracker{
                 break;
             case "leaping sturgeon":
                 statStore.incrementStat(LEAPING_STURGEON_CAUGHT);
+                break;
+        }
+    }
+
+    private void incrementTypedMined(String minedType)
+    {
+        if (minedType == null)
+        {
+            return;
+        }
+
+        String t = minedType.trim().toLowerCase();
+        if (t.startsWith("granite"))
+        {
+            statStore.incrementStat(GRANITE_MINED);
+            return;
+        }
+        if (t.startsWith("sandstone"))
+        {
+            statStore.incrementStat(SANDSTONE_MINED);
+            return;
+        }
+
+        switch (t)
+        {
+            case "clay":
+                statStore.incrementStat(CLAY_MINED);
+                break;
+            case "copper":
+                statStore.incrementStat(COPPER_ORE_MINED);
+                break;
+            case "tin":
+                statStore.incrementStat(TIN_ORE_MINED);
+                break;
+            case "limestone":
+                statStore.incrementStat(LIMESTONE_MINED);
+                break;
+            case "iron":
+                statStore.incrementStat(IRON_ORE_MINED);
+                break;
+            case "silver":
+                statStore.incrementStat(SILVER_ORE_MINED);
+                break;
+            case "coal":
+                statStore.incrementStat(COAL_MINED);
+                break;
+            case "gold":
+                statStore.incrementStat(GOLD_ORE_MINED);
+                break;
+            case "mithril":
+                statStore.incrementStat(MITHRIL_ORE_MINED);
+                break;
+            case "adamantite":
+                statStore.incrementStat(ADAMANTITE_ORE_MINED);
+                break;
+            case "runite":
+                statStore.incrementStat(RUNITE_ORE_MINED);
+                break;
+            case "pay-dirt":
+                statStore.incrementStat(PAY_DIRT_MINED);
+                break;
+            case "amethyst":
+                statStore.incrementStat(AMETHYST_MINED);
+                break;
+            case "pure essence":
+                statStore.incrementStat(PURE_ESSENCE_MINED);
                 break;
         }
     }
