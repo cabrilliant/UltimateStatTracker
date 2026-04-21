@@ -108,6 +108,16 @@ The plugin captures a broad range of gameplay data. Here's a high-level overview
 ---
 
 
+---
+
+## Notes
+
+* This plugin may not be fully compatible with seasonal game worlds
+* As the plugin relies heavily on game chat messages, non english clients or clients with heavily modified game chat messages may not be reliable.
+
+---
+
+
 ## Contributing
 
 * Contributions are welcome! If you have ideas for new stats to track or improvements to the plugin, feel free to submit a pull request or open an issue.
