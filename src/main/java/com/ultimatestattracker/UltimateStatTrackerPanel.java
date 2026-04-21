@@ -215,7 +215,6 @@ public class UltimateStatTrackerPanel extends PluginPanel
 
     public void rebuild()
     {
-        populateDummyData();
         content.removeAll();
 
         JLabel title = new JLabel("Ultimate Stat Tracker");
@@ -371,31 +370,5 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 return String.format("%.1fM", millions);
             }
         }
-    }
-
-    private void populateDummyData()
-    {
-        Random random = new Random();
-        List<String> keys = new ArrayList<>(STAT_LABELS.keySet());
-        Collections.shuffle(keys);
-
-        int half = keys.size() / 2;
-
-        for (int i = 0; i < keys.size(); i++)
-        {
-            if (i < half)
-            {
-                // First half: under 500k
-                statStore.setStat(keys.get(i), random.nextInt(500_000));
-            }
-            else
-            {
-                // Second half: anything up to max
-                statStore.setStat(keys.get(i), random.nextInt(Integer.MAX_VALUE));
-            }
-        }
-
-        // Guarantee at least one is max
-        statStore.setStat(keys.get(keys.size() - 1), Integer.MAX_VALUE);
     }
 }
