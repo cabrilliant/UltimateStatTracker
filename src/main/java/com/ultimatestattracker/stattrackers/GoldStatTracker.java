@@ -9,6 +9,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.InterfaceID;
 
 import static com.ultimatestattracker.StatKeys.SHOP_GP_GAINED;
 import static com.ultimatestattracker.StatKeys.SHOP_GP_SPENT;
@@ -38,7 +39,7 @@ public class GoldStatTracker implements StatTracker {
     public void onWidgetLoaded(WidgetLoaded event) {
         log.debug(String.valueOf(event.getGroupId()));
         //shop spent at gp tracking
-        if (event.getGroupId() == WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId())
+        if (event.getGroupId() == InterfaceID.SHOP_INVENTORY)
         {
             shopOpen = true;
             lastShopGold = client.getItemContainer(InventoryID.INVENTORY).count(ItemID.COINS_995);
@@ -48,7 +49,7 @@ public class GoldStatTracker implements StatTracker {
 
     @Override
     public void onWidgetClosed(WidgetClosed event) {
-        if (event.getGroupId() == WidgetInfo.SHOP_INVENTORY_ITEMS_CONTAINER.getGroupId())
+        if (event.getGroupId() == InterfaceID.SHOP_INVENTORY)
         {
             shopOpen = false;
             lastShopGold = -1;
