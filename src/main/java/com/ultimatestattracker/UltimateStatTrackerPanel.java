@@ -155,12 +155,42 @@ public class UltimateStatTrackerPanel extends PluginPanel
         refreshButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         refreshButton.addActionListener(e -> rebuild());
 
+        JButton resetAllButton = new JButton("Reset All");
+        resetAllButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        resetAllButton.addActionListener(e ->
+        {
+            int result = JOptionPane.showConfirmDialog(
+                    this,
+                    "Reset ALL stats? This cannot be undone.",
+                    "Confirm Reset All",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (result == JOptionPane.YES_OPTION && statStore != null)
+            {
+                String formattedDate = java.time.Instant.ofEpochMilli(System.currentTimeMillis())
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                for (String key : STAT_LABELS.keySet())
+                {
+                    statStore.setStat(key, 0);
+                    statStore.setStatTrackingDate(key, formattedDate);
+                }
+
+                rebuild();
+            }
+        });
+
         sortBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
         sortBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         sortBox.addActionListener(e -> rebuild());
 
         topBar.add(searchField);
         topBar.add(refreshButton);
+        topBar.add(resetAllButton);
         topBar.add(sortBox);
 
         add(topBar, BorderLayout.NORTH);

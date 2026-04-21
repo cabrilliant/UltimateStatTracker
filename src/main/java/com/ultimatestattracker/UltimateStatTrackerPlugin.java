@@ -2,7 +2,6 @@ package com.ultimatestattracker;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import javax.swing.*;
 
 import com.ultimatestattracker.stattrackers.GoldStatTracker;
 import lombok.extern.slf4j.Slf4j;
@@ -14,22 +13,13 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.input.MouseAdapter;
-import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.overlay.OverlayManager;
-import java.awt.*;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
-import net.runelite.api.widgets.WidgetInfo;
 
-import net.runelite.api.ChatMessageType;
+import java.awt.image.BufferedImage;
 
 import static com.ultimatestattracker.StatKeys.*;
 import com.ultimatestattracker.stattrackers.*;
@@ -94,13 +84,13 @@ public class UltimateStatTrackerPlugin extends Plugin
 
 		keyManager.registerKeyListener(movementStatTracker.ctrlKeyListner);
 
-		BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/usticon.png");
 
 		panel = new UltimateStatTrackerPanel(this);
 		panel.setStatStore(statStore);
 
 		navButton = NavigationButton.builder()
-				.tooltip("Ultimate Stats")
+				.tooltip("Ultimate Stat Tracker")
 				.icon(icon)
 				.priority(5)
 				.panel(panel)
