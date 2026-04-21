@@ -2,7 +2,7 @@
 
 A comprehensive lifetime stat tracking plugin for RuneLite that records various account activity across your entire accounts lifetime.
 The ultimate "number go up" plugin as requested by the 2007Scape subreddit.
-
+![plugin_overview](Assets/overview.png)
 ## What It Tracks
 
 The plugin captures a broad range of gameplay data. Here's a high-level overview:
@@ -17,8 +17,9 @@ The plugin captures a broad range of gameplay data. Here's a high-level overview
 
 * Fishing: Tracks all major fish types (from shrimp to dark crabs) caught
 * Mining: Tracks ores, pay-dirt, essence etc mined.
-* Woodcutting: Tracks all log tiers (normal to redwood) chopped. Sailing trees to be added soon.
+* Woodcutting: Tracks all log tiers (normal to redwood) chopped. Sailing trees to be added soon. ![damage_tracking](Assets/logs.png) ![damage_tracking](Assets/ore.png)
 * Misc gathering like flax and cabbage picked (for the nostalgia)
+  ![flax_picked](Assets/picked.png)
 
 ### Farming
 
@@ -41,12 +42,15 @@ The plugin captures a broad range of gameplay data. Here's a high-level overview
 * Potion sips consumed
 * HP regeneration
 * Beer and specific foods (like cabbage, trout)
+  ![food_tracking](Assets/eaten.png)
 
 ### Combat
 
 * Total damage dealt and received
 * Biggest hitsplat
 * Attacks blocked and missed
+
+![damage_tracking](Assets/Damage.png)
 
 ### Other Skilling Activities
 
@@ -59,6 +63,7 @@ The plugin captures a broad range of gameplay data. Here's a high-level overview
 * Hunter: Creatures trapped, implings caught
 * Smithing: Bars smelted, items made
 * Firemaking: Logs burned
+
 
 ### Miscellaneous
 
@@ -98,3 +103,14 @@ The plugin captures a broad range of gameplay data. Here's a high-level overview
 * Milestone notifications
 * Many more stats such as individual seeds planted, individual npcs thieved, etc.
 
+---
+
+
+## Contributing
+
+* Contributions are welcome! If you have ideas for new stats to track or improvements to the plugin, feel free to submit a pull request or open an issue.
+
+---
+
+## Bugs
+* Due to the sheer amount of stats tracked, bugs are bound to pop up. Please feel free to report any bugs and I will do my best to fix them as soon as possible :)
