@@ -18,9 +18,9 @@ The plugin captures a broad range of gameplay data. Here's a high-level overview
 * Fishing: Tracks all major fish types (from shrimp to dark crabs) caught
 * Mining: Tracks ores, pay-dirt, essence etc mined.
 * Woodcutting: Tracks all log tiers (normal to redwood) chopped. Sailing trees to be added soon. ![damage_tracking](Assets/logs.png) ![damage_tracking](Assets/ore.png)
-* Misc gathering like flax and cabbage picked (for the nostalgia). 
- 
-    ![flax_picked](Assets/picked.png)
+* Misc gathering like flax and cabbage picked (for the nostalgia).
+
+![flax_picked](Assets/picked.png)
 
 ### Farming
 
@@ -43,7 +43,8 @@ The plugin captures a broad range of gameplay data. Here's a high-level overview
 * Potion sips consumed
 * HP regeneration
 * Beer and specific foods (like cabbage, trout)
-  ![food_tracking](Assets/eaten.png)
+
+![food_tracking](Assets/eaten.png)
 
 ### Combat
 
