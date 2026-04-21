@@ -24,7 +24,7 @@ public class SkillingStatTracker implements StatTracker{
     //from woodcutting plugin
     private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)\\s+(?:([\\w ]+?)\\s+)?(logs?|mushrooms)\\.");
     private static final Pattern FISH_CATCH_PATTERN =
-            Pattern.compile("You catch (?:a|an|some) ([\\w'\\- ]+)\\.?");
+            Pattern.compile("You catch (?:a|an|some) ([\\w'\\- ]+)[.!?]?");
     private static final Pattern MINE_OR_QUARRY_SOME_PATTERN =
             Pattern.compile("You manage to (?:mine|quarry) some (.+)\\.");
 
