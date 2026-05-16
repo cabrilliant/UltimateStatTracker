@@ -140,27 +140,141 @@ public class StatKeys {
      public static String ATTACKS_BLOCKED = "attacksBlocked";
      public static String ATTACKS_MISSED = "attacksMissed";
 
-     public static final String[] ALL_KEYS = discoverStatKeys();
 
-     private static String[] discoverStatKeys()
-     {
-         return Arrays.stream(StatKeys.class.getDeclaredFields())
-                 .filter(f -> Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()))
-                 .filter(f -> f.getType() == String.class)
-                 .sorted(Comparator.comparing(Field::getName))
-                 .map(StatKeys::readStaticStringField)
-                 .toArray(String[]::new);
-     }
+     //note, cant use reflection here as runelite does not allow it
+     public static final String[] ALL_KEYS = {
+             // --- Agility ---
+             NORMAL_AGILITY,
+             ROOF_TOP_AGILITY,
 
-     private static String readStaticStringField(Field f)
-     {
-         try
-         {
-             return (String) f.get(null);
-         }
-         catch (IllegalAccessException e)
-         {
-             throw new ExceptionInInitializerError(e);
-         }
-     }
+             // --- Combat ---
+             ATTACKS_BLOCKED,
+             ATTACKS_MISSED,
+             BIGGEST_HITSPLAT,
+             DAMAGE_DONE,
+             DAMAGE_RECEIVED,
+
+             // --- Crafting ---
+             GEMS_CUT,
+             GLASS_BLOWN,
+
+             // --- Farming ---
+             SEEDS_PLANTED,
+             WEEDS_RAKED,
+
+             // --- Firemaking ---
+             LOGS_BURNED,
+
+             // --- Food & Healing ---
+             BEER_DRANK,
+             CABBAGE_EATEN,
+             FOOD_BURNED,
+             FOOD_COOKED,
+             FOOD_EATEN,
+             HP_REGEN,
+             POTION_SIPS_DRANK,
+             TROUT_EATEN,
+
+             // --- Fletching ---
+             BOWS_FLECTHED,
+             BOWS_STRUNG,
+             DARTS_FLECTHED,
+
+             // --- Gathering ---
+             ADAMANTITE_ORE_MINED,
+             AMETHYST_MINED,
+             ANCHOVIES_CAUGHT,
+             ANGLERFISH_CAUGHT,
+             BASS_CAUGHT,
+             CABBAGE_PICKED,
+             CLAY_MINED,
+             COAL_MINED,
+             COD_CAUGHT,
+             COPPER_ORE_MINED,
+             DARK_CRAB_CAUGHT,
+             FISH_CAUGHT,
+             FLAX_PICKED,
+             GOLD_ORE_MINED,
+             GRANITE_MINED,
+             HERRING_CAUGHT,
+             IRON_ORE_MINED,
+             KARAMBWAN_CAUGHT,
+             LEAPING_SALMON_CAUGHT,
+             LEAPING_STURGEON_CAUGHT,
+             LEAPING_TROUT_CAUGHT,
+             LIMESTONE_MINED,
+             LOBSTER_CAUGHT,
+             LOGS_CHOPPED,
+             MAGIC_LOGS_CHOPPED,
+             MAHOGANY_LOGS_CHOPPED,
+             MANTA_RAY_CAUGHT,
+             MAPLE_LOGS_CHOPPED,
+             MINNOW_CAUGHT,
+             MITHRIL_ORE_MINED,
+             MONKFISH_CAUGHT,
+             NORMAL_LOGS_CHOPPED,
+             OAK_LOGS_CHOPPED,
+             PAY_DIRT_MINED,
+             PIKE_CAUGHT,
+             PURE_ESSENCE_MINED,
+             REDWOOD_LOGS_CHOPPED,
+             ROCKS_MINED,
+             RUNITE_ORE_MINED,
+             SACRED_EEL_CAUGHT,
+             SALMON_CAUGHT,
+             SANDSTONE_MINED,
+             SARDINE_CAUGHT,
+             SEA_TURTLE_CAUGHT,
+             SHARK_CAUGHT,
+             SHRIMP_CAUGHT,
+             SILVER_ORE_MINED,
+             SWORDFISH_CAUGHT,
+             TEAK_LOGS_CHOPPED,
+             TIN_ORE_MINED,
+             TROUT_CAUGHT,
+             TUNA_CAUGHT,
+             WILLOW_LOGS_CHOPPED,
+             YEW_LOGS_CHOPPED,
+
+             // --- Herblore ---
+             HERBS_CLEANED,
+             POTIONS_MADE,
+             UNFINISHED_POTIONS_MADE,
+
+             // --- Hunter ---
+             CREATURES_TRAPPED,
+             IMPLINGS_CAUGHT,
+
+             // --- Items ---
+             EXAMINE,
+             ITEMS_DROPPED,
+             VIALS_SMASHED,
+
+             // --- Misc ---
+             CRITTERS_PET,
+
+             // --- Movement ---
+             TILES_RAN,
+             TILES_WALKED,
+
+             // --- Prayer ---
+             ASHES_SCATTERED,
+             BONES_BURIED,
+
+             // --- Runecraft ---
+             RUNES_CRAFTED,
+
+             // --- Shops ---
+             SHOP_GP_GAINED,
+             SHOP_GP_SPENT,
+
+             // --- Smithing ---
+             BARS_SMELTED,
+             ITEMS_SMITHED,
+
+             // --- Thieving ---
+             FAILED_PICK_POCKETS,
+             PICK_POCKETS,
+             STALLS_THIEVED
+     };
 }
