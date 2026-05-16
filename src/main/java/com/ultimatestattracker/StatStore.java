@@ -15,7 +15,6 @@ public class StatStore {
     public void storeStat(String key, int value){
         log.debug("Previous stat value for {}: {}", key, getStat(key));
         cfg.setRSProfileConfiguration(CONFIG_GROUP, key, value);
-        log.debug("new stat value for {}: {}", key, getStat(key));
     }
 
     public int getStat(String key)

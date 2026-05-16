@@ -1,9 +1,9 @@
 package com.ultimatestattracker;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class StatKeys {
      // --- Items ---
@@ -277,4 +277,19 @@ public class StatKeys {
              PICK_POCKETS,
              STALLS_THIEVED
      };
+
+     /**
+      * Stats that rely on game-tick (or shop widget) tracking and are not updated while performance mode is on.
+      */
+     public static final Set<String> PERFORMANCE_MODE_DISABLED_KEYS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+             TILES_WALKED,
+             TILES_RAN,
+             SHOP_GP_SPENT,
+             SHOP_GP_GAINED,
+             LOGS_BURNED,
+             WEEDS_RAKED,
+             RUNES_CRAFTED,
+             HP_REGEN,
+             CRITTERS_PET
+     )));
 }

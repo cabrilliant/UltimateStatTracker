@@ -75,11 +75,11 @@ public class GoldStatTracker implements StatTracker {
             if (currentGold < lastShopGold) {
                 int spent = lastShopGold - currentGold;
                 statStore.incrementStatBy(SHOP_GP_SPENT, spent);
-                log.debug("Spent {} gp, total: {}", spent, statStore.getStat(SHOP_GP_SPENT));
+                //log.debug("Spent {} gp, total: {}", spent, statStore.getStat(SHOP_GP_SPENT));
             } else if (currentGold > lastShopGold) {
                 int gained = currentGold - lastShopGold;
                 statStore.incrementStatBy(SHOP_GP_GAINED, gained);
-                log.debug("Gained {} gp, total: {}", gained, statStore.getStat(SHOP_GP_GAINED));
+                //log.debug("Gained {} gp, total: {}", gained, statStore.getStat(SHOP_GP_GAINED));
             }
 
             lastShopGold = currentGold;

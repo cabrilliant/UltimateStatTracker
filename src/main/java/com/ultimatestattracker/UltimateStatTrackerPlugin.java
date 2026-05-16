@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -68,6 +69,11 @@ public class UltimateStatTrackerPlugin extends Plugin
 	private KeyManager keyManager;
 
 	public boolean loggedIn;
+
+	public boolean isPerformanceMode()
+	{
+		return config.performanceMode();
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -142,23 +148,40 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		goldStatTracker.onWidgetLoaded(event);
+		if (!config.performanceMode())
+		{
+			goldStatTracker.onWidgetLoaded(event);
+		}
 	}
 
 	@Subscribe
 	public void onWidgetClosed(WidgetClosed event)
 	{
-		goldStatTracker.onWidgetClosed(event);
+		if (!config.performanceMode())
+		{
+			goldStatTracker.onWidgetClosed(event);
+		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event) {
-		goldStatTracker.onGameTick(event);
-		movementStatTracker.onGameTick(event);
-		skillingStatTracker.onGameTick(event);
-		itemStatTracker.onGameTick(event);
-		foodStatTracker.onGameTick(event);
-		npcStatTracker.onGameTick(event);
+		if (!config.performanceMode()){
+			movementStatTracker.onGameTick(event);
+			goldStatTracker.onGameTick(event);
+			skillingStatTracker.onGameTick(event);
+			itemStatTracker.onGameTick(event);
+			foodStatTracker.onGameTick(event);
+			npcStatTracker.onGameTick(event);
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if ("UltimateStatTracker".equals(event.getGroup()) && panel != null)
+		{
+			panel.rebuild();
+		}
 	}
 
 	@Provides

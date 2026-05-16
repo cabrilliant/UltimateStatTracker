@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ultimatestattracker.StatKeys.*;
 
@@ -22,6 +21,8 @@ public class UltimateStatTrackerPanel extends PluginPanel
     public JScrollPane scrollPane;
 
     private static final Map<String, String> STAT_LABELS = new LinkedHashMap<>();
+    private static final Color COLOR_DISABLED = new Color(100, 100, 100);
+    private static final String PERFORMANCE_MODE_TOOLTIP = "Disabled in performance mode";
 
     private UltimateStatTrackerPlugin plugin;
     static
@@ -277,6 +278,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 }
 
                 int value = statStore.getStat(key);
+                boolean notTracked = plugin.isPerformanceMode() && PERFORMANCE_MODE_DISABLED_KEYS.contains(key);
 
                 JPanel row = new JPanel(new BorderLayout());
                 row.setBackground(content.getBackground());
@@ -287,12 +289,19 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 leftPanel.setBackground(content.getBackground());
 
                 JLabel left = new JLabel(label);
-                left.setForeground(Color.WHITE);
+                left.setForeground(notTracked ? COLOR_DISABLED : Color.WHITE);
 
                 JLabel info = new JLabel(" ⓘ");
-                info.setForeground(Color.GRAY);
+                info.setForeground(notTracked ? COLOR_DISABLED : Color.GRAY);
                 String date = statStore.getStatTrackingDate(key);
-                info.setToolTipText(date != null ? "Tracking since: " + date : "No data");
+                if (notTracked)
+                {
+                    info.setToolTipText("Not tracked while Performance Mode is enabled.");
+                }
+                else
+                {
+                    info.setToolTipText(date != null ? "Tracking since: " + date : "No data");
+                }
 
                 leftPanel.add(left);
                 leftPanel.add(info);
@@ -309,7 +318,11 @@ public class UltimateStatTrackerPanel extends PluginPanel
 
                 JLabel right = new JLabel(formatted);
 
-                if (value == Integer.MAX_VALUE || formatted.contains("M"))
+                if (notTracked)
+                {
+                    right.setForeground(COLOR_DISABLED);
+                }
+                else if (value == Integer.MAX_VALUE || formatted.contains("M"))
                 {
                     right.setForeground(Color.GREEN);
                 }
@@ -320,6 +333,15 @@ public class UltimateStatTrackerPanel extends PluginPanel
 
                 row.add(leftPanel, BorderLayout.WEST);
                 row.add(right, BorderLayout.EAST);
+
+                if (notTracked)
+                {
+                    row.setToolTipText(PERFORMANCE_MODE_TOOLTIP);
+                    leftPanel.setToolTipText(PERFORMANCE_MODE_TOOLTIP);
+                    left.setToolTipText(PERFORMANCE_MODE_TOOLTIP);
+                    info.setToolTipText(PERFORMANCE_MODE_TOOLTIP);
+                    right.setToolTipText(PERFORMANCE_MODE_TOOLTIP);
+                }
 
                 // ---------------- RIGHT CLICK MENU ----------------
                 JPopupMenu menu = new JPopupMenu();
