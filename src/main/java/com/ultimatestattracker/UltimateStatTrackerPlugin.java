@@ -127,10 +127,10 @@ public class UltimateStatTrackerPlugin extends Plugin
 					statStore.setStatTrackingDate(key,formattedDate);
 				}
 				loggedIn = true;
-				panel.rebuild();
 			}
+			panel.rebuild();
 		}
-		//we dont need to set it to false because the tracker will have some data as long as one login was done this session.
+
 	}
 
 	@Subscribe
