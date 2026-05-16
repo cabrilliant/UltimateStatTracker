@@ -69,6 +69,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	private KeyManager keyManager;
 
 	public boolean loggedIn;
+	public boolean firstLogin = true;
 
 	public boolean isPerformanceMode()
 	{
@@ -128,7 +129,10 @@ public class UltimateStatTrackerPlugin extends Plugin
 				}
 				loggedIn = true;
 			}
-			panel.rebuild();
+			if (firstLogin) {
+				panel.rebuild();
+				firstLogin = false;
+			}
 		}
 
 	}
