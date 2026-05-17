@@ -95,7 +95,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(LOGS_BURNED, "Logs Burned");
         STAT_LABELS.put(FOOD_EATEN, "Food Eaten");
         STAT_LABELS.put(HP_REGEN, "HP Regen");
-        STAT_LABELS.put(BEER_DRANK, "Beer Drank");
+        STAT_LABELS.put(BEER_DRANK, "Beer Drunk");
         STAT_LABELS.put(CABBAGE_EATEN, "Cabbage Eaten");
         STAT_LABELS.put(TROUT_EATEN, "Trout Eaten");
         STAT_LABELS.put(FLAX_PICKED, "Flax Picked");

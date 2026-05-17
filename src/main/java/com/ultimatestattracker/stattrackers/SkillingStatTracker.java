@@ -195,7 +195,7 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStat(BOWS_FLECTHED);
         }
 
-        else if (msg.contains("You cut the")){ //todo probably make this more robust, could be prone to false matches
+        else if (msg.contains("You cut the") && !msg.contains("chocolate")){ //todo probably make this more robust, could be prone to false matches
             statStore.incrementStat(GEMS_CUT);
         }
 

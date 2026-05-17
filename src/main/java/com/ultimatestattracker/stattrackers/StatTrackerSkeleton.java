@@ -4,6 +4,8 @@ import com.ultimatestattracker.StatStore;
 import net.runelite.api.Client;
 import net.runelite.api.events.*;
 
+
+///if you need to create a new stat tracker you can use this file as a starting point to save some time
 public class StatTrackerSkeleton implements StatTracker{
     private StatStore statStore;
     private Client client;
