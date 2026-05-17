@@ -97,6 +97,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(CABBAGE_PICKED, "Cabbage Picked");
         STAT_LABELS.put(CRITTERS_PET, "Critters Pet");
         STAT_LABELS.put(POTION_SIPS_DRANK, "Potion Sips");
+        STAT_LABELS.put(DIVINE_DAMAGE, "Divine Pot Damage");
         STAT_LABELS.put(VIALS_SMASHED, "Vials Smashed");
         STAT_LABELS.put(PICK_POCKETS, "Pickpockets");
         STAT_LABELS.put(STALLS_THIEVED, "Stalls Thieved");
