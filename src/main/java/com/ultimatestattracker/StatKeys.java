@@ -3,6 +3,7 @@ package com.ultimatestattracker;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class StatKeys {
@@ -143,142 +144,164 @@ public class StatKeys {
 
 
      //note, cant use reflection here as runelite does not allow it
-     public static final String[] ALL_KEYS = {
-             // --- Agility ---
-             NORMAL_AGILITY,
-             ROOF_TOP_AGILITY,
+     public static final StatKey[] ALL_KEYS = {
+          // --- Items ---
+          new StatKey(EXAMINE, StatCategory.ITEMS),
+          new StatKey(ITEMS_DROPPED, StatCategory.ITEMS),
+          new StatKey(VIALS_SMASHED, StatCategory.ITEMS),
 
-             // --- Combat ---
-             ATTACKS_BLOCKED,
-             ATTACKS_MISSED,
-             BIGGEST_HITSPLAT,
-             DAMAGE_DONE,
-             DAMAGE_RECEIVED,
+          // --- Shops ---
+          new StatKey(SHOP_GP_SPENT, StatCategory.SHOPS),
+          new StatKey(SHOP_GP_GAINED, StatCategory.SHOPS),
 
-             // --- Crafting ---
-             GEMS_CUT,
-             GLASS_BLOWN,
+          // --- Movement ---
+          new StatKey(TILES_WALKED, StatCategory.MOVEMENT),
+          new StatKey(TILES_RAN, StatCategory.MOVEMENT),
 
-             // --- Farming ---
-             SEEDS_PLANTED,
-             WEEDS_RAKED,
+          // --- Fishing ---
+          new StatKey(FISH_CAUGHT, StatCategory.FISHING),
+          new StatKey(SHRIMP_CAUGHT, StatCategory.FISHING),
+          new StatKey(ANCHOVIES_CAUGHT, StatCategory.FISHING),
+          new StatKey(SARDINE_CAUGHT, StatCategory.FISHING),
+          new StatKey(HERRING_CAUGHT, StatCategory.FISHING),
+          new StatKey(TROUT_CAUGHT, StatCategory.FISHING),
+          new StatKey(SALMON_CAUGHT, StatCategory.FISHING),
+          new StatKey(PIKE_CAUGHT, StatCategory.FISHING),
+          new StatKey(COD_CAUGHT, StatCategory.FISHING),
+          new StatKey(BASS_CAUGHT, StatCategory.FISHING),
+          new StatKey(TUNA_CAUGHT, StatCategory.FISHING),
+          new StatKey(LOBSTER_CAUGHT, StatCategory.FISHING),
+          new StatKey(SWORDFISH_CAUGHT, StatCategory.FISHING),
+          new StatKey(MONKFISH_CAUGHT, StatCategory.FISHING),
+          new StatKey(SHARK_CAUGHT, StatCategory.FISHING),
+          new StatKey(SEA_TURTLE_CAUGHT, StatCategory.FISHING),
+          new StatKey(MANTA_RAY_CAUGHT, StatCategory.FISHING),
+          new StatKey(ANGLERFISH_CAUGHT, StatCategory.FISHING),
+          new StatKey(KARAMBWAN_CAUGHT, StatCategory.FISHING),
+          new StatKey(DARK_CRAB_CAUGHT, StatCategory.FISHING),
+          new StatKey(MINNOW_CAUGHT, StatCategory.FISHING),
+          new StatKey(SACRED_EEL_CAUGHT, StatCategory.FISHING),
+          new StatKey(LEAPING_TROUT_CAUGHT, StatCategory.FISHING),
+          new StatKey(LEAPING_SALMON_CAUGHT, StatCategory.FISHING),
+          new StatKey(LEAPING_STURGEON_CAUGHT, StatCategory.FISHING),
 
-             // --- Firemaking ---
-             LOGS_BURNED,
+          // --- Mining ---
+          new StatKey(ROCKS_MINED, StatCategory.MINING),
+          new StatKey(CLAY_MINED, StatCategory.MINING),
+          new StatKey(COPPER_ORE_MINED, StatCategory.MINING),
+          new StatKey(TIN_ORE_MINED, StatCategory.MINING),
+          new StatKey(LIMESTONE_MINED, StatCategory.MINING),
+          new StatKey(IRON_ORE_MINED, StatCategory.MINING),
+          new StatKey(SILVER_ORE_MINED, StatCategory.MINING),
+          new StatKey(COAL_MINED, StatCategory.MINING),
+          new StatKey(GOLD_ORE_MINED, StatCategory.MINING),
+          new StatKey(MITHRIL_ORE_MINED, StatCategory.MINING),
+          new StatKey(ADAMANTITE_ORE_MINED, StatCategory.MINING),
+          new StatKey(RUNITE_ORE_MINED, StatCategory.MINING),
+          new StatKey(GRANITE_MINED, StatCategory.MINING),
+          new StatKey(SANDSTONE_MINED, StatCategory.MINING),
+          new StatKey(PAY_DIRT_MINED, StatCategory.MINING),
+          new StatKey(AMETHYST_MINED, StatCategory.MINING),
+          new StatKey(PURE_ESSENCE_MINED, StatCategory.MINING),
 
-             // --- Food & Healing ---
-             BEER_DRANK,
-             CABBAGE_EATEN,
-             FOOD_BURNED,
-             FOOD_COOKED,
-             FOOD_EATEN,
-             HP_REGEN,
-             POTION_SIPS_DRANK,
-             DIVINE_DAMAGE,
-             TROUT_EATEN,
+          // --- Woodcutting ---
+          new StatKey(LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(NORMAL_LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(OAK_LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(WILLOW_LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(TEAK_LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(MAPLE_LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(MAHOGANY_LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(YEW_LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(MAGIC_LOGS_CHOPPED, StatCategory.WOODCUTTING),
+          new StatKey(REDWOOD_LOGS_CHOPPED, StatCategory.WOODCUTTING),
 
-             // --- Fletching ---
-             BOWS_FLECTHED,
-             BOWS_STRUNG,
-             DARTS_FLECTHED,
+          // --- Gathering ---
+          new StatKey(FLAX_PICKED, StatCategory.GATHERING),
+          new StatKey(CABBAGE_PICKED, StatCategory.GATHERING),
 
-             // --- Gathering ---
-             ADAMANTITE_ORE_MINED,
-             AMETHYST_MINED,
-             ANCHOVIES_CAUGHT,
-             ANGLERFISH_CAUGHT,
-             BASS_CAUGHT,
-             CABBAGE_PICKED,
-             CLAY_MINED,
-             COAL_MINED,
-             COD_CAUGHT,
-             COPPER_ORE_MINED,
-             DARK_CRAB_CAUGHT,
-             FISH_CAUGHT,
-             FLAX_PICKED,
-             GOLD_ORE_MINED,
-             GRANITE_MINED,
-             HERRING_CAUGHT,
-             IRON_ORE_MINED,
-             KARAMBWAN_CAUGHT,
-             LEAPING_SALMON_CAUGHT,
-             LEAPING_STURGEON_CAUGHT,
-             LEAPING_TROUT_CAUGHT,
-             LIMESTONE_MINED,
-             LOBSTER_CAUGHT,
-             LOGS_CHOPPED,
-             MAGIC_LOGS_CHOPPED,
-             MAHOGANY_LOGS_CHOPPED,
-             MANTA_RAY_CAUGHT,
-             MAPLE_LOGS_CHOPPED,
-             MINNOW_CAUGHT,
-             MITHRIL_ORE_MINED,
-             MONKFISH_CAUGHT,
-             NORMAL_LOGS_CHOPPED,
-             OAK_LOGS_CHOPPED,
-             PAY_DIRT_MINED,
-             PIKE_CAUGHT,
-             PURE_ESSENCE_MINED,
-             REDWOOD_LOGS_CHOPPED,
-             ROCKS_MINED,
-             RUNITE_ORE_MINED,
-             SACRED_EEL_CAUGHT,
-             SALMON_CAUGHT,
-             SANDSTONE_MINED,
-             SARDINE_CAUGHT,
-             SEA_TURTLE_CAUGHT,
-             SHARK_CAUGHT,
-             SHRIMP_CAUGHT,
-             SILVER_ORE_MINED,
-             SWORDFISH_CAUGHT,
-             TEAK_LOGS_CHOPPED,
-             TIN_ORE_MINED,
-             TROUT_CAUGHT,
-             TUNA_CAUGHT,
-             WILLOW_LOGS_CHOPPED,
-             YEW_LOGS_CHOPPED,
+          // --- Farming ---
+          new StatKey(WEEDS_RAKED, StatCategory.FARMING),
+          new StatKey(SEEDS_PLANTED, StatCategory.FARMING),
 
-             // --- Herblore ---
-             HERBS_CLEANED,
-             POTIONS_MADE,
-             UNFINISHED_POTIONS_MADE,
+          // --- Misc ---
+          new StatKey(CRITTERS_PET, StatCategory.MISC),
 
-             // --- Hunter ---
-             CREATURES_TRAPPED,
-             IMPLINGS_CAUGHT,
+          // --- Prayer ---
+          new StatKey(BONES_BURIED, StatCategory.PRAYER),
+          new StatKey(ASHES_SCATTERED, StatCategory.PRAYER),
 
-             // --- Items ---
-             EXAMINE,
-             ITEMS_DROPPED,
-             VIALS_SMASHED,
+          // --- Firemaking ---
+          new StatKey(LOGS_BURNED, StatCategory.FIREMAKING),
 
-             // --- Misc ---
-             CRITTERS_PET,
+          // --- Food & Healing ---
+          new StatKey(FOOD_EATEN, StatCategory.FOOD_AND_HEALING),
+          new StatKey(HP_REGEN, StatCategory.FOOD_AND_HEALING),
+          new StatKey(BEER_DRANK, StatCategory.FOOD_AND_HEALING),
+          new StatKey(CABBAGE_EATEN, StatCategory.FOOD_AND_HEALING),
+          new StatKey(TROUT_EATEN, StatCategory.FOOD_AND_HEALING),
+          new StatKey(FOOD_COOKED, StatCategory.FOOD_AND_HEALING),
+          new StatKey(FOOD_BURNED, StatCategory.FOOD_AND_HEALING),
+          new StatKey(POTION_SIPS_DRANK, StatCategory.FOOD_AND_HEALING),
+          new StatKey(DIVINE_DAMAGE, StatCategory.FOOD_AND_HEALING),
 
-             // --- Movement ---
-             TILES_RAN,
-             TILES_WALKED,
+          // --- Thieving ---
+          new StatKey(PICK_POCKETS, StatCategory.THIEVING),
+          new StatKey(FAILED_PICK_POCKETS, StatCategory.THIEVING),
+          new StatKey(STALLS_THIEVED, StatCategory.THIEVING),
 
-             // --- Prayer ---
-             ASHES_SCATTERED,
-             BONES_BURIED,
+          // --- Agility ---
+          new StatKey(ROOF_TOP_AGILITY, StatCategory.AGILITY),
+          new StatKey(NORMAL_AGILITY, StatCategory.AGILITY),
 
-             // --- Runecraft ---
-             RUNES_CRAFTED,
+          // --- Herblore ---
+          new StatKey(UNFINISHED_POTIONS_MADE, StatCategory.HERBLORE),
+          new StatKey(POTIONS_MADE, StatCategory.HERBLORE),
+          new StatKey(HERBS_CLEANED, StatCategory.HERBLORE),
 
-             // --- Shops ---
-             SHOP_GP_GAINED,
-             SHOP_GP_SPENT,
+          // --- Runecraft ---
+          new StatKey(RUNES_CRAFTED, StatCategory.RUNECRAFT),
 
-             // --- Smithing ---
-             BARS_SMELTED,
-             ITEMS_SMITHED,
+          // --- Crafting ---
+          new StatKey(GEMS_CUT, StatCategory.CRAFTING),
+          new StatKey(GLASS_BLOWN, StatCategory.CRAFTING),
 
-             // --- Thieving ---
-             FAILED_PICK_POCKETS,
-             PICK_POCKETS,
-             STALLS_THIEVED
+          // --- Fletching ---
+          new StatKey(BOWS_FLECTHED, StatCategory.FLETCHING),
+          new StatKey(BOWS_STRUNG, StatCategory.FLETCHING),
+          new StatKey(DARTS_FLECTHED, StatCategory.FLETCHING),
+
+          // --- Hunter ---
+          new StatKey(CREATURES_TRAPPED, StatCategory.HUNTER),
+          new StatKey(IMPLINGS_CAUGHT, StatCategory.HUNTER),
+
+          // --- Smithing ---
+          new StatKey(BARS_SMELTED, StatCategory.SMITHING),
+          new StatKey(ITEMS_SMITHED, StatCategory.SMITHING),
+
+          // --- Combat ---
+          new StatKey(DAMAGE_DONE, StatCategory.COMBAT),
+          new StatKey(DAMAGE_RECEIVED, StatCategory.COMBAT),
+          new StatKey(BIGGEST_HITSPLAT, StatCategory.COMBAT),
+          new StatKey(ATTACKS_BLOCKED, StatCategory.COMBAT),
+          new StatKey(ATTACKS_MISSED, StatCategory.COMBAT)
      };
+
+     public static final Map<String, StatCategory> KEY_TO_CATEGORY = Arrays.stream(ALL_KEYS)
+             .collect(java.util.stream.Collectors.toMap(
+                     StatKey::getValue,
+                     StatKey::getCategory
+             ));
+
+     private static StatCategory getCategory(String key){
+            for (StatKey statKey : ALL_KEYS){
+                 if (statKey.getValue().equals(key)){
+                        return statKey.getCategory();
+                 }
+            }
+            return null;
+     }
+
 
      /**
       * Stats that rely on game-tick (or shop widget) tracking and are not updated while performance mode is on.

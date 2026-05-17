@@ -7,6 +7,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import net.runelite.client.game.SkillIconManager;
+
 import static com.ultimatestattracker.StatKeys.*;
 
 public class UltimateStatTrackerPanel extends PluginPanel
@@ -23,6 +25,9 @@ public class UltimateStatTrackerPanel extends PluginPanel
     private static final Map<String, String> STAT_LABELS = new LinkedHashMap<>();
     private static final Color COLOR_DISABLED = new Color(100, 100, 100);
     private static final String PERFORMANCE_MODE_TOOLTIP = "Disabled in performance mode";
+
+
+    private final StatCategoryFilterBar categoryFilterBar;
 
     private UltimateStatTrackerPlugin plugin;
     static
@@ -128,9 +133,10 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(ATTACKS_MISSED, "Attacks Missed");
     }
 
-    public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin)
+    public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)
     {
         this.plugin = plugin;
+        categoryFilterBar = new StatCategoryFilterBar(skillIconManager, this::rebuild);
         setLayout(new BorderLayout());
 
         // ---- TOP BAR ----
@@ -194,6 +200,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
         topBar.add(refreshButton);
         topBar.add(resetAllButton);
         topBar.add(sortBox);
+        topBar.add(categoryFilterBar);
 
         add(topBar, BorderLayout.NORTH);
 
@@ -274,6 +281,12 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 String label = entry.getValue();
 
                 if (!filter.isEmpty() && !label.toLowerCase().contains(filter))
+                {
+                    continue;
+                }
+
+                StatCategory activeCategory = categoryFilterBar.getSelectedCategory();
+                if (activeCategory != null && StatKeys.KEY_TO_CATEGORY.get(key) != activeCategory)
                 {
                     continue;
                 }
