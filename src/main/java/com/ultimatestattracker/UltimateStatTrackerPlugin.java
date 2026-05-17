@@ -75,10 +75,15 @@ public class UltimateStatTrackerPlugin extends Plugin
 	public boolean loggedIn;
 	public boolean firstLogin = true;
 
+	public final String version = "1.1.0";
+	private final String VERSION_KEY = "ustp.version";
+
 	public boolean isPerformanceMode()
 	{
 		return config.performanceMode();
 	}
+
+
 
 	@Override
 	protected void startUp() throws Exception
@@ -134,6 +139,22 @@ public class UltimateStatTrackerPlugin extends Plugin
 				loggedIn = true;
 			}
 			if (firstLogin) {
+				String lastVersion = configManager.getConfiguration("ultimatestattracker", VERSION_KEY);
+				//show release notes if this is a new version
+				if (!version.equals(lastVersion))
+				{
+					String[] lines = ReleaseNotes.getReleaseNotes().split("\\n");
+					for (String line : lines)
+					{
+						client.addChatMessage(
+								ChatMessageType.GAMEMESSAGE,
+								"",
+								"<col=ff0000>" + line + "</col>",
+								null
+						);
+					}
+					configManager.setConfiguration("ultimatestattracker", VERSION_KEY, version);
+				}
 				panel.rebuild();
 				firstLogin = false;
 			}
