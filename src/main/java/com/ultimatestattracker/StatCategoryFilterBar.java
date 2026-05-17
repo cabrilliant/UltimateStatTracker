@@ -9,20 +9,29 @@ import java.util.Map;
 
 class StatCategoryFilterBar extends JPanel
 {
+	private static final int COLUMNS = 7;
+	private static final int BUTTON_SIZE = 24;
+	private static final int GAP = 2;
+
 	private final Map<StatCategory, JToggleButton> buttons = new EnumMap<>(StatCategory.class);
 	private StatCategory selected;
 
 	StatCategoryFilterBar(SkillIconManager skillIconManager, Runnable onFilterChanged)
 	{
-		setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
+		int rows = (StatCategory.values().length + COLUMNS - 1) / COLUMNS;
+		int height = rows * (BUTTON_SIZE + GAP) + GAP;
+
+		setLayout(new GridLayout(rows, COLUMNS, GAP, GAP));
 		setAlignmentX(Component.LEFT_ALIGNMENT);
-		setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+		setPreferredSize(new Dimension(Short.MAX_VALUE, height));
+		setMaximumSize(new Dimension(Integer.MAX_VALUE, height));
+		setMinimumSize(new Dimension(0, height));
 
 		for (StatCategory category : StatCategory.values())
 		{
 			JToggleButton button = new JToggleButton(new ImageIcon(StatCategoryIcons.getIcon(category, skillIconManager)));
 			button.setToolTipText(category.getDisplayName());
-			button.setPreferredSize(new Dimension(24, 24));
+			button.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
 			button.setFocusable(false);
 			button.setMargin(new Insets(1, 1, 1, 1));
 
