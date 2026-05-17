@@ -17,6 +17,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 
@@ -68,6 +69,9 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private SkillIconManager skillIconManager;
+
 	public boolean loggedIn;
 	public boolean firstLogin = true;
 
@@ -93,7 +97,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 
 		BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/usticon.png");
 
-		panel = new UltimateStatTrackerPanel(this);
+		panel = new UltimateStatTrackerPanel(this, skillIconManager);
 		panel.setStatStore(statStore);
 
 		navButton = NavigationButton.builder()
@@ -118,14 +122,14 @@ public class UltimateStatTrackerPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			for (String key : ALL_KEYS)
+			for (StatKey key : ALL_KEYS)
 			{
-				if ("0".equals(statStore.getStatTrackingDate(key)))
+				if ("0".equals(statStore.getStatTrackingDate(key.getValue())))
 				{
 					String formattedDate = java.time.Instant.ofEpochMilli(System.currentTimeMillis())
 							.atZone(java.time.ZoneId.systemDefault())
 							.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-					statStore.setStatTrackingDate(key,formattedDate);
+					statStore.setStatTrackingDate(key.getValue(),formattedDate);
 				}
 				loggedIn = true;
 			}
