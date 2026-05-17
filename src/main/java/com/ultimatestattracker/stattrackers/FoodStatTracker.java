@@ -78,20 +78,21 @@ public class FoodStatTracker implements StatTracker{
         //check if hp changed
         //if did by 1 and last thing consumed was not a one hp food then natural health regen +1
         int currentHp = client.getBoostedSkillLevel(Skill.HITPOINTS);
-        if (lastHp != -1 && currentHp == lastHp + 1)
-        {
+        if (lastHp != -1 && currentHp == lastHp + 1) {
             //then if we didnt eat a 1 hp food most recently, this was probably natural regen
             //note if someone were to eat a more than 1 hp food at 98 and go to 99 (or any time they are 1 hp below their cap)
             //this would mistakenly be counted as regen
             //however i dont really think thats a huge problem as that should be rathar rare
             //maybe todo to improve this to have better food tracking and thus be more accurate
-            if (lastThingConsumed == null)
-            {
+            if (lastThingConsumed == null) {
                 statStore.incrementStat(HP_REGEN);
-            }
-            else if (Arrays.stream(oneHPFood).noneMatch(food -> Text.removeTags(lastThingConsumed).contains(food)))
-            {
+            } else if (Arrays.stream(oneHPFood).noneMatch(food -> Text.removeTags(lastThingConsumed).contains(food))) {
                 statStore.incrementStat(HP_REGEN);
+            } else
+            {
+                // If the last thingConsumed is not cleared or changed, and it was a 1 hp regen item, then hp regen stops tracking.
+                // With this clear at most 1 hp regen is lost per "eat" of these items.
+                lastThingConsumed = null;
             }
         }
 
@@ -145,6 +146,10 @@ public class FoodStatTracker implements StatTracker{
 
             if (event.getMessage().contains(("You drink some of the")) || event.getMessage().contains(("You drink some of your"))){
                 statStore.incrementStat(POTION_SIPS_DRANK);
+
+                if (event.getMessage().contains("divine")) {
+                    statStore.incrementStatBy(DIVINE_DAMAGE, 10); // Divine pots always do 10 damage
+                }
             }
         }
 

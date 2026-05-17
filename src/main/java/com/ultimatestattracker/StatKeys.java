@@ -98,6 +98,7 @@ public class StatKeys {
      public static String FOOD_COOKED = "foodCooked";
      public static String FOOD_BURNED = "foodBurned";
      public static String POTION_SIPS_DRANK = "potionSips";
+     public static String DIVINE_DAMAGE = "divineDamage";
 
      // --- Thieving ---
      public static String PICK_POCKETS = "pickPockets";
@@ -173,6 +174,7 @@ public class StatKeys {
              FOOD_EATEN,
              HP_REGEN,
              POTION_SIPS_DRANK,
+             DIVINE_DAMAGE,
              TROUT_EATEN,
 
              // --- Fletching ---
