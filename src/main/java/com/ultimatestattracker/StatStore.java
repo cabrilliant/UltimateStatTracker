@@ -13,7 +13,7 @@ public class StatStore {
     }
 
     public void storeStat(String key, int value){
-        log.debug("Previous stat value for {}: {}", key, getStat(key));
+        //log.debug("Previous stat value for {}: {}", key, getStat(key));
         cfg.setRSProfileConfiguration(CONFIG_GROUP, key, value);
     }
 
@@ -31,7 +31,7 @@ public class StatStore {
 
     public void incrementStatBy(String key, int value)
     {
-        log.debug("increment by called");
+        //log.debug("increment by called");
         int current=getStat(key);
         if(current>Integer.MAX_VALUE-value){ //overflow protection
             storeStat(key,Integer.MAX_VALUE);

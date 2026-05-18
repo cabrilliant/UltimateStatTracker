@@ -98,7 +98,7 @@ public class MovementStatTracker implements StatTracker{
                         statStore.incrementStatBy(TILES_WALKED, maxMove);
                     }
 
-                    log.debug("Moved {} tiles (ran {})", maxMove, runEnabled);
+                    //log.debug("Moved {} tiles (ran {})", maxMove, runEnabled);
                 }
             }
             lastPlayerPos = currentPos;

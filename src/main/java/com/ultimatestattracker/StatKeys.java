@@ -82,6 +82,7 @@ public class StatKeys {
 
      // -- Misc --
      public static String CRITTERS_PET = "crittersPet";
+     public static String THE_GUNS = "theGunsHiCount";
 
      // --- Prayer ---
      public static String BONES_BURIED = "bonesBuried";
@@ -227,6 +228,7 @@ public class StatKeys {
 
           // --- Misc ---
           new StatKey(CRITTERS_PET, StatCategory.MISC),
+          new StatKey(THE_GUNS,StatCategory.MISC),
 
           // --- Prayer ---
           new StatKey(BONES_BURIED, StatCategory.PRAYER),
