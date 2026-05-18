@@ -331,6 +331,7 @@ public class StatKeys {
              WEEDS_RAKED,
              RUNES_CRAFTED,
              HP_REGEN,
-             CRITTERS_PET
+             CRITTERS_PET,
+             THE_GUNS
      )));
 }
