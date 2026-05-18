@@ -56,7 +56,7 @@ final class StatCategoryIcons
 		{
 			coinsIcon = ImageUtil.loadImageResource(
 					StatCategoryIcons.class,
-					"/icons/Coins_10000.png"
+					"Coins_10000.png"
 			);
 		}
 		return coinsIcon;
@@ -68,7 +68,7 @@ final class StatCategoryIcons
 		{
 			transportIcon = ImageUtil.loadImageResource(
 					StatCategoryIcons.class,
-					"/icons/Transportation_icon.png"
+					"Transportation_icon.png"
 			);
 		}
 		return transportIcon;
@@ -80,7 +80,7 @@ final class StatCategoryIcons
 		{
 			flaxIcon = ImageUtil.loadImageResource(
 					StatCategoryIcons.class,
-					"/icons/Flax.png"
+					"Flax.png"
 			);
 		}
 		return flaxIcon;
@@ -92,7 +92,7 @@ final class StatCategoryIcons
 		{
 			bankNoteIcon = ImageUtil.loadImageResource(
 					StatCategoryIcons.class,
-					"/icons/Bank_note.png"
+					"Bank_note.png"
 			);
 		}
 		return bankNoteIcon;
