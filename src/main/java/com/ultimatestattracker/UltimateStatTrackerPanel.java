@@ -300,6 +300,11 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 }
 
                 int value = statStore.getStat(key);
+                if (plugin.isHideZeroStatsEnabled() && value == 0)
+                {
+                    continue;
+                }
+
                 boolean notTracked = plugin.isPerformanceMode() && PERFORMANCE_MODE_DISABLED_KEYS.contains(key);
 
                 JPanel row = new JPanel(new BorderLayout());

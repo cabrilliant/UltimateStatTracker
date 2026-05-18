@@ -83,6 +83,11 @@ public class UltimateStatTrackerPlugin extends Plugin
 		return config.performanceMode();
 	}
 
+	public boolean isHideZeroStatsEnabled()
+	{
+		return config.hideZeroStats();
+	}
+
 
 
 	@Override

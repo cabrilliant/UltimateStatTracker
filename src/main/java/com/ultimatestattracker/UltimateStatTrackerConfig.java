@@ -17,4 +17,15 @@ public interface UltimateStatTrackerConfig extends Config
     {
         return true;
     }
+
+    @ConfigItem(
+            keyName = "hideZeroStats",
+            name = "Hide Zero-Value Stats",
+            description = "Hide stats that are still at zero from the panel.",
+            position = 2
+    )
+    default boolean hideZeroStats()
+    {
+        return false;
+    }
 }
