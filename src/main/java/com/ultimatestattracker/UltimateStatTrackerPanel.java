@@ -280,7 +280,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
             repaint();
             return;
         }
-
+        int hiddenStats = 0;
         if (statStore != null)
         {
             for (Map.Entry<String, String> entry : getSortedEntries())
@@ -300,8 +300,10 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 }
 
                 int value = statStore.getStat(key);
+
                 if (plugin.isHideZeroStatsEnabled() && value == 0)
                 {
+                    hiddenStats++;
                     continue;
                 }
 
@@ -418,6 +420,16 @@ public class UltimateStatTrackerPanel extends PluginPanel
                 });
 
                 content.add(row);
+            }
+
+            if (plugin.isHideZeroStatsEnabled() && hiddenStats > 0)
+            {
+                content.add(Box.createVerticalStrut(10));
+                String hiddenText = hiddenStats == 1 ? "1 stat hidden" : hiddenStats + " stats hidden";
+                JLabel hiddenLabel = new JLabel(hiddenText);
+                hiddenLabel.setForeground(Color.GRAY);
+                hiddenLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                content.add(hiddenLabel);
             }
         }
 
