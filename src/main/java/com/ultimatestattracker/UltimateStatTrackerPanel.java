@@ -131,6 +131,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(BIGGEST_HITSPLAT, "Biggest Hit");
         STAT_LABELS.put(ATTACKS_BLOCKED, "Attacks Blocked");
         STAT_LABELS.put(ATTACKS_MISSED, "Attacks Missed");
+        STAT_LABELS.put(DEATHS, "Deaths");
     }
 
     public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)

@@ -225,6 +225,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		skillingStatTracker.onChatMessage(event);
 		foodStatTracker.onChatMessage(event);
 		itemStatTracker.onChatMessage(event);
+		combatStatTracker.onChatMessage(event);
 	}
 
 	@Subscribe

@@ -75,6 +75,16 @@ public class CombatStatTracker implements StatTracker{
 
     @Override
     public void onChatMessage(ChatMessage event) {
+        if (event.getType() != ChatMessageType.SPAM
+                && event.getType() != ChatMessageType.GAMEMESSAGE
+                && event.getType() != ChatMessageType.MESBOX)
+        {
+            return;
+        }
 
+        final var msg = event.getMessage();
+        if (msg.contains("Oh dear, you are dead!")){
+            statStore.incrementStat(DEATHS);
+        }
     }
 }

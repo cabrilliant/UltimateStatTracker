@@ -141,6 +141,7 @@ public class StatKeys {
      public static String BIGGEST_HITSPLAT = "biggestHitsplat";
      public static String ATTACKS_BLOCKED = "attacksBlocked";
      public static String ATTACKS_MISSED = "attacksMissed";
+     public static String DEATHS = "timesDied";
 
 
      //note, cant use reflection here as runelite does not allow it
@@ -284,7 +285,8 @@ public class StatKeys {
           new StatKey(DAMAGE_RECEIVED, StatCategory.COMBAT),
           new StatKey(BIGGEST_HITSPLAT, StatCategory.COMBAT),
           new StatKey(ATTACKS_BLOCKED, StatCategory.COMBAT),
-          new StatKey(ATTACKS_MISSED, StatCategory.COMBAT)
+          new StatKey(ATTACKS_MISSED, StatCategory.COMBAT),
+          new StatKey(DEATHS,StatCategory.COMBAT)
      };
 
      public static final Map<String, StatCategory> KEY_TO_CATEGORY = Arrays.stream(ALL_KEYS)
