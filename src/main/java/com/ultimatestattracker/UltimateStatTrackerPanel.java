@@ -133,6 +133,12 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(ATTACKS_MISSED, "Attacks Missed");
         STAT_LABELS.put(DEATHS, "Deaths");
         STAT_LABELS.put(THE_GUNS,"Highest 'The Guns' Count");
+        STAT_LABELS.put(HIDES_TANNED,"Hides Tanned");
+        STAT_LABELS.put(GREEN_DHIDE_TANNED,"Green D'hide Tanned");
+        STAT_LABELS.put(BLUE_DHIDE_TANNED,"Blue D'hide Tanned");
+        STAT_LABELS.put(RED_DHIDE_TANNED,"Red D'hide Tanned");
+        STAT_LABELS.put(BLACK_DHIDE_TANNED,"Black D'hide Tanned");
+        STAT_LABELS.put(COWHIDE_TANNED,"Cowhide Tanned");
     }
 
     public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)

@@ -122,6 +122,12 @@ public class StatKeys {
      // -- Crafting --
      public static String GEMS_CUT = "gemsCut";
      public static String GLASS_BLOWN = "glassBlown";
+     public static String HIDES_TANNED = "hidesTanned";
+     public static String GREEN_DHIDE_TANNED = "greenDhideTanned";
+     public static String BLUE_DHIDE_TANNED = "blueDhideTanned";
+     public static String RED_DHIDE_TANNED = "redDhideTanned";
+     public static String BLACK_DHIDE_TANNED = "blackDhideTanned";
+     public static String COWHIDE_TANNED = "cowhideTanned";
 
      //-- Fletching --
      public static String BOWS_FLECTHED = "bowsFletched";
@@ -268,6 +274,12 @@ public class StatKeys {
           // --- Crafting ---
           new StatKey(GEMS_CUT, StatCategory.CRAFTING),
           new StatKey(GLASS_BLOWN, StatCategory.CRAFTING),
+          new StatKey(HIDES_TANNED, StatCategory.CRAFTING),
+          new StatKey(GREEN_DHIDE_TANNED, StatCategory.CRAFTING),
+          new StatKey(BLUE_DHIDE_TANNED, StatCategory.CRAFTING),
+          new StatKey(RED_DHIDE_TANNED, StatCategory.CRAFTING),
+          new StatKey(BLACK_DHIDE_TANNED, StatCategory.CRAFTING),
+          new StatKey(COWHIDE_TANNED, StatCategory.CRAFTING),
 
           // --- Fletching ---
           new StatKey(BOWS_FLECTHED, StatCategory.FLETCHING),

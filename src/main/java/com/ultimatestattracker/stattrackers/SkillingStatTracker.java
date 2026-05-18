@@ -27,6 +27,8 @@ public class SkillingStatTracker implements StatTracker{
             Pattern.compile("You catch (?:a|an|some) ([\\w'\\- ]+)[.!?]?");
     private static final Pattern MINE_OR_QUARRY_SOME_PATTERN =
             Pattern.compile("You manage to (?:mine|quarry) some (.+)\\.");
+    private static final Pattern TANNER_PATTERN =
+            Pattern.compile("^The tanner tans (your|\\d+) (.+?)(?: for you)?\\.$");
 
     private int prevWeedCount = 0;
 
@@ -121,6 +123,7 @@ public class SkillingStatTracker implements StatTracker{
         final Matcher woodCutMatcher = WOOD_CUT_PATTERN.matcher(msg);
         final Matcher fishMatcher = FISH_CATCH_PATTERN.matcher(msg);
         final Matcher mineOrQuarrySomeMatcher = MINE_OR_QUARRY_SOME_PATTERN.matcher(msg);
+        final Matcher tannerMatcher = TANNER_PATTERN.matcher(msg);
         if (woodCutMatcher.matches())
         {
             statStore.incrementStat(LOGS_CHOPPED);
@@ -232,6 +235,57 @@ public class SkillingStatTracker implements StatTracker{
 
         else if (msg.contains("You bury the")){
             statStore.incrementStat(BONES_BURIED);
+        }
+
+        else if (tannerMatcher.matches()){
+            log.debug("tanner match {} {}", tannerMatcher.group(1), tannerMatcher.group(2));
+            String xRaw = tannerMatcher.group(1);
+            String y = tannerMatcher.group(2);
+
+            int x = -1;
+            if ("your".equalsIgnoreCase(xRaw))
+            {
+                x = 1;
+            }
+            else
+            {
+                try
+                {
+                    x = Integer.parseInt(xRaw);
+                    log.debug("hides tanned: {}" , x);
+                    log.debug("type of hide tanned: {}" , y);
+                }
+                catch (NumberFormatException e)
+                {
+                   log.warn("could not parse number from tanner message");
+                   return;
+                }
+            }
+            if (x != -1){
+                //we use if else here to make use of contains as opposed to switch statement
+                //this way we match both dragonhide and dragonhides
+                if (y.contains("black dragonhide"))
+                {
+                    statStore.incrementStatBy(BLACK_DHIDE_TANNED, x);
+                }
+                else if (y.contains("red dragonhide"))
+                {
+                    statStore.incrementStatBy(RED_DHIDE_TANNED, x);
+                }
+                else if (y.contains("blue dragonhide"))
+                {
+                    statStore.incrementStatBy(BLUE_DHIDE_TANNED, x);
+                }
+                else if (y.contains("green dragonhide"))
+                {
+                    statStore.incrementStatBy(GREEN_DHIDE_TANNED, x);
+                }
+                else if (y.contains("cowhide")){
+                    statStore.incrementStatBy(COWHIDE_TANNED, x);
+                }
+                statStore.incrementStatBy(HIDES_TANNED, x);
+            }
+
         }
     }
 
