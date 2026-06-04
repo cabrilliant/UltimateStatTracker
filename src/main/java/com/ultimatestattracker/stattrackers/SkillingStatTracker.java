@@ -49,6 +49,8 @@ public class SkillingStatTracker implements StatTracker{
             "beer glass"
     };
 
+    private String lastFishCaught = "";
+
     public SkillingStatTracker(StatStore statStore, Client client, XpTrackerService xpTrackerService)
     {
         this.statStore = statStore;
@@ -126,119 +128,171 @@ public class SkillingStatTracker implements StatTracker{
         final Matcher tannerMatcher = TANNER_PATTERN.matcher(msg);
         if (woodCutMatcher.matches())
         {
+            log.debug("msg {} matches woodcutter", msg);
             statStore.incrementStat(LOGS_CHOPPED);
+
             if (woodCutMatcher.group(2).startsWith("log"))
             {
+                log.debug("wood type chopped: {}", woodCutMatcher.group(1));
                 incrementTypedLogs(woodCutMatcher.group(1));
             }
         }
 
         else if (fishMatcher.matches())
         {
+            log.debug("msg {} matches fishing", msg);
+            log.debug("fish caught: {}", fishMatcher.group(1));
+
             statStore.incrementStat(FISH_CAUGHT);
             incrementTypedFish(fishMatcher.group(1));
         }
 
         else if (mineOrQuarrySomeMatcher.matches())
         {
+            log.debug("msg {} matches mining", msg);
+            log.debug("rock mined: {}", mineOrQuarrySomeMatcher.group(1));
+
             statStore.incrementStat(ROCKS_MINED);
             incrementTypedMined(mineOrQuarrySomeMatcher.group(1));
         }
 
-        else if(msg.contains("You pick the") && msg.contains("pocket") && !msg.contains("attempt")){
+        else if(msg.contains("You pick the") && msg.contains("pocket") && !msg.contains("attempt"))
+        {
+            log.debug("msg {} matches successful pickpocket", msg);
             statStore.incrementStat(PICK_POCKETS);
         }
 
-        else if(msg.contains("You fail to pick the") && msg.contains("pocket")){
+        else if(msg.contains("You fail to pick the") && msg.contains("pocket"))
+        {
+            log.debug("msg {} matches failed pickpocket", msg);
             statStore.incrementStat(FAILED_PICK_POCKETS);
         }
 
-        else if(msg.contains("You steal a")){
+        else if(msg.contains("You steal a"))
+        {
+            log.debug("msg {} matches stall theft", msg);
             statStore.incrementStat(STALLS_THIEVED);
         }
 
-        else if (msg.contains("You plant a")){
+        else if (msg.contains("You plant a"))
+        {
+            log.debug("msg {} matches seed planting", msg);
             statStore.incrementStat(SEEDS_PLANTED);
         }
 
-        else if (msg.contains("Rooftop lap")){
+        else if (msg.contains("Rooftop lap"))
+        {
+            log.debug("msg {} matches rooftop agility lap", msg);
             statStore.incrementStat(ROOF_TOP_AGILITY);
         }
 
-        else if (msg.contains("lap count") &&  !msg.contains("Rooftop")){
+        else if (msg.contains("lap count") &&  !msg.contains("Rooftop"))
+        {
+            log.debug("msg {} matches normal agility lap", msg);
             statStore.incrementStat(NORMAL_AGILITY);
         }
 
-        //todo this msg was barehanded catch with no jar in inventory. ensure works for nets and when jar is in inv
-        else if (msg.contains("You manage to catch the impling")){
+//todo this msg was barehanded catch with no jar in inventory. ensure works for nets and when jar is in inv
+        else if (msg.contains("You manage to catch the impling"))
+        {
+            log.debug("msg {} matches impling catch", msg);
             statStore.incrementStat(IMPLINGS_CAUGHT);
         }
 
-        else if (msg.contains("You successfully cook")){
+        else if (msg.contains("You successfully cook"))
+        {
+            log.debug("msg {} matches successful cooking", msg);
             statStore.incrementStat(FOOD_COOKED);
         }
 
-        else if (msg.contains("You accidentally burn")){
+        else if (msg.contains("You accidentally burn"))
+        {
+            log.debug("msg {} matches burned food", msg);
             statStore.incrementStat(FOOD_BURNED);
         }
 
-        else if (msg.contains("You put the") && msg.contains("vial")){
+        else if (msg.contains("You put the") && msg.contains("vial"))
+        {
+            log.debug("msg {} matches unfinished potion", msg);
             statStore.incrementStat(UNFINISHED_POTIONS_MADE);
         }
 
-        else if (msg.contains("You mix the") && msg.contains("potion")){
+        else if (msg.contains("You mix the") && msg.contains("potion"))
+        {
+            log.debug("msg {} matches potion making", msg);
             statStore.incrementStat(POTIONS_MADE);
         }
 
-        else if (msg.contains("You clean the Grimy")){
+        else if (msg.contains("You clean the Grimy"))
+        {
+            log.debug("msg {} matches herb cleaning", msg);
             statStore.incrementStat(HERBS_CLEANED);
         }
 
-        else if (msg.contains("You carefully cut the")){
+        else if (msg.contains("You carefully cut the"))
+        {
+            log.debug("msg {} matches bow fletching", msg);
             statStore.incrementStat(BOWS_FLECTHED);
         }
 
-        else if (msg.contains("You cut the") && !msg.contains("chocolate")){ //todo probably make this more robust, could be prone to false matches
+        else if (msg.contains("You cut the") && !msg.contains("chocolate"))
+        {
+            log.debug("msg {} matches gem cutting", msg);
             statStore.incrementStat(GEMS_CUT);
         }
 
-        else if (msg.contains("You smelt the")){
+        else if (msg.contains("You smelt the"))
+        {
+            log.debug("msg {} matches smelting", msg);
             statStore.incrementStat(BARS_SMELTED);
         }
 
-        else if (msg.contains("You hammer the")){
+        else if (msg.contains("You hammer the"))
+        {
+            log.debug("msg {} matches smithing", msg);
             statStore.incrementStat(ITEMS_SMITHED);
         }
 
-        else if (msg.contains("You add a string to the bow")){
+        else if (msg.contains("You add a string to the bow"))
+        {
+            log.debug("msg {} matches bow stringing", msg);
             statStore.incrementStat(BOWS_STRUNG);
         }
 
-        else if (msg.contains("You make a") && Arrays.stream(glassItems).anyMatch(msg.toLowerCase()::contains)){
+        else if (msg.contains("You make a") && Arrays.stream(glassItems).anyMatch(msg.toLowerCase()::contains))
+        {
+            log.debug("msg {} matches glassblowing", msg);
             statStore.incrementStat(GLASS_BLOWN);
         }
 
-        else if (msg.contains("You finish making") &&msg.contains("darts")){
-            //parse the number of darts made. it will be in between the words making and darts
-                String numberStr = msg.substring(msg.indexOf("making ") + "making ".length(), msg.indexOf(" darts")).trim();
-                try {
-                    int number = Integer.parseInt(numberStr);
-                    statStore.incrementStatBy(DARTS_FLECTHED, number);
-                } catch (NumberFormatException e) {
-                    log.warn("Failed to parse number of darts fletched from message: {}", msg);
-                }
+        else if (msg.contains("You finish making") &&msg.contains("darts"))
+        {
+            log.debug("msg {} matches dart fletching", msg);
+
+            String numberStr = msg.substring(msg.indexOf("making ") + "making ".length(), msg.indexOf(" darts")).trim();
+            try
+            {
+                int number = Integer.parseInt(numberStr);
+                log.debug("darts fletched: {}", number);
+                statStore.incrementStatBy(DARTS_FLECTHED, number);
+            }
+            catch (NumberFormatException e)
+            {
+                log.warn("Failed to parse number of darts fletched from message: {}", msg);
+            }
         }
 
-        else if (msg.contains("You've caught a") || msg.contains("You manage to catch") ){
-            statStore.incrementStat(CREATURES_TRAPPED);
-        }
-
-        else if (msg.contains("You bury the")){
+        else if (msg.contains("You bury the"))
+        {
+            log.debug("msg {} matches bone burying", msg);
             statStore.incrementStat(BONES_BURIED);
         }
 
-        else if (tannerMatcher.matches()){
+        else if (tannerMatcher.matches())
+        {
+            log.debug("msg {} matches tanning", msg);
             log.debug("tanner match {} {}", tannerMatcher.group(1), tannerMatcher.group(2));
+
             String xRaw = tannerMatcher.group(1);
             String y = tannerMatcher.group(2);
 
@@ -252,40 +306,73 @@ public class SkillingStatTracker implements StatTracker{
                 try
                 {
                     x = Integer.parseInt(xRaw);
-                    log.debug("hides tanned: {}" , x);
-                    log.debug("type of hide tanned: {}" , y);
+                    log.debug("hides tanned: {}", x);
+                    log.debug("type of hide tanned: {}", y);
                 }
                 catch (NumberFormatException e)
                 {
-                   log.warn("could not parse number from tanner message");
-                   return;
+                    log.warn("could not parse number from tanner message");
+                    return;
                 }
             }
-            if (x != -1){
-                //we use if else here to make use of contains as opposed to switch statement
-                //this way we match both dragonhide and dragonhides
+
+            if (x != -1)
+            {
                 if (y.contains("black dragonhide"))
                 {
+                    log.debug("incrementing black dragonhide tanned by {}", x);
                     statStore.incrementStatBy(BLACK_DHIDE_TANNED, x);
                 }
                 else if (y.contains("red dragonhide"))
                 {
+                    log.debug("incrementing red dragonhide tanned by {}", x);
                     statStore.incrementStatBy(RED_DHIDE_TANNED, x);
                 }
                 else if (y.contains("blue dragonhide"))
                 {
+                    log.debug("incrementing blue dragonhide tanned by {}", x);
                     statStore.incrementStatBy(BLUE_DHIDE_TANNED, x);
                 }
                 else if (y.contains("green dragonhide"))
                 {
+                    log.debug("incrementing green dragonhide tanned by {}", x);
                     statStore.incrementStatBy(GREEN_DHIDE_TANNED, x);
                 }
-                else if (y.contains("cowhide")){
+                else if (y.contains("cowhide"))
+                {
+                    log.debug("incrementing cowhide tanned by {}", x);
                     statStore.incrementStatBy(COWHIDE_TANNED, x);
                 }
+
+                log.debug("incrementing total hides tanned by {}", x);
                 statStore.incrementStatBy(HIDES_TANNED, x);
             }
+        }
 
+        else if (msg.contains("catch an extra") && msg.contains("fish"))
+        {
+            log.debug("msg {} matches extra fish catch", msg);
+            log.debug("extra fish caught {}", lastFishCaught);
+
+            incrementTypedFish(lastFishCaught);
+        }
+
+        else if (msg.contains("The glowing fish scatter"))
+        {
+            log.debug("msg {} matches spirit pool stab", msg);
+            statStore.incrementStat(SPIRIT_POOL_STABS);
+        }
+
+        //please always keep hunter last
+        //its very generic and as such prone to eating other skilling messages like fishing.
+        else if (msg.contains("You've caught a") || msg.contains("You manage to catch"))
+        {
+            log.debug("msg {} matches creature trapping", msg);
+            statStore.incrementStat(CREATURES_TRAPPED);
+        }
+
+        else{
+            log.debug("Unmatched message {} ", msg);
         }
     }
 
@@ -405,6 +492,8 @@ public class SkillingStatTracker implements StatTracker{
             t = t.substring("raw ".length()).trim();
         }
 
+        lastFishCaught = t;
+
         switch (t)
         {
             case "shrimps":
@@ -481,6 +570,9 @@ public class SkillingStatTracker implements StatTracker{
                 break;
             case "leaping sturgeon":
                 statStore.incrementStat(LEAPING_STURGEON_CAUGHT);
+                break;
+            case "harpoonfish":
+                statStore.incrementStat(HARPOON_FISH_CAUGHT);
                 break;
         }
     }

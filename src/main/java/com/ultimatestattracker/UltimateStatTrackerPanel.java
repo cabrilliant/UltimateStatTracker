@@ -139,6 +139,8 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(RED_DHIDE_TANNED,"Red D'hide Tanned");
         STAT_LABELS.put(BLACK_DHIDE_TANNED,"Black D'hide Tanned");
         STAT_LABELS.put(COWHIDE_TANNED,"Cowhide Tanned");
+        STAT_LABELS.put(HARPOON_FISH_CAUGHT,"Harpoonfish Caught");
+        STAT_LABELS.put(SPIRIT_POOL_STABS,"Spirit Pool Stabs");
     }
 
     public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)

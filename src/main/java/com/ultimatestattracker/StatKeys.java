@@ -20,7 +20,7 @@ public class StatKeys {
      public static String TILES_WALKED = "tilesWalked";
      public static String TILES_RAN = "tilesRan";
 
-     // --- Gathering ---
+     // --- Fishing ---
      public static String FISH_CAUGHT = "fishCaught";
      public static String SHRIMP_CAUGHT = "shrimpCaught";
      public static String ANCHOVIES_CAUGHT = "anchoviesCaught";
@@ -46,6 +46,9 @@ public class StatKeys {
      public static String LEAPING_TROUT_CAUGHT = "leapingTroutCaught";
      public static String LEAPING_SALMON_CAUGHT = "leapingSalmonCaught";
      public static String LEAPING_STURGEON_CAUGHT = "leapingSturgeonCaught";
+     public static String HARPOON_FISH_CAUGHT = "harpoonFishCaught";
+     public static String SPIRIT_POOL_STABS = "spiritPoolStabs";
+     // --- Mining ---
      public static String ROCKS_MINED = "rocksMined";
      public static String CLAY_MINED = "clayMined";
      public static String COPPER_ORE_MINED = "copperOreMined";
@@ -63,6 +66,7 @@ public class StatKeys {
      public static String PAY_DIRT_MINED = "payDirtMined";
      public static String AMETHYST_MINED = "amethystMined";
      public static String PURE_ESSENCE_MINED = "pureEssenceMined";
+     // --- Woodcutting ---
      public static String LOGS_CHOPPED = "logsChopped";
      public static String NORMAL_LOGS_CHOPPED = "normalLogsChopped";
      public static String OAK_LOGS_CHOPPED = "oakLogsChopped";
@@ -73,6 +77,8 @@ public class StatKeys {
      public static String YEW_LOGS_CHOPPED = "yewLogsChopped";
      public static String MAGIC_LOGS_CHOPPED = "magicLogsChopped";
      public static String REDWOOD_LOGS_CHOPPED = "redwoodLogsChopped";
+
+     // --- Gathering ---
      public static String FLAX_PICKED = "flaxPicked";
      public static String CABBAGE_PICKED = "cabbagePicked";
 
@@ -192,6 +198,8 @@ public class StatKeys {
           new StatKey(LEAPING_TROUT_CAUGHT, StatCategory.FISHING),
           new StatKey(LEAPING_SALMON_CAUGHT, StatCategory.FISHING),
           new StatKey(LEAPING_STURGEON_CAUGHT, StatCategory.FISHING),
+             new StatKey(HARPOON_FISH_CAUGHT, StatCategory.FISHING),
+             new StatKey(SPIRIT_POOL_STABS, StatCategory.FISHING),
 
           // --- Mining ---
           new StatKey(ROCKS_MINED, StatCategory.MINING),
