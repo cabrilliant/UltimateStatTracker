@@ -159,7 +159,6 @@ public class UltimateStatTrackerPanel extends PluginPanel
         categoryFilterBar = new StatCategoryFilterBar(skillIconManager, this::rebuild);
         setLayout(new BorderLayout());
 
-        // ---- TOP BAR ----
         JPanel topBar = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
 
@@ -216,6 +215,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
         sortBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         sortBox.addActionListener(e -> rebuild());
 
+        JPanel buttonRow = new JPanel();
         buttonRow.setLayout(new BoxLayout(buttonRow, BoxLayout.X_AXIS));
         buttonRow.setAlignmentX(Component.LEFT_ALIGNMENT);
 
