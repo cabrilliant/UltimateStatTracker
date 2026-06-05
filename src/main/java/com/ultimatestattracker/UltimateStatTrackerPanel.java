@@ -216,15 +216,20 @@ public class UltimateStatTrackerPanel extends PluginPanel
         sortBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         sortBox.addActionListener(e -> rebuild());
 
+        buttonRow.setLayout(new BoxLayout(buttonRow, BoxLayout.X_AXIS));
+        buttonRow.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        buttonRow.add(refreshButton);
+        buttonRow.add(Box.createHorizontalGlue());
+        buttonRow.add(resetAllButton);
+
         topBar.add(searchField);
-        topBar.add(refreshButton);
-        topBar.add(resetAllButton);
+        topBar.add(buttonRow);
         topBar.add(sortBox);
         topBar.add(categoryFilterBar);
 
         add(topBar, BorderLayout.NORTH);
 
-        // ---- MAIN CONTENT ----
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBackground(new Color(40, 35, 30));
 

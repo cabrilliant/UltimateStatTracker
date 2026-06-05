@@ -367,7 +367,7 @@ public class SkillingStatTracker implements StatTracker{
 
         //please always keep hunter last
         //its very generic and as such prone to eating other skilling messages like fishing.
-        else if ( (msg.contains("You've caught a") || msg.contains("You manage to catch")) && !msg.contains("fish") && !msg.contains("shrimp") )
+        else if ( (msg.contains("You've caught a") || msg.contains("You manage to catch") || msg.contains("You release the")) && !msg.contains("fish") && !msg.contains("shrimp") && !msg.contains("jar") )
         {
             log.debug("msg {} matches creature trapping", msg);
             statStore.incrementStat(CREATURES_TRAPPED);
