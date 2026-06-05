@@ -199,7 +199,7 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStat(IMPLINGS_CAUGHT);
         }
 
-        else if (msg.contains("You successfully cook"))
+        else if (msg.contains("You successfully cook") || msg.contains("You cook the"))
         {
             log.debug("msg {} matches successful cooking", msg);
             statStore.incrementStat(FOOD_COOKED);
