@@ -64,6 +64,11 @@ public class CombatStatTracker implements StatTracker{
     }
 
     @Override
+    public void onAnimationChanged(AnimationChanged event) {
+
+    }
+
+    @Override
     public void onGameTick(GameTick event) {
 
     }

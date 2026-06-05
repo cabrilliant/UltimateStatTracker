@@ -2,6 +2,7 @@ package com.ultimatestattracker.stattrackers;
 
 import com.ultimatestattracker.StatStore;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
@@ -129,5 +130,15 @@ public class MovementStatTracker implements StatTracker{
     @Override
     public void onHitsplatApplied(HitsplatApplied event) {
 
+    }
+
+    @Override public void onAnimationChanged(AnimationChanged event)
+    {
+        Actor actor = event.getActor();
+        log.debug("Anim ID: {}", actor.getAnimation());
+        //todo export to constants
+        if (actor.getAnimation() == 3265 ){
+            statStore.incrementStat(FAIRY_RING_TELES);
+        }
     }
 }

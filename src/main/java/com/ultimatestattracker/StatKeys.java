@@ -367,6 +367,7 @@ public class StatKeys {
              HP_REGEN,
              CRITTERS_PET,
              THE_GUNS,
-             SPIRIT_TREE_TELES
+             SPIRIT_TREE_TELES,
+             FAIRY_RING_TELES
      )));
 }

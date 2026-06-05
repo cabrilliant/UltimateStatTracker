@@ -211,6 +211,14 @@ public class UltimateStatTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		if (!config.performanceMode()) {
+			movementStatTracker.onAnimationChanged(event);
+		}
+	}
+
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if ("UltimateStatTracker".equals(event.getGroup()) && panel != null)

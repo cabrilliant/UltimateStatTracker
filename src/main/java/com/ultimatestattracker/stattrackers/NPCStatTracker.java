@@ -122,4 +122,9 @@ public class NPCStatTracker implements StatTracker{
 
     }
 
+    @Override
+    public void onAnimationChanged(AnimationChanged event) {
+
+    }
+
 }

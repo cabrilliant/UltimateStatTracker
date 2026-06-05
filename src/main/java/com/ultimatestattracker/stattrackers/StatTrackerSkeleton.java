@@ -50,4 +50,9 @@ public class StatTrackerSkeleton implements StatTracker{
     public void onHitsplatApplied(HitsplatApplied event) {
 
     }
+
+    @Override
+    public void onAnimationChanged(AnimationChanged event) {
+
+    }
 }
