@@ -11,8 +11,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.api.Varbits;
 import java.awt.event.KeyEvent;
 
-import static com.ultimatestattracker.StatKeys.TILES_RAN;
-import static com.ultimatestattracker.StatKeys.TILES_WALKED;
+import static com.ultimatestattracker.StatKeys.*;
 
 @Slf4j
 public class MovementStatTracker implements StatTracker{
@@ -61,7 +60,19 @@ public class MovementStatTracker implements StatTracker{
 
     @Override
     public void onWidgetLoaded(WidgetLoaded event) {
-
+        if (event.getGroupId() == 193){
+            log.debug("potential spirit tree popup");
+            Widget chatBoxMessage = client.getWidget(193,2);
+            if (chatBoxMessage == null){
+                log.debug("couldnt find chatbox message widget for spirit tree");
+            }
+            if (chatBoxMessage!=null){
+                log.debug("text: {}", chatBoxMessage.getText());
+                if (chatBoxMessage.getText().contains("place your hands on the dry")){
+                    statStore.incrementStat(SPIRIT_TREE_TELES);
+                }
+            }
+        }
     }
 
     @Override

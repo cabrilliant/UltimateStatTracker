@@ -185,6 +185,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		if (!config.performanceMode())
 		{
 			goldStatTracker.onWidgetLoaded(event);
+			movementStatTracker.onWidgetLoaded(event);
 		}
 	}
 
@@ -231,6 +232,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		foodStatTracker.onChatMessage(event);
 		itemStatTracker.onChatMessage(event);
 		combatStatTracker.onChatMessage(event);
+		movementStatTracker.onChatMessage(event);
 	}
 
 	@Subscribe

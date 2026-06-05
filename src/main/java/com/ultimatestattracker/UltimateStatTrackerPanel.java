@@ -151,6 +151,8 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(MONKFISH_COOKED, "Monkfish Cooked");
         STAT_LABELS.put(KARAMBWAN_COOKED, "Karambwans Cooked");
         STAT_LABELS.put(ANGLERFISH_COOKED, "Anglerfish Cooked");
+        STAT_LABELS.put(SPIRIT_TREE_TELES, "Spirit Tree Teleports");
+        STAT_LABELS.put(FAIRY_RING_TELES, "Fairy Ring Teleports");
     }
 
     public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)

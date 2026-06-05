@@ -1,5 +1,7 @@
 package com.ultimatestattracker;
 
+import org.lwjgl.system.linux.Stat;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,6 +21,8 @@ public class StatKeys {
      // --- Movement ---
      public static String TILES_WALKED = "tilesWalked";
      public static String TILES_RAN = "tilesRan";
+     public static String SPIRIT_TREE_TELES = "spiritTreeTeles";
+     public static String FAIRY_RING_TELES = "fairyRingTeles";
 
      // --- Fishing ---
      public static String FISH_CAUGHT = "fishCaught";
@@ -178,9 +182,11 @@ public class StatKeys {
           new StatKey(SHOP_GP_SPENT, StatCategory.SHOPS),
           new StatKey(SHOP_GP_GAINED, StatCategory.SHOPS),
 
-          // --- Movement ---
+          // --- Movement / Transporation ---
           new StatKey(TILES_WALKED, StatCategory.MOVEMENT),
           new StatKey(TILES_RAN, StatCategory.MOVEMENT),
+             new StatKey(SPIRIT_TREE_TELES, StatCategory.MOVEMENT),
+             new StatKey(FAIRY_RING_TELES,StatCategory.MOVEMENT),
 
           // --- Fishing ---
           new StatKey(FISH_CAUGHT, StatCategory.FISHING),
@@ -360,6 +366,7 @@ public class StatKeys {
              RUNES_CRAFTED,
              HP_REGEN,
              CRITTERS_PET,
-             THE_GUNS
+             THE_GUNS,
+             SPIRIT_TREE_TELES
      )));
 }
