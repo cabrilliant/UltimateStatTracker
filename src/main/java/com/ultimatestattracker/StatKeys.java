@@ -37,6 +37,7 @@ public class StatKeys {
      public static String FORTIS_TELEPORT = "fortisTeleport";
      public static String YANILLE_TELEPORT = "yanilleTeleport";
      public static String HOUSE_TELEPORT = "houseTeleport";
+     public static String TOTAL_TELEPORTS = "totalTeleports";
 
      // --- Fishing ---
      public static String FISH_CAUGHT = "fishCaught";
@@ -214,6 +215,7 @@ public class StatKeys {
              new StatKey(SEERS_VILLAGE_TELEPORT, StatCategory.MOVEMENT),
              new StatKey(FORTIS_TELEPORT,StatCategory.MOVEMENT),
              new StatKey(HOUSE_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(TOTAL_TELEPORTS,StatCategory.MOVEMENT),
 
           // --- Fishing ---
           new StatKey(FISH_CAUGHT, StatCategory.FISHING),

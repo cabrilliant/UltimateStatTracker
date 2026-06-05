@@ -177,6 +177,7 @@ public class MovementStatTracker implements StatTracker{
     }
 
     private void trackTeleport(String lastOptionClicked) {
+        statStore.incrementStat(TOTAL_TELEPORTS);
         //use if else instead of switch here because for non diary teles we get <x> teleport, but for diary teles we just get <x> so we need to use contains
         log.debug("last teleport clicked {}",lastOptionClicked);
         if (lastOptionClicked.contains("varrock")){

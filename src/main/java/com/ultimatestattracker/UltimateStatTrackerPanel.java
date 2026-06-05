@@ -167,6 +167,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(SEERS_VILLAGE_TELEPORT, "Seers Village Teleports");
         STAT_LABELS.put(FORTIS_TELEPORT,"Fortis Teleports");
         STAT_LABELS.put(HOUSE_TELEPORT,"House Teleports");
+        STAT_LABELS.put(TOTAL_TELEPORTS,"Total Teleports");
     }
 
     public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)
