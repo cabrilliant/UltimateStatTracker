@@ -1,6 +1,6 @@
 package com.ultimatestattracker;
 
-import org.lwjgl.system.linux.Stat;
+import net.runelite.client.plugins.itemstats.stats.Stat;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +23,20 @@ public class StatKeys {
      public static String TILES_RAN = "tilesRan";
      public static String SPIRIT_TREE_TELES = "spiritTreeTeles";
      public static String FAIRY_RING_TELES = "fairyRingTeles";
+     public static String VARROCK_TELEPORT = "varrockTeleport";
+     public static String LUMBRIDGE_TELEPORT = "lumbridgeTeleport";
+     public static String FALADOR_TELEPORT = "faladorTeleport";
+     public static String CAMELOT_TELEPORT = "camelotTeleport";
+     public static String ARDOUGNE_TELEPORT = "ardougneTeleport";
+     public static String WATCHTOWER_TELEPORT = "watchtowerTeleport";
+     public static String TROLLHEIM_TELEPORT = "trollheimTeleport";
+     public static String APE_ATOLL_TELEPORT = "apeAtollTeleport";
+     public static String KOUREND_TELEPORT = "kourendTeleport";
+     public static String GRAND_EXCHANGE_TELEPORT = "grandExchangeTeleport";
+     public static String SEERS_VILLAGE_TELEPORT = "seersVillageTeleport";
+     public static String FORTIS_TELEPORT = "fortisTeleport";
+     public static String YANILLE_TELEPORT = "yanilleTeleport";
+     public static String HOUSE_TELEPORT = "houseTeleport";
 
      // --- Fishing ---
      public static String FISH_CAUGHT = "fishCaught";
@@ -187,6 +201,19 @@ public class StatKeys {
           new StatKey(TILES_RAN, StatCategory.MOVEMENT),
              new StatKey(SPIRIT_TREE_TELES, StatCategory.MOVEMENT),
              new StatKey(FAIRY_RING_TELES,StatCategory.MOVEMENT),
+             new StatKey(VARROCK_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(LUMBRIDGE_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(FALADOR_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(CAMELOT_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(ARDOUGNE_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(WATCHTOWER_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(TROLLHEIM_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(APE_ATOLL_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(KOUREND_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(GRAND_EXCHANGE_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(SEERS_VILLAGE_TELEPORT, StatCategory.MOVEMENT),
+             new StatKey(FORTIS_TELEPORT,StatCategory.MOVEMENT),
+             new StatKey(HOUSE_TELEPORT, StatCategory.MOVEMENT),
 
           // --- Fishing ---
           new StatKey(FISH_CAUGHT, StatCategory.FISHING),

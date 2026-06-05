@@ -37,7 +37,7 @@ public class GoldStatTracker implements StatTracker {
 
     @Override
     public void onWidgetLoaded(WidgetLoaded event) {
-        log.debug(String.valueOf(event.getGroupId()));
+        //log.debug(String.valueOf(event.getGroupId()));
         //shop spent at gp tracking
         if (event.getGroupId() == InterfaceID.SHOP_INVENTORY)
         {

@@ -153,6 +153,20 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(ANGLERFISH_COOKED, "Anglerfish Cooked");
         STAT_LABELS.put(SPIRIT_TREE_TELES, "Spirit Tree Teleports");
         STAT_LABELS.put(FAIRY_RING_TELES, "Fairy Ring Teleports");
+        STAT_LABELS.put(VARROCK_TELEPORT, "Varrock Teleports");
+        STAT_LABELS.put(LUMBRIDGE_TELEPORT, "Lumbridge Teleports");
+        STAT_LABELS.put(FALADOR_TELEPORT, "Falador Teleports");
+        STAT_LABELS.put(CAMELOT_TELEPORT, "Camelot Teleports");
+        STAT_LABELS.put(ARDOUGNE_TELEPORT, "Ardougne Teleports");
+        STAT_LABELS.put(WATCHTOWER_TELEPORT, "Watchtower Teleports");
+        STAT_LABELS.put(YANILLE_TELEPORT, "Yanille Teleports");
+        STAT_LABELS.put(TROLLHEIM_TELEPORT, "Trollheim Teleports");
+        STAT_LABELS.put(APE_ATOLL_TELEPORT, "Ape Atoll Teleports");
+        STAT_LABELS.put(KOUREND_TELEPORT, "Kourend Teleports");
+        STAT_LABELS.put(GRAND_EXCHANGE_TELEPORT, "Grand Exchange Teleports");
+        STAT_LABELS.put(SEERS_VILLAGE_TELEPORT, "Seers Village Teleports");
+        STAT_LABELS.put(FORTIS_TELEPORT,"Fortis Teleports");
+        STAT_LABELS.put(HOUSE_TELEPORT,"House Teleports");
     }
 
     public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)

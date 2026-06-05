@@ -176,6 +176,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 		itemStatTracker.onMenuOptionClicked(event);
 		foodStatTracker.onMenuOptionClicked(event);
 		npcStatTracker.onMenuOptionClicked(event);
+		movementStatTracker.onMenuOptionClicked(event);
 
 	}
 
