@@ -202,7 +202,9 @@ public class SkillingStatTracker implements StatTracker{
         else if (msg.contains("You successfully cook") || msg.contains("You cook the"))
         {
             log.debug("msg {} matches successful cooking", msg);
+
             statStore.incrementStat(FOOD_COOKED);
+            incrementTypedCook(msg);
         }
 
         else if (msg.contains("You accidentally burn"))
@@ -374,6 +376,113 @@ public class SkillingStatTracker implements StatTracker{
         else{
             log.debug("Unmatched message {} ", msg);
         }
+    }
+
+    private void incrementTypedCook(String msg)
+    {
+        if (msg == null)
+        {
+            return;
+        }
+
+        String lower = msg.toLowerCase();
+
+        String cookedItem = null;
+
+        int idx = lower.indexOf("cook a ");
+        if (idx == -1)
+        {
+            idx = lower.indexOf("cook the ");
+            if (idx == -1)
+            {
+                return;
+            }
+        }
+
+        int start;
+        if (lower.startsWith("cook a ", idx))
+        {
+            start = idx + "cook a ".length();
+        }
+        else
+        {
+            start = idx + "cook the ".length();
+        }
+
+        String tail = msg.substring(start).trim();
+
+        if (tail.toLowerCase().startsWith("raw "))
+        {
+            tail = tail.substring(4).trim();
+        }
+
+        int end = tail.indexOf(' ');
+        if (end != -1)
+        {
+            tail = tail.substring(0, end);
+        }
+
+        cookedItem = tail
+                .replace(".", "")
+                .replace("!", "")
+                .trim()
+                .toLowerCase();
+
+        if (cookedItem.isEmpty())
+        {
+            return;
+        }
+
+        switch (cookedItem)
+        {
+            case "shrimp":
+            case "shrimps":
+                statStore.incrementStat(SHRIMP_COOKED);
+                break;
+
+            case "anchovies":
+            case "anchovy":
+                statStore.incrementStat(ANCHOVIES_COOKED);
+                break;
+
+            case "trout":
+                statStore.incrementStat(TROUT_COOKED);
+                break;
+
+            case "salmon":
+                statStore.incrementStat(SALMON_COOKED);
+                break;
+
+            case "lobster":
+                statStore.incrementStat(LOBSTER_COOKED);
+                break;
+
+            case "swordfish":
+                statStore.incrementStat(SWORDFISH_COOKED);
+                break;
+
+            case "shark":
+                statStore.incrementStat(SHARK_COOKED);
+                break;
+
+            case "monkfish":
+                statStore.incrementStat(MONKFISH_COOKED);
+                break;
+
+            case "karambwan":
+                statStore.incrementStat(KARAMBWAN_COOKED);
+                break;
+
+            case "anglerfish":
+                statStore.incrementStat(ANGLERFISH_COOKED);
+                break;
+
+            default:
+                log.debug("unknown cooked item type: {}", cookedItem);
+                break;
+        }
+
+        log.debug("cooked item detected: {}", cookedItem);
     }
 
     @Override

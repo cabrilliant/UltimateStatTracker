@@ -107,6 +107,16 @@ public class StatKeys {
      public static String FOOD_BURNED = "foodBurned";
      public static String POTION_SIPS_DRANK = "potionSips";
      public static String DIVINE_DAMAGE = "divineDamage";
+     public static String SHRIMP_COOKED = "shrimpCooked";
+     public static String ANCHOVIES_COOKED = "anchoviesCooked";
+     public static String TROUT_COOKED = "troutCooked";
+     public static String SALMON_COOKED = "salmonCooked";
+     public static String LOBSTER_COOKED = "lobsterCooked";
+     public static String SWORDFISH_COOKED = "swordfishCooked";
+     public static String SHARK_COOKED = "sharkCooked";
+     public static String MONKFISH_COOKED = "monkfishCooked";
+     public static String KARAMBWAN_COOKED = "karambwanCooked";
+     public static String ANGLERFISH_COOKED = "anglerfishCooked";
 
      // --- Thieving ---
      public static String PICK_POCKETS = "pickPockets";
@@ -261,6 +271,16 @@ public class StatKeys {
           new StatKey(FOOD_BURNED, StatCategory.FOOD_AND_HEALING),
           new StatKey(POTION_SIPS_DRANK, StatCategory.FOOD_AND_HEALING),
           new StatKey(DIVINE_DAMAGE, StatCategory.FOOD_AND_HEALING),
+             new StatKey(SHRIMP_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(ANCHOVIES_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(TROUT_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(SALMON_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(LOBSTER_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(SWORDFISH_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(SHARK_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(MONKFISH_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(KARAMBWAN_COOKED, StatCategory.FOOD_AND_HEALING),
+             new StatKey(ANGLERFISH_COOKED, StatCategory.FOOD_AND_HEALING),
 
           // --- Thieving ---
           new StatKey(PICK_POCKETS, StatCategory.THIEVING),

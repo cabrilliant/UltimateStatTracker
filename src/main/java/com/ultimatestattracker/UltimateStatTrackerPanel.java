@@ -141,6 +141,16 @@ public class UltimateStatTrackerPanel extends PluginPanel
         STAT_LABELS.put(COWHIDE_TANNED,"Cowhide Tanned");
         STAT_LABELS.put(HARPOON_FISH_CAUGHT,"Harpoonfish Caught");
         STAT_LABELS.put(SPIRIT_POOL_STABS,"Spirit Pool Stabs");
+        STAT_LABELS.put(SHRIMP_COOKED, "Shrimp Cooked");
+        STAT_LABELS.put(ANCHOVIES_COOKED, "Anchovies Cooked");
+        STAT_LABELS.put(TROUT_COOKED, "Trout Cooked");
+        STAT_LABELS.put(SALMON_COOKED, "Salmon Cooked");
+        STAT_LABELS.put(LOBSTER_COOKED, "Lobsters Cooked");
+        STAT_LABELS.put(SWORDFISH_COOKED, "Swordfish Cooked");
+        STAT_LABELS.put(SHARK_COOKED, "Sharks Cooked");
+        STAT_LABELS.put(MONKFISH_COOKED, "Monkfish Cooked");
+        STAT_LABELS.put(KARAMBWAN_COOKED, "Karambwans Cooked");
+        STAT_LABELS.put(ANGLERFISH_COOKED, "Anglerfish Cooked");
     }
 
     public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)
