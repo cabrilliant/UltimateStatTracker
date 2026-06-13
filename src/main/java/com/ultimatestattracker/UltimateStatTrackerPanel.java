@@ -20,8 +20,6 @@ public class UltimateStatTrackerPanel extends PluginPanel
     private StatStore statStore;
     private String filter = "";
 
-    public JScrollPane scrollPane;
-
     private static final Map<String, String> STAT_LABELS = new LinkedHashMap<>();
     private static final Color COLOR_DISABLED = new Color(100, 100, 100);
     private static final String PERFORMANCE_MODE_TOOLTIP = "Disabled in performance mode";
@@ -250,15 +248,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBackground(new Color(40, 35, 30));
 
-        scrollPane = new JScrollPane(content);
-        scrollPane.setWheelScrollingEnabled(true);
-
-        scrollPane.getViewport().addMouseWheelListener(e -> {
-            JScrollBar bar = scrollPane.getVerticalScrollBar();
-            bar.setValue(bar.getValue() + (e.getWheelRotation() * bar.getUnitIncrement() * 3));
-        });
-
-        add(scrollPane, BorderLayout.CENTER);
+        add(content, BorderLayout.CENTER);
     }
 
     public void setStatStore(StatStore store)
