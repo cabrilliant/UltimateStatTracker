@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.runelite.client.game.SkillIconManager;
 
@@ -16,10 +17,8 @@ public class UltimateStatTrackerPanel extends PluginPanel
     private final JPanel content = new JPanel();
     private final JTextField searchField = new JTextField();
     private final JComboBox<String> sortBox = new JComboBox<>(new String[]{"Alphabetical", "Numeric"});
-
     private StatStore statStore;
     private String filter = "";
-
     private static final Map<String, String> STAT_LABELS = new LinkedHashMap<>();
     private static final Color COLOR_DISABLED = new Color(100, 100, 100);
     private static final String PERFORMANCE_MODE_TOOLTIP = "Disabled in performance mode";
@@ -28,145 +27,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
     private final StatCategoryFilterBar categoryFilterBar;
 
     private UltimateStatTrackerPlugin plugin;
-    static
-    {
-        STAT_LABELS.put(EXAMINE, "Things Examined");
-        STAT_LABELS.put(ITEMS_DROPPED, "Items Dropped");
-        STAT_LABELS.put(SHOP_GP_SPENT, "Shop GP Spent");
-        STAT_LABELS.put(SHOP_GP_GAINED, "Shop GP Gained");
-        STAT_LABELS.put(TILES_WALKED, "Tiles Walked");
-        STAT_LABELS.put(TILES_RAN, "Tiles Ran");
-        STAT_LABELS.put(FISH_CAUGHT, "Fish Caught");
-        STAT_LABELS.put(SHRIMP_CAUGHT, "Shrimp Caught");
-        STAT_LABELS.put(ANCHOVIES_CAUGHT, "Anchovies Caught");
-        STAT_LABELS.put(SARDINE_CAUGHT, "Sardines Caught");
-        STAT_LABELS.put(HERRING_CAUGHT, "Herring Caught");
-        STAT_LABELS.put(TROUT_CAUGHT, "Trout Caught");
-        STAT_LABELS.put(SALMON_CAUGHT, "Salmon Caught");
-        STAT_LABELS.put(PIKE_CAUGHT, "Pike Caught");
-        STAT_LABELS.put(COD_CAUGHT, "Cod Caught");
-        STAT_LABELS.put(BASS_CAUGHT, "Bass Caught");
-        STAT_LABELS.put(TUNA_CAUGHT, "Tuna Caught");
-        STAT_LABELS.put(LOBSTER_CAUGHT, "Lobsters Caught");
-        STAT_LABELS.put(SWORDFISH_CAUGHT, "Swordfish Caught");
-        STAT_LABELS.put(MONKFISH_CAUGHT, "Monkfish Caught");
-        STAT_LABELS.put(SHARK_CAUGHT, "Sharks Caught");
-        STAT_LABELS.put(SEA_TURTLE_CAUGHT, "Sea Turtles Caught");
-        STAT_LABELS.put(MANTA_RAY_CAUGHT, "Manta Rays Caught");
-        STAT_LABELS.put(ANGLERFISH_CAUGHT, "Anglerfish Caught");
-        STAT_LABELS.put(KARAMBWAN_CAUGHT, "Karambwans Caught");
-        STAT_LABELS.put(DARK_CRAB_CAUGHT, "Dark Crabs Caught");
-        STAT_LABELS.put(MINNOW_CAUGHT, "Minnows Caught");
-        STAT_LABELS.put(SACRED_EEL_CAUGHT, "Sacred Eels Caught");
-        STAT_LABELS.put(LEAPING_TROUT_CAUGHT, "Leaping Trout Caught");
-        STAT_LABELS.put(LEAPING_SALMON_CAUGHT, "Leaping Salmon Caught");
-        STAT_LABELS.put(LEAPING_STURGEON_CAUGHT, "Leaping Sturgeon Caught");
-        STAT_LABELS.put(ROCKS_MINED, "Rocks Mined");
-        STAT_LABELS.put(CLAY_MINED, "Clay Mined");
-        STAT_LABELS.put(COPPER_ORE_MINED, "Copper Ore Mined");
-        STAT_LABELS.put(TIN_ORE_MINED, "Tin Ore Mined");
-        STAT_LABELS.put(LIMESTONE_MINED, "Limestone Mined");
-        STAT_LABELS.put(IRON_ORE_MINED, "Iron Ore Mined");
-        STAT_LABELS.put(SILVER_ORE_MINED, "Silver Ore Mined");
-        STAT_LABELS.put(COAL_MINED, "Coal Mined");
-        STAT_LABELS.put(GOLD_ORE_MINED, "Gold Ore Mined");
-        STAT_LABELS.put(MITHRIL_ORE_MINED, "Mithril Ore Mined");
-        STAT_LABELS.put(ADAMANTITE_ORE_MINED, "Adamantite Ore Mined");
-        STAT_LABELS.put(RUNITE_ORE_MINED, "Runite Ore Mined");
-        STAT_LABELS.put(GRANITE_MINED, "Granite Mined");
-        STAT_LABELS.put(SANDSTONE_MINED, "Sandstone Mined");
-        STAT_LABELS.put(PAY_DIRT_MINED, "Pay-dirt Mined");
-        STAT_LABELS.put(AMETHYST_MINED, "Amethyst Mined");
-        STAT_LABELS.put(PURE_ESSENCE_MINED, "Pure Essence Mined");
-        STAT_LABELS.put(LOGS_CHOPPED, "Logs Chopped");
-        STAT_LABELS.put(NORMAL_LOGS_CHOPPED, "Normal Logs Chopped");
-        STAT_LABELS.put(OAK_LOGS_CHOPPED, "Oak Logs Chopped");
-        STAT_LABELS.put(WILLOW_LOGS_CHOPPED, "Willow Logs Chopped");
-        STAT_LABELS.put(TEAK_LOGS_CHOPPED, "Teak Logs Chopped");
-        STAT_LABELS.put(MAPLE_LOGS_CHOPPED, "Maple Logs Chopped");
-        STAT_LABELS.put(MAHOGANY_LOGS_CHOPPED, "Mahogany Logs Chopped");
-        STAT_LABELS.put(YEW_LOGS_CHOPPED, "Yew Logs Chopped");
-        STAT_LABELS.put(MAGIC_LOGS_CHOPPED, "Magic Logs Chopped");
-        STAT_LABELS.put(REDWOOD_LOGS_CHOPPED, "Redwood Logs Chopped");
-        STAT_LABELS.put(BONES_BURIED, "Bones Buried");
-        STAT_LABELS.put(ASHES_SCATTERED, "Ashes Scattered");
-        STAT_LABELS.put(LOGS_BURNED, "Logs Burned");
-        STAT_LABELS.put(FOOD_EATEN, "Food Eaten");
-        STAT_LABELS.put(HP_REGEN, "HP Regen");
-        STAT_LABELS.put(BEER_DRANK, "Beer Drunk");
-        STAT_LABELS.put(CABBAGE_EATEN, "Cabbage Eaten");
-        STAT_LABELS.put(TROUT_EATEN, "Trout Eaten");
-        STAT_LABELS.put(FLAX_PICKED, "Flax Picked");
-        STAT_LABELS.put(CABBAGE_PICKED, "Cabbage Picked");
-        STAT_LABELS.put(CRITTERS_PET, "Critters Pet");
-        STAT_LABELS.put(POTION_SIPS_DRANK, "Potion Sips");
-        STAT_LABELS.put(DIVINE_DAMAGE, "Divine Pot Damage");
-        STAT_LABELS.put(VIALS_SMASHED, "Vials Smashed");
-        STAT_LABELS.put(PICK_POCKETS, "Pickpockets");
-        STAT_LABELS.put(STALLS_THIEVED, "Stalls Thieved");
-        STAT_LABELS.put(WEEDS_RAKED, "Weeds Raked");
-        STAT_LABELS.put(SEEDS_PLANTED, "Seeds Planted");
-        STAT_LABELS.put(ROOF_TOP_AGILITY, "Rooftop Laps");
-        STAT_LABELS.put(NORMAL_AGILITY, "Agility Laps");
-        STAT_LABELS.put(IMPLINGS_CAUGHT, "Implings Caught");
-        STAT_LABELS.put(FOOD_COOKED, "Food Cooked");
-        STAT_LABELS.put(FOOD_BURNED, "Food Burned");
-        STAT_LABELS.put(FAILED_PICK_POCKETS, "Failed Pickpockets");
-        STAT_LABELS.put(UNFINISHED_POTIONS_MADE, "Unfinished Potions");
-        STAT_LABELS.put(POTIONS_MADE, "Potions Made");
-        STAT_LABELS.put(HERBS_CLEANED, "Herbs Cleaned");
-        STAT_LABELS.put(RUNES_CRAFTED, "Runes Crafted");
-        STAT_LABELS.put(GEMS_CUT, "Gems Cut");
-        STAT_LABELS.put(GLASS_BLOWN, "Glass Blown");
-        STAT_LABELS.put(BOWS_FLECTHED, "Bows Fletched");
-        STAT_LABELS.put(BOWS_STRUNG, "Bows Strung");
-        STAT_LABELS.put(DARTS_FLECTHED, "Darts Fletched");
-        STAT_LABELS.put(CREATURES_TRAPPED, "Creatures Trapped");
-        STAT_LABELS.put(BARS_SMELTED, "Bars Smelted");
-        STAT_LABELS.put(ITEMS_SMITHED, "Items Smithed");
-        STAT_LABELS.put(DAMAGE_DONE, "Damage Done");
-        STAT_LABELS.put(DAMAGE_RECEIVED, "Damage Received");
-        STAT_LABELS.put(BIGGEST_HITSPLAT, "Biggest Hit");
-        STAT_LABELS.put(ATTACKS_BLOCKED, "Attacks Blocked");
-        STAT_LABELS.put(ATTACKS_MISSED, "Attacks Missed");
-        STAT_LABELS.put(DEATHS, "Deaths");
-        STAT_LABELS.put(THE_GUNS,"Highest 'The Guns' Count");
-        STAT_LABELS.put(HIDES_TANNED,"Hides Tanned");
-        STAT_LABELS.put(GREEN_DHIDE_TANNED,"Green D'hide Tanned");
-        STAT_LABELS.put(BLUE_DHIDE_TANNED,"Blue D'hide Tanned");
-        STAT_LABELS.put(RED_DHIDE_TANNED,"Red D'hide Tanned");
-        STAT_LABELS.put(BLACK_DHIDE_TANNED,"Black D'hide Tanned");
-        STAT_LABELS.put(COWHIDE_TANNED,"Cowhide Tanned");
-        STAT_LABELS.put(HARPOON_FISH_CAUGHT,"Harpoonfish Caught");
-        STAT_LABELS.put(SPIRIT_POOL_STABS,"Spirit Pool Stabs");
-        STAT_LABELS.put(SHRIMP_COOKED, "Shrimp Cooked");
-        STAT_LABELS.put(ANCHOVIES_COOKED, "Anchovies Cooked");
-        STAT_LABELS.put(TROUT_COOKED, "Trout Cooked");
-        STAT_LABELS.put(SALMON_COOKED, "Salmon Cooked");
-        STAT_LABELS.put(LOBSTER_COOKED, "Lobsters Cooked");
-        STAT_LABELS.put(SWORDFISH_COOKED, "Swordfish Cooked");
-        STAT_LABELS.put(SHARK_COOKED, "Sharks Cooked");
-        STAT_LABELS.put(MONKFISH_COOKED, "Monkfish Cooked");
-        STAT_LABELS.put(KARAMBWAN_COOKED, "Karambwans Cooked");
-        STAT_LABELS.put(ANGLERFISH_COOKED, "Anglerfish Cooked");
-        STAT_LABELS.put(SPIRIT_TREE_TELES, "Spirit Tree Teleports");
-        STAT_LABELS.put(FAIRY_RING_TELES, "Fairy Ring Teleports");
-        STAT_LABELS.put(VARROCK_TELEPORT, "Varrock Teleports");
-        STAT_LABELS.put(LUMBRIDGE_TELEPORT, "Lumbridge Teleports");
-        STAT_LABELS.put(FALADOR_TELEPORT, "Falador Teleports");
-        STAT_LABELS.put(CAMELOT_TELEPORT, "Camelot Teleports");
-        STAT_LABELS.put(ARDOUGNE_TELEPORT, "Ardougne Teleports");
-        STAT_LABELS.put(WATCHTOWER_TELEPORT, "Watchtower Teleports");
-        STAT_LABELS.put(YANILLE_TELEPORT, "Yanille Teleports");
-        STAT_LABELS.put(TROLLHEIM_TELEPORT, "Trollheim Teleports");
-        STAT_LABELS.put(APE_ATOLL_TELEPORT, "Ape Atoll Teleports");
-        STAT_LABELS.put(KOUREND_TELEPORT, "Kourend Teleports");
-        STAT_LABELS.put(GRAND_EXCHANGE_TELEPORT, "Grand Exchange Teleports");
-        STAT_LABELS.put(SEERS_VILLAGE_TELEPORT, "Seers Village Teleports");
-        STAT_LABELS.put(FORTIS_TELEPORT,"Fortis Teleports");
-        STAT_LABELS.put(HOUSE_TELEPORT,"House Teleports");
-        STAT_LABELS.put(TOTAL_TELEPORTS,"Total Teleports");
-    }
+
 
     public UltimateStatTrackerPanel(UltimateStatTrackerPlugin plugin, SkillIconManager skillIconManager)
     {
@@ -216,10 +77,10 @@ public class UltimateStatTrackerPanel extends PluginPanel
                         .atZone(java.time.ZoneId.systemDefault())
                         .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                for (String key : STAT_LABELS.keySet())
+                for (StatKey key : ALL_KEYS)
                 {
-                    statStore.setStat(key, 0);
-                    statStore.setStatTrackingDate(key, formattedDate);
+                    statStore.setStat(key.getValue(), 0);
+                    statStore.setStatTrackingDate(key.getValue(), formattedDate);
                 }
 
                 rebuild();
@@ -267,7 +128,7 @@ public class UltimateStatTrackerPanel extends PluginPanel
     {
         String selected = (String) sortBox.getSelectedItem();
 
-        List<Map.Entry<String, String>> entries = new ArrayList<>(STAT_LABELS.entrySet());
+        var entries = Arrays.stream(ALL_KEYS).map(x -> Map.entry(x.getValue(), x.displayString)).collect(Collectors.toList());
 
         if ("Alphabetical".equals(selected))
         {

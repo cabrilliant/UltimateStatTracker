@@ -3,13 +3,21 @@ package com.ultimatestattracker;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
 
+import java.util.Arrays;
+import java.util.Objects;
+
+import static com.ultimatestattracker.StatKeys.ALL_KEYS;
+
 @Slf4j
 public class StatStore {
     private static final String CONFIG_GROUP = "ultimatestattracker";
+    private final MilestoneManager milestoneManager;
     private ConfigManager cfg;
+    private UltimateStatTrackerPlugin plugin;
 
-    public StatStore(ConfigManager cfg){
+    public StatStore(ConfigManager cfg, UltimateStatTrackerPlugin plugin, MilestoneManager milestoneManager){
         this.cfg = cfg;
+        this.milestoneManager = milestoneManager;
     }
 
     public void storeStat(String key, int value){
@@ -37,7 +45,16 @@ public class StatStore {
             storeStat(key,Integer.MAX_VALUE);
             return;
         }
+        StatKey statkey = Arrays.stream(ALL_KEYS)
+                .filter(k -> Objects.equals(k.getValue(), key))
+                .findFirst()
+                .orElse(null);
+
+        if (statkey != null & milestoneManager.Enabled && milestoneManager.MilestoneReached(current + value, current)) {
+            milestoneManager.SendMilestoneMessage(current + value,statkey);
+        }
         storeStat(key,current+value);
+
     }
 
     public void setStat(String key, int value){

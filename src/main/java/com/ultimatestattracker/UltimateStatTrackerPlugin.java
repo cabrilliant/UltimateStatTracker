@@ -93,7 +93,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		statStore = new StatStore(configManager);
+		statStore = new StatStore(configManager,this, new MilestoneManager(config,client));
 
 		goldStatTracker = new GoldStatTracker(statStore, client);
 		itemStatTracker = new ItemStatTracker(statStore, client);
