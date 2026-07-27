@@ -149,22 +149,21 @@ public class MovementStatTracker implements StatTracker{
     @Override public void onAnimationChanged(AnimationChanged event)
     {
         Actor actor = event.getActor();
-        if (actor == client.getLocalPlayer()) {
-            log.debug("Anim ID: {}", actor.getAnimation());
-        }
-        //todo export to constants
-        if (actor.getAnimation() == 3265 ){
-            statStore.incrementStat(FAIRY_RING_TELES);
-        }
+        if (actor == client.getLocalPlayer()) {     
+            //todo export to constants
+            if (actor.getAnimation() == 3265 ){
+                statStore.incrementStat(FAIRY_RING_TELES);
+            }
 
-        //tele tab
-        else if (actor.getAnimation() == 4069){
-            trackTeleTab(lastOptionClicked);
-        }
+            //tele tab
+            else if (actor.getAnimation() == 4069){
+                trackTeleTab(lastOptionClicked);
+            }
 
-        //standard teleport
-        else if(actor.getAnimation() == 714){
-            trackStandardTeleport(lastOptionClicked);
+            //standard teleport
+            else if(actor.getAnimation() == 714){
+                trackStandardTeleport(lastOptionClicked);
+            }
         }
     }
 
