@@ -47,6 +47,13 @@ public class FoodStatTracker implements StatTracker{
         FOOD_EATEN_MAP.put("karambwan", KARAMBWAN_EATEN);
         FOOD_EATEN_MAP.put("dark crab", DARK_CRAB_EATEN);
         FOOD_EATEN_MAP.put("sea turtle", SEA_TURTLE_EATEN);
+        // Deep Sea Trawling fish
+        FOOD_EATEN_MAP.put("haddock", HADDOCK_EATEN);
+        FOOD_EATEN_MAP.put("giant krill", GIANT_KRILL_EATEN);
+        FOOD_EATEN_MAP.put("yellowfin", YELLOWFIN_EATEN);
+        FOOD_EATEN_MAP.put("halibut", HALIBUT_EATEN);
+        FOOD_EATEN_MAP.put("bluefin", BLUEFIN_EATEN);
+        FOOD_EATEN_MAP.put("marlin", MARLIN_EATEN);
     }
 
 

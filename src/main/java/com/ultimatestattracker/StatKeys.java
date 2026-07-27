@@ -172,6 +172,20 @@ public class StatKeys {
      public static String KARAMBWAN_COOKED = "karambwanCooked";
      public static String ANGLERFISH_COOKED = "anglerfishCooked";
 
+     // --- Deep Sea Trawling fish ---
+     public static String HADDOCK_COOKED = "haddockCooked";
+     public static String GIANT_KRILL_COOKED = "giantKrillCooked";
+     public static String YELLOWFIN_COOKED = "yellowfinCooked";
+     public static String HALIBUT_COOKED = "halibutCooked";
+     public static String BLUEFIN_COOKED = "bluefinCooked";
+     public static String MARLIN_COOKED = "marlinCooked";
+     public static String HADDOCK_EATEN = "haddockEaten";
+     public static String GIANT_KRILL_EATEN = "giantKrillEaten";
+     public static String YELLOWFIN_EATEN = "yellowfinEaten";
+     public static String HALIBUT_EATEN = "halibutEaten";
+     public static String BLUEFIN_EATEN = "bluefinEaten";
+     public static String MARLIN_EATEN = "marlinEaten";
+
      // --- Thieving ---
      public static String PICK_POCKETS = "pickPockets";
      public static String FAILED_PICK_POCKETS = "failedPickPockets";
@@ -380,6 +394,12 @@ public class StatKeys {
              new StatKey(KARAMBWAN_EATEN, StatCategory.FOOD_AND_HEALING, "Karambwans Eaten"),
              new StatKey(DARK_CRAB_EATEN, StatCategory.FOOD_AND_HEALING, "Dark Crabs Eaten"),
              new StatKey(SEA_TURTLE_EATEN, StatCategory.FOOD_AND_HEALING, "Sea Turtles Eaten"),
+             new StatKey(HADDOCK_EATEN, StatCategory.FOOD_AND_HEALING, "Haddock Eaten"),
+             new StatKey(GIANT_KRILL_EATEN, StatCategory.FOOD_AND_HEALING, "Giant Krill Eaten"),
+             new StatKey(YELLOWFIN_EATEN, StatCategory.FOOD_AND_HEALING, "Yellowfin Eaten"),
+             new StatKey(HALIBUT_EATEN, StatCategory.FOOD_AND_HEALING, "Halibut Eaten"),
+             new StatKey(BLUEFIN_EATEN, StatCategory.FOOD_AND_HEALING, "Bluefin Eaten"),
+             new StatKey(MARLIN_EATEN, StatCategory.FOOD_AND_HEALING, "Marlin Eaten"),
              new StatKey(CAKE_SLICES_EATEN, StatCategory.FOOD_AND_HEALING, "Cake Slices Eaten"),
              new StatKey(FOOD_COOKED, StatCategory.FOOD_AND_HEALING, "Food Cooked"),
              new StatKey(FOOD_BURNED, StatCategory.FOOD_AND_HEALING, "Food Burned"),
@@ -396,6 +416,12 @@ public class StatKeys {
              new StatKey(MONKFISH_COOKED, StatCategory.FOOD_AND_HEALING, "Monkfish Cooked"),
              new StatKey(KARAMBWAN_COOKED, StatCategory.FOOD_AND_HEALING, "Karambwans Cooked"),
              new StatKey(ANGLERFISH_COOKED, StatCategory.FOOD_AND_HEALING, "Anglerfish Cooked"),
+             new StatKey(HADDOCK_COOKED, StatCategory.FOOD_AND_HEALING, "Haddock Cooked"),
+             new StatKey(GIANT_KRILL_COOKED, StatCategory.FOOD_AND_HEALING, "Giant Krill Cooked"),
+             new StatKey(YELLOWFIN_COOKED, StatCategory.FOOD_AND_HEALING, "Yellowfin Cooked"),
+             new StatKey(HALIBUT_COOKED, StatCategory.FOOD_AND_HEALING, "Halibut Cooked"),
+             new StatKey(BLUEFIN_COOKED, StatCategory.FOOD_AND_HEALING, "Bluefin Cooked"),
+             new StatKey(MARLIN_COOKED, StatCategory.FOOD_AND_HEALING, "Marlin Cooked"),
 
              // --- Thieving ---
              new StatKey(PICK_POCKETS, StatCategory.THIEVING, "Pickpockets"),

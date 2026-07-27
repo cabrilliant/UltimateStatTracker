@@ -416,10 +416,19 @@ public class SkillingStatTracker implements StatTracker{
             tail = tail.substring(4).trim();
         }
 
-        int end = tail.indexOf(' ');
-        if (end != -1)
+        // Handle multi-word fish names (e.g. "giant krill") before truncating
+        // at the first space below.
+        if (tail.toLowerCase().startsWith("giant krill"))
         {
-            tail = tail.substring(0, end);
+            tail = "giant krill";
+        }
+        else
+        {
+            int end = tail.indexOf(' ');
+            if (end != -1)
+            {
+                tail = tail.substring(0, end);
+            }
         }
 
         cookedItem = tail
@@ -475,6 +484,30 @@ public class SkillingStatTracker implements StatTracker{
 
             case "anglerfish":
                 statStore.incrementStat(ANGLERFISH_COOKED);
+                break;
+
+            case "haddock":
+                statStore.incrementStat(HADDOCK_COOKED);
+                break;
+
+            case "giant krill":
+                statStore.incrementStat(GIANT_KRILL_COOKED);
+                break;
+
+            case "yellowfin":
+                statStore.incrementStat(YELLOWFIN_COOKED);
+                break;
+
+            case "halibut":
+                statStore.incrementStat(HALIBUT_COOKED);
+                break;
+
+            case "bluefin":
+                statStore.incrementStat(BLUEFIN_COOKED);
+                break;
+
+            case "marlin":
+                statStore.incrementStat(MARLIN_COOKED);
                 break;
 
             default:
