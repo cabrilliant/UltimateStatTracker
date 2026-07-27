@@ -75,7 +75,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	public boolean loggedIn;
 	public boolean firstLogin = true;
 
-	public final String version = "1.1.1";
+	public final String version = "1.1.3";
 	private final String VERSION_KEY = "ustp.version";
 
 	public boolean isPerformanceMode()
