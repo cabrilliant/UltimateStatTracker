@@ -91,5 +91,28 @@ public class CombatStatTracker implements StatTracker{
         if (msg.contains("Oh dear, you are dead!")){
             statStore.incrementStat(DEATHS);
         }
+
+        if (msg.contains("You resurrect a")) {
+            // checking greater's first as it is most likely
+            if (msg.contains("greater ghostly")) {
+                statStore.incrementStat(GREATER_GHOSTS_SUMMONED);
+            } else if (msg.contains("greater skeletal")) {
+                statStore.incrementStat(GREATER_SKELETONS_SUMMONED);
+            } else if (msg.contains("greater zombified")) {
+                statStore.incrementStat(GREATER_ZOMBIES_SUMMONED);
+            } else if (msg.contains("lesser ghostly")) {
+                statStore.incrementStat(LESSER_GHOSTS_SUMMONED);
+            } else if (msg.contains("lesser skeletal")) {
+                statStore.incrementStat(LESSER_SKELETONS_SUMMONED);
+            } else if (msg.contains("lesser zombified")) {
+                statStore.incrementStat(LESSER_ZOMBIES_SUMMONED);
+            } else if (msg.contains("superior ghostly")) {
+                statStore.incrementStat(SUPERIOR_GHOSTS_SUMMONED);
+            } else if (msg.contains("superior skeletal")) {
+                statStore.incrementStat(SUPERIOR_SKELETONS_SUMMONED);
+            } else if (msg.contains("superior zombified")) {
+                statStore.incrementStat(SUPERIOR_ZOMBIES_SUMMONED);
+            }
+        }
     }
 }

@@ -184,6 +184,15 @@ public class StatKeys {
      public static String ATTACKS_BLOCKED = "attacksBlocked";
      public static String ATTACKS_MISSED = "attacksMissed";
      public static String DEATHS = "timesDied";
+     public static String LESSER_GHOSTS_SUMMONED = "lesserGhostsSummoned";
+     public static String LESSER_SKELETONS_SUMMONED = "lesserSkeletonsSummoned";
+     public static String LESSER_ZOMBIES_SUMMONED = "lesserZombiesSummoned";
+     public static String SUPERIOR_GHOSTS_SUMMONED = "superiorGhostsSummoned";
+     public static String SUPERIOR_SKELETONS_SUMMONED = "superiorSkeletonsSummoned";
+     public static String SUPERIOR_ZOMBIES_SUMMONED = "superiorZombiesSummoned";
+     public static String GREATER_GHOSTS_SUMMONED = "greaterGhostsSummoned";
+     public static String GREATER_SKELETONS_SUMMONED = "greaterSkeletonsSummoned";
+     public static String GREATER_ZOMBIES_SUMMONED = "greaterZombiesSummoned";
 
 
      //note, cant use reflection here as runelite does not allow it
@@ -364,7 +373,16 @@ public class StatKeys {
              new StatKey(BIGGEST_HITSPLAT, StatCategory.COMBAT, "Biggest Hit"),
              new StatKey(ATTACKS_BLOCKED, StatCategory.COMBAT, "Attacks Blocked"),
              new StatKey(ATTACKS_MISSED, StatCategory.COMBAT, "Attacks Missed"),
-             new StatKey(DEATHS, StatCategory.COMBAT, "Deaths")
+             new StatKey(DEATHS, StatCategory.COMBAT, "Deaths"),
+             new StatKey(LESSER_GHOSTS_SUMMONED, StatCategory.COMBAT, "Lesser Ghosts Summoned"),
+             new StatKey(LESSER_SKELETONS_SUMMONED, StatCategory.COMBAT, "Lesser Skeletons Summoned"),
+             new StatKey(LESSER_ZOMBIES_SUMMONED, StatCategory.COMBAT, "Lesser Zombies Summoned"),
+             new StatKey(SUPERIOR_GHOSTS_SUMMONED, StatCategory.COMBAT, "Superior Ghosts Summoned"),
+             new StatKey(SUPERIOR_SKELETONS_SUMMONED, StatCategory.COMBAT, "Superior Skeletons Summoned"),
+             new StatKey(SUPERIOR_ZOMBIES_SUMMONED, StatCategory.COMBAT, "Superior Zombies Summoned"),
+             new StatKey(GREATER_GHOSTS_SUMMONED, StatCategory.COMBAT, "Greater Ghosts Summoned"),
+             new StatKey(GREATER_SKELETONS_SUMMONED, StatCategory.COMBAT, "Greater Skeletons Summoned"),
+             new StatKey(GREATER_ZOMBIES_SUMMONED, StatCategory.COMBAT, "Greater Zombies Summoned")
      };
 
      public static final Map<String, StatCategory> KEY_TO_CATEGORY = Arrays.stream(ALL_KEYS)
