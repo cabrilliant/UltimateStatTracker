@@ -23,6 +23,8 @@ import net.runelite.client.ui.NavigationButton;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.SwingUtilities;
+
 import static com.ultimatestattracker.StatKeys.*;
 import com.ultimatestattracker.stattrackers.*;
 import net.runelite.client.util.ImageUtil;
@@ -87,6 +89,18 @@ public class UltimateStatTrackerPlugin extends Plugin
 	{
 		return config.hideZeroStats();
 	}
+
+	public boolean isDynamicUpdatesEnabled()
+	{
+		return config.enableDynamicUpdates();
+	}
+
+	public int getDynamicUpdateRate()
+	{
+		return Math.max(1, config.dynamicUpdateRate());
+	}
+
+	private int dynamicUpdateTickCounter = 0;
 
 
 
@@ -209,6 +223,20 @@ public class UltimateStatTrackerPlugin extends Plugin
 			foodStatTracker.onGameTick(event);
 			npcStatTracker.onGameTick(event);
 		}
+
+		if (isDynamicUpdatesEnabled() && panel != null)
+		{
+			dynamicUpdateTickCounter++;
+			if (dynamicUpdateTickCounter >= getDynamicUpdateRate())
+			{
+				dynamicUpdateTickCounter = 0;
+				SwingUtilities.invokeLater(panel::rebuild);
+			}
+		}
+		else
+		{
+			dynamicUpdateTickCounter = 0;
+		}
 	}
 
 	@Subscribe
@@ -224,6 +252,7 @@ public class UltimateStatTrackerPlugin extends Plugin
 	{
 		if ("UltimateStatTracker".equals(event.getGroup()) && panel != null)
 		{
+			dynamicUpdateTickCounter = 0;
 			panel.rebuild();
 		}
 	}

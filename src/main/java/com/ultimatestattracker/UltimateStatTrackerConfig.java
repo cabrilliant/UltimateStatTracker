@@ -53,4 +53,26 @@ public interface UltimateStatTrackerConfig extends Config
     {
         return new Color(108, 4, 215); // dark purple default
     }
+
+    @ConfigItem(
+            keyName = "enableDynamicUpdates",
+            name = "Enable Dynamic Updates",
+            description = "Periodically refresh the stat tracker panel without manual interaction.",
+            position = 4
+    )
+    default boolean enableDynamicUpdates()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "dynamicUpdateRate",
+            name = "Dynamic Update Rate (ticks)",
+            description = "How often (in game ticks) to refresh the panel when Dynamic Updates are enabled.",
+            position = 5
+    )
+    default int dynamicUpdateRate()
+    {
+        return 10;
+    }
 }
