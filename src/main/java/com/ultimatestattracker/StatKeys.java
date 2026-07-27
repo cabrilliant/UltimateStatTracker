@@ -13,6 +13,22 @@ public class StatKeys {
      public static String EXAMINE = "itemsExamined";
      public static String ITEMS_DROPPED = "itemsDropped";
      public static String VIALS_SMASHED = "vialsSmashed";
+     public static String HERBS_PLACED_IN_HERB_SACK = "herbsPlacedInHerbSack";
+     public static String GUAM_LEAF_PLACED = "guamLeafPlaced";
+     public static String MARRENTILL_PLACED = "marrentillPlaced";
+     public static String TARROMIN_PLACED = "tarrominPlaced";
+     public static String HARRALANDER_PLACED = "harralanderPlaced";
+     public static String RANARR_WEED_PLACED = "ranarrWeedPlaced";
+     public static String TOADFLAX_PLACED = "toadflaxPlaced";
+     public static String IRIT_LEAF_PLACED = "iritLeafPlaced";
+     public static String AVANTOE_PLACED = "avantoePlaced";
+     public static String KWUARM_PLACED = "kwuarmPlaced";
+     public static String HUASCA_PLACED = "huascaPlaced";
+     public static String SNAPDRAGON_PLACED = "snapdragonPlaced";
+     public static String CADANTINE_PLACED = "cadantinePlaced";
+     public static String LANTADYME_PLACED = "lantadymePlaced";
+     public static String DWARF_WEED_PLACED = "dwarfWeedPlaced";
+     public static String TORSTOL_PLACED = "torstolPlaced";
 
      // --- Shops ---
      public static String SHOP_GP_SPENT = "shopGpSpent";
@@ -122,6 +138,25 @@ public class StatKeys {
      public static String BEER_DRANK = "beerDrank";
      public static String CABBAGE_EATEN = "cabbageEaten";
      public static String TROUT_EATEN = "troutEaten";
+     public static String SHRIMP_EATEN = "shrimpEaten";
+     public static String ANCHOVIES_EATEN = "anchoviesEaten";
+     public static String SARDINE_EATEN = "sardineEaten";
+     public static String HERRING_EATEN = "herringEaten";
+     public static String PIKE_EATEN = "pikeEaten";
+     public static String COD_EATEN = "codEaten";
+     public static String SALMON_EATEN = "salmonEaten";
+     public static String TUNA_EATEN = "tunaEaten";
+     public static String BASS_EATEN = "bassEaten";
+     public static String LOBSTER_EATEN = "lobsterEaten";
+     public static String SWORDFISH_EATEN = "swordfishEaten";
+     public static String MONKFISH_EATEN = "monkfishEaten";
+     public static String SHARK_EATEN = "sharkEaten";
+     public static String MANTA_RAY_EATEN = "mantaRayEaten";
+     public static String ANGLERFISH_EATEN = "anglerfishEaten";
+     public static String KARAMBWAN_EATEN = "karambwanEaten";
+     public static String DARK_CRAB_EATEN = "darkCrabEaten";
+     public static String SEA_TURTLE_EATEN = "seaTurtleEaten";
+     public static String CAKE_SLICES_EATEN = "cakeSlicesEaten";
      public static String FOOD_COOKED = "foodCooked";
      public static String FOOD_BURNED = "foodBurned";
      public static String POTION_SIPS_DRANK = "potionSips";
@@ -201,6 +236,22 @@ public class StatKeys {
              new StatKey(EXAMINE, StatCategory.ITEMS, "Things Examined"),
              new StatKey(ITEMS_DROPPED, StatCategory.ITEMS, "Items Dropped"),
              new StatKey(VIALS_SMASHED, StatCategory.ITEMS, "Vials Smashed"),
+             new StatKey(HERBS_PLACED_IN_HERB_SACK, StatCategory.ITEMS, "Herbs Placed in Herb Sack"),
+             new StatKey(GUAM_LEAF_PLACED, StatCategory.ITEMS, "Guam Leaf Placed in Herb Sack"),
+             new StatKey(MARRENTILL_PLACED, StatCategory.ITEMS, "Marrentill Placed in Herb Sack"),
+             new StatKey(TARROMIN_PLACED, StatCategory.ITEMS, "Tarromin Placed in Herb Sack"),
+             new StatKey(HARRALANDER_PLACED, StatCategory.ITEMS, "Harralander Placed in Herb Sack"),
+             new StatKey(RANARR_WEED_PLACED, StatCategory.ITEMS, "Ranarr Weed Placed in Herb Sack"),
+             new StatKey(TOADFLAX_PLACED, StatCategory.ITEMS, "Toadflax Placed in Herb Sack"),
+             new StatKey(IRIT_LEAF_PLACED, StatCategory.ITEMS, "Irit Leaf Placed in Herb Sack"),
+             new StatKey(AVANTOE_PLACED, StatCategory.ITEMS, "Avantoe Placed in Herb Sack"),
+             new StatKey(KWUARM_PLACED, StatCategory.ITEMS, "Kwuarm Placed in Herb Sack"),
+             new StatKey(HUASCA_PLACED, StatCategory.ITEMS, "Huasca Placed in Herb Sack"),
+             new StatKey(SNAPDRAGON_PLACED, StatCategory.ITEMS, "Snapdragon Placed in Herb Sack"),
+             new StatKey(CADANTINE_PLACED, StatCategory.ITEMS, "Cadantine Placed in Herb Sack"),
+             new StatKey(LANTADYME_PLACED, StatCategory.ITEMS, "Lantadyme Placed in Herb Sack"),
+             new StatKey(DWARF_WEED_PLACED, StatCategory.ITEMS, "Dwarf Weed Placed in Herb Sack"),
+             new StatKey(TORSTOL_PLACED, StatCategory.ITEMS, "Torstol Placed in Herb Sack"),
 
              // --- Shops ---
              new StatKey(SHOP_GP_SPENT, StatCategory.SHOPS, "Shop GP Spent"),
@@ -311,6 +362,25 @@ public class StatKeys {
              new StatKey(BEER_DRANK, StatCategory.FOOD_AND_HEALING, "Beer Drunk"),
              new StatKey(CABBAGE_EATEN, StatCategory.FOOD_AND_HEALING, "Cabbage Eaten"),
              new StatKey(TROUT_EATEN, StatCategory.FOOD_AND_HEALING, "Trout Eaten"),
+             new StatKey(SHRIMP_EATEN, StatCategory.FOOD_AND_HEALING, "Shrimp Eaten"),
+             new StatKey(ANCHOVIES_EATEN, StatCategory.FOOD_AND_HEALING, "Anchovies Eaten"),
+             new StatKey(SARDINE_EATEN, StatCategory.FOOD_AND_HEALING, "Sardines Eaten"),
+             new StatKey(HERRING_EATEN, StatCategory.FOOD_AND_HEALING, "Herring Eaten"),
+             new StatKey(PIKE_EATEN, StatCategory.FOOD_AND_HEALING, "Pike Eaten"),
+             new StatKey(COD_EATEN, StatCategory.FOOD_AND_HEALING, "Cod Eaten"),
+             new StatKey(SALMON_EATEN, StatCategory.FOOD_AND_HEALING, "Salmon Eaten"),
+             new StatKey(TUNA_EATEN, StatCategory.FOOD_AND_HEALING, "Tuna Eaten"),
+             new StatKey(BASS_EATEN, StatCategory.FOOD_AND_HEALING, "Bass Eaten"),
+             new StatKey(LOBSTER_EATEN, StatCategory.FOOD_AND_HEALING, "Lobsters Eaten"),
+             new StatKey(SWORDFISH_EATEN, StatCategory.FOOD_AND_HEALING, "Swordfish Eaten"),
+             new StatKey(MONKFISH_EATEN, StatCategory.FOOD_AND_HEALING, "Monkfish Eaten"),
+             new StatKey(SHARK_EATEN, StatCategory.FOOD_AND_HEALING, "Sharks Eaten"),
+             new StatKey(MANTA_RAY_EATEN, StatCategory.FOOD_AND_HEALING, "Manta Rays Eaten"),
+             new StatKey(ANGLERFISH_EATEN, StatCategory.FOOD_AND_HEALING, "Anglerfish Eaten"),
+             new StatKey(KARAMBWAN_EATEN, StatCategory.FOOD_AND_HEALING, "Karambwans Eaten"),
+             new StatKey(DARK_CRAB_EATEN, StatCategory.FOOD_AND_HEALING, "Dark Crabs Eaten"),
+             new StatKey(SEA_TURTLE_EATEN, StatCategory.FOOD_AND_HEALING, "Sea Turtles Eaten"),
+             new StatKey(CAKE_SLICES_EATEN, StatCategory.FOOD_AND_HEALING, "Cake Slices Eaten"),
              new StatKey(FOOD_COOKED, StatCategory.FOOD_AND_HEALING, "Food Cooked"),
              new StatKey(FOOD_BURNED, StatCategory.FOOD_AND_HEALING, "Food Burned"),
              new StatKey(POTION_SIPS_DRANK, StatCategory.FOOD_AND_HEALING, "Potion Sips"),
