@@ -9,6 +9,7 @@ import net.runelite.client.plugins.xptracker.XpTrackerService;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +51,71 @@ public class SkillingStatTracker implements StatTracker{
     };
 
     private String lastFishCaught = "";
+
+    // Order matters: longer phrases must come before any shorter prefix they could match.
+    private static final List<String> MULTI_WORD_FOODS = Arrays.asList(
+            "moonlight antelope",
+            "sunlight antelope",
+            "dashing kebbit",
+            "pyre fox",
+            "giant krill",
+            "sea turtle",
+            "manta ray",
+            "dark crab"
+    );
+
+    private static final Map<String, String> COOKED_STAT_BY_NAME = new HashMap<>();
+    private static final Map<String, String> BURNED_STAT_BY_NAME = new HashMap<>();
+    static
+    {
+        COOKED_STAT_BY_NAME.put("shrimp",              SHRIMP_COOKED);
+        COOKED_STAT_BY_NAME.put("shrimps",             SHRIMP_COOKED);
+        COOKED_STAT_BY_NAME.put("anchovy",             ANCHOVIES_COOKED);
+        COOKED_STAT_BY_NAME.put("anchovies",           ANCHOVIES_COOKED);
+        COOKED_STAT_BY_NAME.put("trout",               TROUT_COOKED);
+        COOKED_STAT_BY_NAME.put("salmon",              SALMON_COOKED);
+        COOKED_STAT_BY_NAME.put("lobster",             LOBSTER_COOKED);
+        COOKED_STAT_BY_NAME.put("swordfish",           SWORDFISH_COOKED);
+        COOKED_STAT_BY_NAME.put("shark",               SHARK_COOKED);
+        COOKED_STAT_BY_NAME.put("monkfish",            MONKFISH_COOKED);
+        COOKED_STAT_BY_NAME.put("karambwan",           KARAMBWAN_COOKED);
+        COOKED_STAT_BY_NAME.put("anglerfish",          ANGLERFISH_COOKED);
+        COOKED_STAT_BY_NAME.put("haddock",             HADDOCK_COOKED);
+        COOKED_STAT_BY_NAME.put("giant krill",         GIANT_KRILL_COOKED);
+        COOKED_STAT_BY_NAME.put("yellowfin",           YELLOWFIN_COOKED);
+        COOKED_STAT_BY_NAME.put("halibut",             HALIBUT_COOKED);
+        COOKED_STAT_BY_NAME.put("bluefin",             BLUEFIN_COOKED);
+        COOKED_STAT_BY_NAME.put("marlin",              MARLIN_COOKED);
+        COOKED_STAT_BY_NAME.put("sea turtle",          SEA_TURTLE_COOKED);
+        COOKED_STAT_BY_NAME.put("dashing kebbit",      DASHING_KEBBIT_COOKED);
+        COOKED_STAT_BY_NAME.put("sunlight antelope",   SUNLIGHT_ANTELOPE_COOKED);
+        COOKED_STAT_BY_NAME.put("moonlight antelope",  MOONLIGHT_ANTELOPE_COOKED);
+        COOKED_STAT_BY_NAME.put("pyre fox",            PYRE_FOX_COOKED);
+
+        BURNED_STAT_BY_NAME.put("shrimp",              SHRIMP_BURNED);
+        BURNED_STAT_BY_NAME.put("shrimps",             SHRIMP_BURNED);
+        BURNED_STAT_BY_NAME.put("anchovy",             ANCHOVIES_BURNED);
+        BURNED_STAT_BY_NAME.put("anchovies",           ANCHOVIES_BURNED);
+        BURNED_STAT_BY_NAME.put("trout",               TROUT_BURNED);
+        BURNED_STAT_BY_NAME.put("salmon",              SALMON_BURNED);
+        BURNED_STAT_BY_NAME.put("lobster",             LOBSTER_BURNED);
+        BURNED_STAT_BY_NAME.put("swordfish",           SWORDFISH_BURNED);
+        BURNED_STAT_BY_NAME.put("shark",               SHARK_BURNED);
+        BURNED_STAT_BY_NAME.put("monkfish",            MONKFISH_BURNED);
+        BURNED_STAT_BY_NAME.put("karambwan",           KARAMBWAN_BURNED);
+        BURNED_STAT_BY_NAME.put("anglerfish",          ANGLERFISH_BURNED);
+        BURNED_STAT_BY_NAME.put("haddock",             HADDOCK_BURNED);
+        BURNED_STAT_BY_NAME.put("giant krill",         GIANT_KRILL_BURNED);
+        BURNED_STAT_BY_NAME.put("yellowfin",           YELLOWFIN_BURNED);
+        BURNED_STAT_BY_NAME.put("halibut",             HALIBUT_BURNED);
+        BURNED_STAT_BY_NAME.put("bluefin",             BLUEFIN_BURNED);
+        BURNED_STAT_BY_NAME.put("marlin",              MARLIN_BURNED);
+        BURNED_STAT_BY_NAME.put("sea turtle",          SEA_TURTLE_BURNED);
+        BURNED_STAT_BY_NAME.put("dashing kebbit",      DASHING_KEBBIT_BURNED);
+        BURNED_STAT_BY_NAME.put("sunlight antelope",   SUNLIGHT_ANTELOPE_BURNED);
+        BURNED_STAT_BY_NAME.put("moonlight antelope",  MOONLIGHT_ANTELOPE_BURNED);
+        BURNED_STAT_BY_NAME.put("pyre fox",            PYRE_FOX_BURNED);
+    }
 
     public SkillingStatTracker(StatStore statStore, Client client, XpTrackerService xpTrackerService)
     {
@@ -211,6 +277,7 @@ public class SkillingStatTracker implements StatTracker{
         {
             log.debug("msg {} matches burned food", msg);
             statStore.incrementStat(FOOD_BURNED);
+            incrementTypedBurn(msg);
         }
 
         else if (msg.contains("You put the") && msg.contains("vial"))
@@ -380,33 +447,67 @@ public class SkillingStatTracker implements StatTracker{
 
     private void incrementTypedCook(String msg)
     {
-        if (msg == null)
+        String cookedItem = extractFoodName(msg, "cook a ", "cook the ");
+        if (cookedItem == null)
         {
             return;
         }
 
-        String lower = msg.toLowerCase();
-
-        String cookedItem = null;
-
-        int idx = lower.indexOf("cook a ");
-        if (idx == -1)
+        String statKey = COOKED_STAT_BY_NAME.get(cookedItem);
+        if (statKey != null)
         {
-            idx = lower.indexOf("cook the ");
-            if (idx == -1)
-            {
-                return;
-            }
-        }
-
-        int start;
-        if (lower.startsWith("cook a ", idx))
-        {
-            start = idx + "cook a ".length();
+            statStore.incrementStat(statKey);
         }
         else
         {
-            start = idx + "cook the ".length();
+            log.debug("unknown cooked item type: {}", cookedItem);
+        }
+
+        log.debug("cooked item detected: {}", cookedItem);
+    }
+
+    private void incrementTypedBurn(String msg)
+    {
+        String burnedItem = extractFoodName(msg, "burn the ");
+        if (burnedItem == null)
+        {
+            return;
+        }
+
+        String statKey = BURNED_STAT_BY_NAME.get(burnedItem);
+        if (statKey != null)
+        {
+            statStore.incrementStat(statKey);
+        }
+        else
+        {
+            log.debug("unknown burned item type: {}", burnedItem);
+        }
+    }
+
+    // Returns null if no trigger matched or no usable name was found.
+    private String extractFoodName(String msg, String... triggers)
+    {
+        if (msg == null || triggers == null || triggers.length == 0)
+        {
+            return null;
+        }
+
+        String lower = msg.toLowerCase();
+        int start = -1;
+        for (String trigger : triggers)
+        {
+            int idx = lower.indexOf(trigger);
+            if (idx != -1)
+            {
+                start = idx + trigger.length();
+                break;
+            }
+        }
+
+        if (start == -1)
+        {
+            return null;
         }
 
         String tail = msg.substring(start).trim();
@@ -416,11 +517,20 @@ public class SkillingStatTracker implements StatTracker{
             tail = tail.substring(4).trim();
         }
 
-        // Handle multi-word fish names (e.g. "giant krill") before truncating
-        // at the first space below.
-        if (tail.toLowerCase().startsWith("giant krill"))
+        // Preserve multi-word names before truncating on space.
+        String lowerTail = tail.toLowerCase();
+        String multiWordMatch = null;
+        for (String phrase : MULTI_WORD_FOODS)
         {
-            tail = "giant krill";
+            if (lowerTail.startsWith(phrase))
+            {
+                multiWordMatch = phrase;
+                break;
+            }
+        }
+        if (multiWordMatch != null)
+        {
+            tail = multiWordMatch;
         }
         else
         {
@@ -431,91 +541,13 @@ public class SkillingStatTracker implements StatTracker{
             }
         }
 
-        cookedItem = tail
+        String result = tail
                 .replace(".", "")
                 .replace("!", "")
                 .trim()
                 .toLowerCase();
 
-        if (cookedItem.isEmpty())
-        {
-            return;
-        }
-
-        switch (cookedItem)
-        {
-            case "shrimp":
-            case "shrimps":
-                statStore.incrementStat(SHRIMP_COOKED);
-                break;
-
-            case "anchovies":
-            case "anchovy":
-                statStore.incrementStat(ANCHOVIES_COOKED);
-                break;
-
-            case "trout":
-                statStore.incrementStat(TROUT_COOKED);
-                break;
-
-            case "salmon":
-                statStore.incrementStat(SALMON_COOKED);
-                break;
-
-            case "lobster":
-                statStore.incrementStat(LOBSTER_COOKED);
-                break;
-
-            case "swordfish":
-                statStore.incrementStat(SWORDFISH_COOKED);
-                break;
-
-            case "shark":
-                statStore.incrementStat(SHARK_COOKED);
-                break;
-
-            case "monkfish":
-                statStore.incrementStat(MONKFISH_COOKED);
-                break;
-
-            case "karambwan":
-                statStore.incrementStat(KARAMBWAN_COOKED);
-                break;
-
-            case "anglerfish":
-                statStore.incrementStat(ANGLERFISH_COOKED);
-                break;
-
-            case "haddock":
-                statStore.incrementStat(HADDOCK_COOKED);
-                break;
-
-            case "giant krill":
-                statStore.incrementStat(GIANT_KRILL_COOKED);
-                break;
-
-            case "yellowfin":
-                statStore.incrementStat(YELLOWFIN_COOKED);
-                break;
-
-            case "halibut":
-                statStore.incrementStat(HALIBUT_COOKED);
-                break;
-
-            case "bluefin":
-                statStore.incrementStat(BLUEFIN_COOKED);
-                break;
-
-            case "marlin":
-                statStore.incrementStat(MARLIN_COOKED);
-                break;
-
-            default:
-                log.debug("unknown cooked item type: {}", cookedItem);
-                break;
-        }
-
-        log.debug("cooked item detected: {}", cookedItem);
+        return result.isEmpty() ? null : result;
     }
 
     @Override

@@ -54,6 +54,11 @@ public class FoodStatTracker implements StatTracker{
         FOOD_EATEN_MAP.put("halibut", HALIBUT_EATEN);
         FOOD_EATEN_MAP.put("bluefin", BLUEFIN_EATEN);
         FOOD_EATEN_MAP.put("marlin", MARLIN_EATEN);
+        // Hunter minigame fish
+        FOOD_EATEN_MAP.put("dashing kebbit", DASHING_KEBBIT_EATEN);
+        FOOD_EATEN_MAP.put("sunlight antelope", SUNLIGHT_ANTELOPE_EATEN);
+        FOOD_EATEN_MAP.put("moonlight antelope", MOONLIGHT_ANTELOPE_EATEN);
+        FOOD_EATEN_MAP.put("pyre fox", PYRE_FOX_EATEN);
     }
 
 
@@ -172,9 +177,13 @@ public class FoodStatTracker implements StatTracker{
             String foodName = msg
                     .substring(msg.indexOf("the ") + "the ".length(),msg.indexOf(".")).trim();
 
-            log.debug("Suspected food name is {}",foodName);
+            String lookup = foodName.toLowerCase();
+            if (lookup.endsWith(" meat")) {
+                lookup = lookup.substring(0, lookup.length() - " meat".length());
+            }
+            log.debug("Suspected food name is {}", lookup);
             // Increment a specific fish/food counter if this food is known
-            String matchingStat = FOOD_EATEN_MAP.get(foodName.toLowerCase());
+            String matchingStat = FOOD_EATEN_MAP.get(lookup);
             if (matchingStat != null) {
                 statStore.incrementStat(matchingStat);
             }

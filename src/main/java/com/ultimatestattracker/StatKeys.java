@@ -171,6 +171,16 @@ public class StatKeys {
      public static String MONKFISH_COOKED = "monkfishCooked";
      public static String KARAMBWAN_COOKED = "karambwanCooked";
      public static String ANGLERFISH_COOKED = "anglerfishCooked";
+     public static String SHRIMP_BURNED = "shrimpBurned";
+     public static String ANCHOVIES_BURNED = "anchoviesBurned";
+     public static String TROUT_BURNED = "troutBurned";
+     public static String SALMON_BURNED = "salmonBurned";
+     public static String LOBSTER_BURNED = "lobsterBurned";
+     public static String SWORDFISH_BURNED = "swordfishBurned";
+     public static String SHARK_BURNED = "sharkBurned";
+     public static String MONKFISH_BURNED = "monkfishBurned";
+     public static String KARAMBWAN_BURNED = "karambwanBurned";
+     public static String ANGLERFISH_BURNED = "anglerfishBurned";
 
      // --- Deep Sea Trawling fish ---
      public static String HADDOCK_COOKED = "haddockCooked";
@@ -179,12 +189,32 @@ public class StatKeys {
      public static String HALIBUT_COOKED = "halibutCooked";
      public static String BLUEFIN_COOKED = "bluefinCooked";
      public static String MARLIN_COOKED = "marlinCooked";
+     public static String SEA_TURTLE_COOKED = "seaTurtleCooked";
+     public static String DASHING_KEBBIT_COOKED = "dashingKebbitCooked";
+     public static String SUNLIGHT_ANTELOPE_COOKED = "sunlightAntelopeCooked";
+     public static String MOONLIGHT_ANTELOPE_COOKED = "moonlightAntelopeCooked";
+     public static String PYRE_FOX_COOKED = "pyreFoxCooked";
+     public static String HADDOCK_BURNED = "haddockBurned";
+     public static String GIANT_KRILL_BURNED = "giantKrillBurned";
+     public static String YELLOWFIN_BURNED = "yellowfinBurned";
+     public static String HALIBUT_BURNED = "halibutBurned";
+     public static String BLUEFIN_BURNED = "bluefinBurned";
+     public static String MARLIN_BURNED = "marlinBurned";
+     public static String SEA_TURTLE_BURNED = "seaTurtleBurned";
+     public static String DASHING_KEBBIT_BURNED = "dashingKebbitBurned";
+     public static String SUNLIGHT_ANTELOPE_BURNED = "sunlightAntelopeBurned";
+     public static String MOONLIGHT_ANTELOPE_BURNED = "moonlightAntelopeBurned";
+     public static String PYRE_FOX_BURNED = "pyreFoxBurned";
      public static String HADDOCK_EATEN = "haddockEaten";
      public static String GIANT_KRILL_EATEN = "giantKrillEaten";
      public static String YELLOWFIN_EATEN = "yellowfinEaten";
      public static String HALIBUT_EATEN = "halibutEaten";
      public static String BLUEFIN_EATEN = "bluefinEaten";
      public static String MARLIN_EATEN = "marlinEaten";
+     public static String DASHING_KEBBIT_EATEN = "dashingKebbitEaten";
+     public static String SUNLIGHT_ANTELOPE_EATEN = "sunlightAntelopeEaten";
+     public static String MOONLIGHT_ANTELOPE_EATEN = "moonlightAntelopeEaten";
+     public static String PYRE_FOX_EATEN = "pyreFoxEaten";
 
      // --- Thieving ---
      public static String PICK_POCKETS = "pickPockets";
@@ -400,6 +430,10 @@ public class StatKeys {
              new StatKey(HALIBUT_EATEN, StatCategory.FOOD_AND_HEALING, "Halibut Eaten"),
              new StatKey(BLUEFIN_EATEN, StatCategory.FOOD_AND_HEALING, "Bluefin Eaten"),
              new StatKey(MARLIN_EATEN, StatCategory.FOOD_AND_HEALING, "Marlin Eaten"),
+             new StatKey(DASHING_KEBBIT_EATEN, StatCategory.FOOD_AND_HEALING, "Dashing Kebbit Eaten"),
+             new StatKey(SUNLIGHT_ANTELOPE_EATEN, StatCategory.FOOD_AND_HEALING, "Sunlight Antelope Eaten"),
+             new StatKey(MOONLIGHT_ANTELOPE_EATEN, StatCategory.FOOD_AND_HEALING, "Moonlight Antelope Eaten"),
+             new StatKey(PYRE_FOX_EATEN, StatCategory.FOOD_AND_HEALING, "Pyre Fox Eaten"),
              new StatKey(CAKE_SLICES_EATEN, StatCategory.FOOD_AND_HEALING, "Cake Slices Eaten"),
              new StatKey(FOOD_COOKED, StatCategory.FOOD_AND_HEALING, "Food Cooked"),
              new StatKey(FOOD_BURNED, StatCategory.FOOD_AND_HEALING, "Food Burned"),
@@ -422,6 +456,33 @@ public class StatKeys {
              new StatKey(HALIBUT_COOKED, StatCategory.FOOD_AND_HEALING, "Halibut Cooked"),
              new StatKey(BLUEFIN_COOKED, StatCategory.FOOD_AND_HEALING, "Bluefin Cooked"),
              new StatKey(MARLIN_COOKED, StatCategory.FOOD_AND_HEALING, "Marlin Cooked"),
+             new StatKey(SEA_TURTLE_COOKED, StatCategory.FOOD_AND_HEALING, "Sea Turtles Cooked"),
+             new StatKey(DASHING_KEBBIT_COOKED, StatCategory.FOOD_AND_HEALING, "Dashing Kebbit Cooked"),
+             new StatKey(SUNLIGHT_ANTELOPE_COOKED, StatCategory.FOOD_AND_HEALING, "Sunlight Antelope Cooked"),
+             new StatKey(MOONLIGHT_ANTELOPE_COOKED, StatCategory.FOOD_AND_HEALING, "Moonlight Antelope Cooked"),
+             new StatKey(PYRE_FOX_COOKED, StatCategory.FOOD_AND_HEALING, "Pyre Fox Cooked"),
+
+             new StatKey(SHRIMP_BURNED, StatCategory.FOOD_AND_HEALING, "Shrimp Burned"),
+             new StatKey(ANCHOVIES_BURNED, StatCategory.FOOD_AND_HEALING, "Anchovies Burned"),
+             new StatKey(TROUT_BURNED, StatCategory.FOOD_AND_HEALING, "Trout Burned"),
+             new StatKey(SALMON_BURNED, StatCategory.FOOD_AND_HEALING, "Salmon Burned"),
+             new StatKey(LOBSTER_BURNED, StatCategory.FOOD_AND_HEALING, "Lobsters Burned"),
+             new StatKey(SWORDFISH_BURNED, StatCategory.FOOD_AND_HEALING, "Swordfish Burned"),
+             new StatKey(SHARK_BURNED, StatCategory.FOOD_AND_HEALING, "Sharks Burned"),
+             new StatKey(MONKFISH_BURNED, StatCategory.FOOD_AND_HEALING, "Monkfish Burned"),
+             new StatKey(KARAMBWAN_BURNED, StatCategory.FOOD_AND_HEALING, "Karambwans Burned"),
+             new StatKey(ANGLERFISH_BURNED, StatCategory.FOOD_AND_HEALING, "Anglerfish Burned"),
+             new StatKey(HADDOCK_BURNED, StatCategory.FOOD_AND_HEALING, "Haddock Burned"),
+             new StatKey(GIANT_KRILL_BURNED, StatCategory.FOOD_AND_HEALING, "Giant Krill Burned"),
+             new StatKey(YELLOWFIN_BURNED, StatCategory.FOOD_AND_HEALING, "Yellowfin Burned"),
+             new StatKey(HALIBUT_BURNED, StatCategory.FOOD_AND_HEALING, "Halibut Burned"),
+             new StatKey(BLUEFIN_BURNED, StatCategory.FOOD_AND_HEALING, "Bluefin Burned"),
+             new StatKey(MARLIN_BURNED, StatCategory.FOOD_AND_HEALING, "Marlin Burned"),
+             new StatKey(SEA_TURTLE_BURNED, StatCategory.FOOD_AND_HEALING, "Sea Turtles Burned"),
+             new StatKey(DASHING_KEBBIT_BURNED, StatCategory.FOOD_AND_HEALING, "Dashing Kebbit Burned"),
+             new StatKey(SUNLIGHT_ANTELOPE_BURNED, StatCategory.FOOD_AND_HEALING, "Sunlight Antelope Burned"),
+             new StatKey(MOONLIGHT_ANTELOPE_BURNED, StatCategory.FOOD_AND_HEALING, "Moonlight Antelope Burned"),
+             new StatKey(PYRE_FOX_BURNED, StatCategory.FOOD_AND_HEALING, "Pyre Fox Burned"),
 
              // --- Thieving ---
              new StatKey(PICK_POCKETS, StatCategory.THIEVING, "Pickpockets"),
