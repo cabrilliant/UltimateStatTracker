@@ -6,11 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
+import net.runelite.client.util.Text;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -432,6 +434,18 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStat(SPIRIT_POOL_STABS);
         }
 
+        else if (msg.contains("You gently shoo the letvek"))
+        {
+            log.debug("msg {} matches letvek shooed", msg);
+            statStore.incrementStat(LETVEKS_SHOOED);
+        }
+
+        else if (msg.contains("You fill the bucket with sap") && isBloodwoodTreeNearby())
+        {
+            log.debug("msg {} matches bloodwood sap bucket filled with bloodwood tree nearby", msg);
+            statStore.incrementStat(BLOODWOOD_SAP_BUCKETS_FILLED);
+        }
+
         //please always keep hunter last
         //its very generic and as such prone to eating other skilling messages like fishing.
         else if ( (msg.contains("You've caught a") || msg.contains("You manage to catch") || msg.contains("You release the")) && !msg.contains("fish") && !msg.contains("shrimp") && !msg.contains("jar") )
@@ -573,6 +587,84 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStatBy(statKey, actionsGained);
         }
         previousSkillActions.put(skill,currentActions);
+    }
+
+    /**
+     * Scans the currently rendered scene for any game object whose name contains
+     * "bloodwood tree". Intended to be called only when the relevant sap chat
+     * message has matched, so we avoid scanning on every game tick.
+     */
+    private boolean isBloodwoodTreeNearby()
+    {
+        Scene scene = client.getScene();
+        if (scene == null)
+        {
+            return false;
+        }
+
+        Tile[][][] tiles = scene.getTiles();
+        if (tiles == null)
+        {
+            return false;
+        }
+
+        int plane = client.getPlane();
+        if (plane < 0 || plane >= tiles.length)
+        {
+            return false;
+        }
+
+        Tile[][] planeTiles = tiles[plane];
+        if (planeTiles == null)
+        {
+            return false;
+        }
+
+        for (int x = 0; x < Constants.SCENE_SIZE && x < planeTiles.length; x++)
+        {
+            Tile[] row = planeTiles[x];
+            if (row == null)
+            {
+                continue;
+            }
+
+            for (int y = 0; y < Constants.SCENE_SIZE && y < row.length; y++)
+            {
+                Tile tile = row[y];
+                if (tile == null)
+                {
+                    continue;
+                }
+
+                GameObject[] gameObjects = tile.getGameObjects();
+                if (gameObjects == null)
+                {
+                    continue;
+                }
+
+                for (GameObject obj : gameObjects)
+                {
+                    if (obj == null)
+                    {
+                        continue;
+                    }
+
+                    ObjectComposition comp = client.getObjectDefinition(obj.getId());
+                    if (comp == null)
+                    {
+                        continue;
+                    }
+
+                    String name = comp.getName();
+                    if (name != null && name.toLowerCase().contains("bloodwood tree"))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     private int getCurrentRuneCount()

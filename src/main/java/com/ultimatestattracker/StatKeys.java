@@ -112,6 +112,8 @@ public class StatKeys {
      public static String YEW_LOGS_CHOPPED = "yewLogsChopped";
      public static String MAGIC_LOGS_CHOPPED = "magicLogsChopped";
      public static String REDWOOD_LOGS_CHOPPED = "redwoodLogsChopped";
+     public static String LETVEKS_SHOOED = "letveksShooed";
+     public static String BLOODWOOD_SAP_BUCKETS_FILLED = "bloodwoodSapBucketsFilled";
 
      // --- Gathering ---
      public static String FLAX_PICKED = "flaxPicked";
@@ -380,6 +382,8 @@ public class StatKeys {
              new StatKey(YEW_LOGS_CHOPPED, StatCategory.WOODCUTTING, "Yew Logs Chopped"),
              new StatKey(MAGIC_LOGS_CHOPPED, StatCategory.WOODCUTTING, "Magic Logs Chopped"),
              new StatKey(REDWOOD_LOGS_CHOPPED, StatCategory.WOODCUTTING, "Redwood Logs Chopped"),
+             new StatKey(LETVEKS_SHOOED, StatCategory.WOODCUTTING, "Letveks Shooed"),
+             new StatKey(BLOODWOOD_SAP_BUCKETS_FILLED, StatCategory.WOODCUTTING, "Bloodwood Sap Buckets Filled"),
 
              // --- Gathering ---
              new StatKey(FLAX_PICKED, StatCategory.GATHERING, "Flax Picked"),
