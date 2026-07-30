@@ -75,4 +75,15 @@ public interface UltimateStatTrackerConfig extends Config
     {
         return 10;
     }
+
+    @ConfigItem(
+            keyName = "exportOnLogoutOrExit",
+            name = "Export Stats on Logout/Exit",
+            description = "Export stats to a JSON file when logging out or closing RuneLite.",
+            position = 6
+    )
+    default boolean exportOnLogoutOrExit()
+    {
+        return false;
+    }
 }
