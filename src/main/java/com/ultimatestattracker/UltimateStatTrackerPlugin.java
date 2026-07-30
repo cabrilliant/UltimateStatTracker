@@ -7,7 +7,10 @@ import com.ultimatestattracker.stattrackers.GoldStatTracker;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
+import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneScapeProfileType;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
@@ -22,17 +25,24 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
 import static com.ultimatestattracker.StatKeys.*;
 import com.ultimatestattracker.stattrackers.*;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
+import net.runelite.http.api.RuneLiteAPI;
 
 @PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 @PluginDescriptor(
-	name = "Ultimate Stat Tracker"
+		name = "Ultimate Stat Tracker"
 )
 public class UltimateStatTrackerPlugin extends Plugin
 {
@@ -79,6 +89,9 @@ public class UltimateStatTrackerPlugin extends Plugin
 
 	public final String version = "1.1.4";
 	private final String VERSION_KEY = "ustp.version";
+
+	private String lastPlayerName;
+	private RuneScapeProfileType lastProfileType = RuneScapeProfileType.STANDARD;
 
 	public boolean isPerformanceMode()
 	{
@@ -141,11 +154,78 @@ public class UltimateStatTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
+	private void rememberPlayerProfile()
+	{
+		Player localPlayer = client.getLocalPlayer();
+
+		if (localPlayer != null && localPlayer.getName() != null)
+		{
+			lastPlayerName = localPlayer.getName();
+			lastProfileType = RuneScapeProfileType.getCurrent(client);
+		}
+	}
+
+	private void exportStats()
+	{
+		if (!config.exportOnLogoutOrExit())
+		{
+			return;
+		}
+
+		if(statStore == null || lastPlayerName == null)
+		{
+			log.error("Unable to export stats, statStore or lastPlayerName was null.");
+			return;
+		}
+
+		Map<String, Integer> stats = new LinkedHashMap<>();
+		Map<String, String> trackingDates = new LinkedHashMap<>();
+
+		for (StatKey key : ALL_KEYS)
+		{
+			stats.put(key.getValue(), statStore.getStat(key.getValue()));
+			trackingDates.put(key.getValue(), statStore.getStatTrackingDate(key.getValue()));
+		}
+
+		Map<String, Object> export = new LinkedHashMap<>();
+		export.put("playerName", lastPlayerName);
+		export.put("profileType", lastProfileType.name());
+		export.put("exportedAtUtc", java.time.Instant.now().toString());
+		export.put("pluginVersion", version);
+		export.put("stats", stats);
+		export.put("trackingSince", trackingDates);
+
+		String playerDirectoryName = lastPlayerName;
+
+		if (lastProfileType != RuneScapeProfileType.STANDARD)
+		{
+			playerDirectoryName += "-" + Text.titleCase(lastProfileType);
+		}
+
+		Path exportDirectory = RuneLite.RUNELITE_DIR.toPath()
+				.resolve("ultimate-stat-tracker")
+				.resolve(playerDirectoryName);
+		Path exportFile = exportDirectory.resolve("stats.json");
+
+		try
+		{
+			Files.createDirectories(exportDirectory);
+			Files.writeString(exportFile, RuneLiteAPI.GSON.toJson(export));
+			log.info("Exported stats to {}", exportFile);
+		}
+		catch (IOException ex)
+		{
+			log.error("Unable to export stats to {}", exportFile, ex);
+		}
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
+			rememberPlayerProfile();
+
 			for (StatKey key : ALL_KEYS)
 			{
 				if ("0".equals(statStore.getStatTrackingDate(key.getValue())))
@@ -178,7 +258,21 @@ public class UltimateStatTrackerPlugin extends Plugin
 				firstLogin = false;
 			}
 		}
+		else if (loggedIn && (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.LOGIN_SCREEN_AUTHENTICATOR))
+		{
+			exportStats();
+			loggedIn = false;
+		}
 
+	}
+
+	@Subscribe
+	public void onClientShutdown(ClientShutdown event)
+	{
+		if (loggedIn)
+		{
+			exportStats();
+		}
 	}
 
 	@Subscribe
@@ -215,6 +309,11 @@ public class UltimateStatTrackerPlugin extends Plugin
 
 	@Subscribe
 	public void onGameTick(GameTick event) {
+		if (loggedIn)
+		{
+			rememberPlayerProfile();
+		}
+
 		if (!config.performanceMode()){
 			movementStatTracker.onGameTick(event);
 			goldStatTracker.onGameTick(event);
