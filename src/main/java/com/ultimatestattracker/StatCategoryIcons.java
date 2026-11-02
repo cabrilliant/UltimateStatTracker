@@ -6,6 +6,7 @@ import net.runelite.client.game.SkillIconManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import net.runelite.client.util.ImageUtil;
 
@@ -18,6 +19,7 @@ final class StatCategoryIcons
 	private static BufferedImage transportIcon;
 	private static BufferedImage flaxIcon;
 	private static BufferedImage bankNoteIcon;
+	private static BufferedImage lampIcon;
 
 	private StatCategoryIcons()
 	{
@@ -44,6 +46,9 @@ final class StatCategoryIcons
 
 			case ITEMS:
 				return getBankNoteIcon();
+
+			case LAMPS:
+				return getLampIcon();
 
 			default:
 				return getUnknownIcon();
@@ -98,6 +103,36 @@ final class StatCategoryIcons
 		return bankNoteIcon;
 	}
 
+	private static BufferedImage getLampIcon()
+	{
+		if (lampIcon == null)
+		{
+			lampIcon = fitToIconBox(ImageUtil.loadImageResource(
+					StatCategoryIcons.class,
+					"Lamp.png"
+			));
+		}
+		return lampIcon;
+	}
+
+	/**
+	 * Scales a sprite down to fit the icon box, keeping its aspect ratio. The item sprites
+	 * are wider than the buttons, so drawn as is they would be clipped on the sides.
+	 */
+	private static BufferedImage fitToIconBox(BufferedImage sprite)
+	{
+		double scale = Math.min((double) ICON_SIZE / sprite.getWidth(), (double) ICON_SIZE / sprite.getHeight());
+		int width = Math.max(1, (int) Math.round(sprite.getWidth() * scale));
+		int height = Math.max(1, (int) Math.round(sprite.getHeight() * scale));
+
+		BufferedImage scaled = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = scaled.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.drawImage(sprite, 0, 0, width, height, null);
+		g.dispose();
+		return scaled;
+	}
+
 	private static Skill skillFor(StatCategory category)
 	{
 		switch (category)
@@ -130,6 +165,10 @@ final class StatCategoryIcons
 				return Skill.FLETCHING;
 			case HUNTER:
 				return Skill.HUNTER;
+			case SAILING:
+				return Skill.SAILING;
+			case COOKING:
+				return Skill.COOKING;
 			case SMITHING:
 				return Skill.SMITHING;
 			case COMBAT:

@@ -9,7 +9,8 @@ import java.util.Map;
 
 class StatCategoryFilterBar extends JPanel
 {
-	private static final int COLUMNS = 7;
+	//keep the category count a multiple of COLUMNS so the grid never ends on a half empty row
+	private static final int COLUMNS = 8;
 	private static final int BUTTON_SIZE = 24;
 	private static final int GAP = 2;
 

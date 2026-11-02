@@ -89,7 +89,20 @@ public class UltimateStatTrackerPanel extends PluginPanel
 
         sortBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
         sortBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        sortBox.addActionListener(e -> rebuild());
+
+        //restore the sort option from the last session, ignoring anything unexpected
+        String savedSort = plugin.getPanelSortOrder();
+        if ("Alphabetical".equals(savedSort) || "Numeric".equals(savedSort))
+        {
+            sortBox.setSelectedItem(savedSort);
+        }
+
+        sortBox.addActionListener(e ->
+        {
+            //only the sort order is remembered, the search filter is deliberately not stored
+            plugin.setPanelSortOrder((String) sortBox.getSelectedItem());
+            rebuild();
+        });
 
         JPanel buttonRow = new JPanel();
         buttonRow.setLayout(new BoxLayout(buttonRow, BoxLayout.X_AXIS));

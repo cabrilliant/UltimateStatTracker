@@ -1,10 +1,13 @@
 package com.ultimatestattracker;
 
+import net.runelite.api.Skill;
 import net.runelite.client.plugins.itemstats.stats.Stat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +15,7 @@ public class StatKeys {
      // --- Items ---
      public static String EXAMINE = "itemsExamined";
      public static String ITEMS_DROPPED = "itemsDropped";
+     public static String ITEMS_EQUIPPED = "itemsEquipped";
      public static String VIALS_SMASHED = "vialsSmashed";
      public static String HERBS_PLACED_IN_HERB_SACK = "herbsPlacedInHerbSack";
      public static String GUAM_LEAF_PLACED = "guamLeafPlaced";
@@ -54,6 +58,9 @@ public class StatKeys {
      public static String YANILLE_TELEPORT = "yanilleTeleport";
      public static String HOUSE_TELEPORT = "houseTeleport";
      public static String TOTAL_TELEPORTS = "totalTeleports";
+     public static String DOORS_OPENED = "doorsOpened";
+     public static String DOORS_CLOSED = "doorsClosed";
+     public static String LADDERS_STAIRS_CLIMBED = "laddersStairsClimbed";
 
      // --- Fishing ---
      public static String FISH_CAUGHT = "fishCaught";
@@ -83,6 +90,32 @@ public class StatKeys {
      public static String LEAPING_STURGEON_CAUGHT = "leapingSturgeonCaught";
      public static String HARPOON_FISH_CAUGHT = "harpoonFishCaught";
      public static String SPIRIT_POOL_STABS = "spiritPoolStabs";
+     public static String RADAS_BLESSING_PROCS = "radasBlessingProcs";
+     public static String DRAGON_HARPOON_SPECS = "dragonHarpoonSpecs";
+
+     // --- Sailing ---
+     public static String WIND_MOTES_RELEASED = "windMotesReleased";
+     public static String SAILS_TRIMMED = "sailsTrimmed";
+     public static String TRAWLING_FISH_CAUGHT = "trawlingFishCaught";
+     public static String HADDOCK_CAUGHT = "haddockCaught";
+     public static String GIANT_KRILL_CAUGHT = "giantKrillCaught";
+     public static String YELLOWFIN_CAUGHT = "yellowfinCaught";
+     public static String HALIBUT_CAUGHT = "halibutCaught";
+     public static String BLUEFIN_CAUGHT = "bluefinCaught";
+     public static String MARLIN_CAUGHT = "marlinCaught";
+     public static String CREW_WORK_WATCHED = "crewWorkWatched";
+     public static String SHOALS_BAITED = "shoalsBaited";
+     public static String BOATS_BOARDED = "boatsBoarded";
+     public static String SALVAGE_DREDGED = "salvageDredged";
+     public static String SALVAGE_SORTED = "salvageSorted";
+     public static String SMALL_SALVAGE_SORTED = "smallSalvageSorted";
+     public static String FISHY_SALVAGE_SORTED = "fishySalvageSorted";
+     public static String BARRACUDA_SALVAGE_SORTED = "barracudaSalvageSorted";
+     public static String LARGE_SALVAGE_SORTED = "largeSalvageSorted";
+     public static String PLUNDERED_SALVAGE_SORTED = "plunderedSalvageSorted";
+     public static String MARTIAL_SALVAGE_SORTED = "martialSalvageSorted";
+     public static String FREMENNIK_SALVAGE_SORTED = "fremennikSalvageSorted";
+     public static String OPULENT_SALVAGE_SORTED = "opulentSalvageSorted";
      // --- Mining ---
      public static String ROCKS_MINED = "rocksMined";
      public static String CLAY_MINED = "clayMined";
@@ -114,6 +147,7 @@ public class StatKeys {
      public static String REDWOOD_LOGS_CHOPPED = "redwoodLogsChopped";
      public static String LETVEKS_SHOOED = "letveksShooed";
      public static String BLOODWOOD_SAP_BUCKETS_FILLED = "bloodwoodSapBucketsFilled";
+     public static String BIRD_NESTS_DROPPED = "birdNestsDropped";
 
      // --- Gathering ---
      public static String FLAX_PICKED = "flaxPicked";
@@ -126,11 +160,23 @@ public class StatKeys {
      // -- Misc --
      public static String CRITTERS_PET = "crittersPet";
      public static String THE_GUNS = "theGunsHiCount";
+     public static String CLUE_SCROLLS_MISSED = "clueScrollsMissed";
+     public static String BEGINNER_CLUE_SCROLLS_MISSED = "beginnerClueScrollsMissed";
+     public static String EASY_CLUE_SCROLLS_MISSED = "easyClueScrollsMissed";
+     public static String MEDIUM_CLUE_SCROLLS_MISSED = "mediumClueScrollsMissed";
+     public static String HARD_CLUE_SCROLLS_MISSED = "hardClueScrollsMissed";
+     public static String EXPERT_CLUE_SCROLLS_MISSED = "expertClueScrollsMissed";
+     public static String MASTER_CLUE_SCROLLS_MISSED = "masterClueScrollsMissed";
+
+     // --- Lamps ---
+     //Totals across every skill. The per skill keys are generated in lampsUsedKey/lampXpKey
+     //from the Skill enum so that all 24 skills stay in sync without a hand written list.
+     public static String LAMPS_USED = "lampsUsed";
+     public static String LAMP_XP = "lampXp";
 
      // --- Prayer ---
      public static String BONES_BURIED = "bonesBuried";
      public static String ASHES_SCATTERED = "ashesScattered";
-
      // --- Firemaking ---
      public static String LOGS_BURNED = "logsBurned";
 
@@ -161,6 +207,7 @@ public class StatKeys {
      public static String CAKE_SLICES_EATEN = "cakeSlicesEaten";
      public static String FOOD_COOKED = "foodCooked";
      public static String FOOD_BURNED = "foodBurned";
+     public static String PINEAPPLE_RINGS_CUT = "pineappleRingsCut";
      public static String POTION_SIPS_DRANK = "potionSips";
      public static String DIVINE_DAMAGE = "divineDamage";
      public static String SHRIMP_COOKED = "shrimpCooked";
@@ -277,10 +324,11 @@ public class StatKeys {
 
 
      //note, cant use reflection here as runelite does not allow it
-     public static final StatKey[] ALL_KEYS = {
+     public static final StatKey[] ALL_KEYS = withLampKeys(new StatKey[]{
              // --- Items ---
              new StatKey(EXAMINE, StatCategory.ITEMS, "Things Examined"),
              new StatKey(ITEMS_DROPPED, StatCategory.ITEMS, "Items Dropped"),
+             new StatKey(ITEMS_EQUIPPED, StatCategory.ITEMS, "Items Equipped"),
              new StatKey(VIALS_SMASHED, StatCategory.ITEMS, "Vials Smashed"),
              new StatKey(HERBS_PLACED_IN_HERB_SACK, StatCategory.ITEMS, "Herbs Looted in Herb Sack"),
              new StatKey(GUAM_LEAF_PLACED, StatCategory.ITEMS, "Guam Leaf Looted in Herb Sack"),
@@ -322,6 +370,9 @@ public class StatKeys {
              new StatKey(FORTIS_TELEPORT, StatCategory.MOVEMENT, "Fortis Teleports"),
              new StatKey(HOUSE_TELEPORT, StatCategory.MOVEMENT, "House Teleports"),
              new StatKey(TOTAL_TELEPORTS, StatCategory.MOVEMENT, "Total Teleports"),
+             new StatKey(DOORS_OPENED, StatCategory.MOVEMENT, "Doors & Gates Opened"),
+             new StatKey(DOORS_CLOSED, StatCategory.MOVEMENT, "Doors & Gates Closed"),
+             new StatKey(LADDERS_STAIRS_CLIMBED, StatCategory.MOVEMENT, "Ladders & Stairs Climbed"),
 
              // --- Fishing ---
              new StatKey(FISH_CAUGHT, StatCategory.FISHING, "Fish Caught"),
@@ -351,6 +402,32 @@ public class StatKeys {
              new StatKey(LEAPING_STURGEON_CAUGHT, StatCategory.FISHING, "Leaping Sturgeon Caught"),
              new StatKey(HARPOON_FISH_CAUGHT, StatCategory.FISHING, "Harpoonfish Caught"),
              new StatKey(SPIRIT_POOL_STABS, StatCategory.FISHING, "Spirit Pool Stabs"),
+             new StatKey(RADAS_BLESSING_PROCS, StatCategory.FISHING, "Rada's Blessing Procs"),
+             new StatKey(DRAGON_HARPOON_SPECS, StatCategory.FISHING, "Dragon Harpoon Specs"),
+
+             // --- Sailing ---
+             new StatKey(WIND_MOTES_RELEASED, StatCategory.SAILING, "Wind Motes Released"),
+             new StatKey(SAILS_TRIMMED, StatCategory.SAILING, "Sails Trimmed"),
+             new StatKey(TRAWLING_FISH_CAUGHT, StatCategory.SAILING, "Trawling Fish Caught"),
+             new StatKey(HADDOCK_CAUGHT, StatCategory.SAILING, "Haddock Caught"),
+             new StatKey(GIANT_KRILL_CAUGHT, StatCategory.SAILING, "Giant Krill Caught"),
+             new StatKey(YELLOWFIN_CAUGHT, StatCategory.SAILING, "Yellowfin Caught"),
+             new StatKey(HALIBUT_CAUGHT, StatCategory.SAILING, "Halibut Caught"),
+             new StatKey(BLUEFIN_CAUGHT, StatCategory.SAILING, "Bluefin Caught"),
+             new StatKey(MARLIN_CAUGHT, StatCategory.SAILING, "Marlin Caught"),
+             new StatKey(CREW_WORK_WATCHED, StatCategory.SAILING, "Times Watched Crew Work"),
+             new StatKey(SHOALS_BAITED, StatCategory.SAILING, "Shoals Baited"),
+             new StatKey(BOATS_BOARDED, StatCategory.SAILING, "Boats Boarded"),
+             new StatKey(SALVAGE_DREDGED, StatCategory.SAILING, "Salvage Dredged"),
+             new StatKey(SALVAGE_SORTED, StatCategory.SAILING, "Salvage Sorted"),
+             new StatKey(SMALL_SALVAGE_SORTED, StatCategory.SAILING, "Small Salvage Sorted"),
+             new StatKey(FISHY_SALVAGE_SORTED, StatCategory.SAILING, "Fishy Salvage Sorted"),
+             new StatKey(BARRACUDA_SALVAGE_SORTED, StatCategory.SAILING, "Barracuda Salvage Sorted"),
+             new StatKey(LARGE_SALVAGE_SORTED, StatCategory.SAILING, "Large Salvage Sorted"),
+             new StatKey(PLUNDERED_SALVAGE_SORTED, StatCategory.SAILING, "Plundered Salvage Sorted"),
+             new StatKey(MARTIAL_SALVAGE_SORTED, StatCategory.SAILING, "Martial Salvage Sorted"),
+             new StatKey(FREMENNIK_SALVAGE_SORTED, StatCategory.SAILING, "Fremennik Salvage Sorted"),
+             new StatKey(OPULENT_SALVAGE_SORTED, StatCategory.SAILING, "Opulent Salvage Sorted"),
 
              // --- Mining ---
              new StatKey(ROCKS_MINED, StatCategory.MINING, "Rocks Mined"),
@@ -384,6 +461,7 @@ public class StatKeys {
              new StatKey(REDWOOD_LOGS_CHOPPED, StatCategory.WOODCUTTING, "Redwood Logs Chopped"),
              new StatKey(LETVEKS_SHOOED, StatCategory.WOODCUTTING, "Letveks Shooed"),
              new StatKey(BLOODWOOD_SAP_BUCKETS_FILLED, StatCategory.WOODCUTTING, "Bloodwood Sap Buckets Filled"),
+             new StatKey(BIRD_NESTS_DROPPED, StatCategory.WOODCUTTING, "Bird Nests Received"),
 
              // --- Gathering ---
              new StatKey(FLAX_PICKED, StatCategory.GATHERING, "Flax Picked"),
@@ -396,6 +474,13 @@ public class StatKeys {
              // --- Misc ---
              new StatKey(CRITTERS_PET, StatCategory.MISC, "Critters Pet"),
              new StatKey(THE_GUNS, StatCategory.MISC, "Highest 'The Guns' Count"),
+             new StatKey(CLUE_SCROLLS_MISSED, StatCategory.MISC, "Clue Scrolls Missed"),
+             new StatKey(BEGINNER_CLUE_SCROLLS_MISSED, StatCategory.MISC, "Beginner Clue Scrolls Missed"),
+             new StatKey(EASY_CLUE_SCROLLS_MISSED, StatCategory.MISC, "Easy Clue Scrolls Missed"),
+             new StatKey(MEDIUM_CLUE_SCROLLS_MISSED, StatCategory.MISC, "Medium Clue Scrolls Missed"),
+             new StatKey(HARD_CLUE_SCROLLS_MISSED, StatCategory.MISC, "Hard Clue Scrolls Missed"),
+             new StatKey(EXPERT_CLUE_SCROLLS_MISSED, StatCategory.MISC, "Expert Clue Scrolls Missed"),
+             new StatKey(MASTER_CLUE_SCROLLS_MISSED, StatCategory.MISC, "Master Clue Scrolls Missed"),
 
              // --- Prayer ---
              new StatKey(BONES_BURIED, StatCategory.PRAYER, "Bones Buried"),
@@ -439,54 +524,55 @@ public class StatKeys {
              new StatKey(MOONLIGHT_ANTELOPE_EATEN, StatCategory.FOOD_AND_HEALING, "Moonlight Antelope Eaten"),
              new StatKey(PYRE_FOX_EATEN, StatCategory.FOOD_AND_HEALING, "Pyre Fox Eaten"),
              new StatKey(CAKE_SLICES_EATEN, StatCategory.FOOD_AND_HEALING, "Cake Slices Eaten"),
-             new StatKey(FOOD_COOKED, StatCategory.FOOD_AND_HEALING, "Food Cooked"),
-             new StatKey(FOOD_BURNED, StatCategory.FOOD_AND_HEALING, "Food Burned"),
+             new StatKey(FOOD_COOKED, StatCategory.COOKING, "Food Cooked"),
+             new StatKey(FOOD_BURNED, StatCategory.COOKING, "Food Burned"),
+             new StatKey(PINEAPPLE_RINGS_CUT, StatCategory.FOOD_AND_HEALING, "Pineapples Cut Into Rings"),
              new StatKey(POTION_SIPS_DRANK, StatCategory.FOOD_AND_HEALING, "Potion Sips"),
              new StatKey(DIVINE_DAMAGE, StatCategory.FOOD_AND_HEALING, "Divine Pot Damage"),
 
-             new StatKey(SHRIMP_COOKED, StatCategory.FOOD_AND_HEALING, "Shrimp Cooked"),
-             new StatKey(ANCHOVIES_COOKED, StatCategory.FOOD_AND_HEALING, "Anchovies Cooked"),
-             new StatKey(TROUT_COOKED, StatCategory.FOOD_AND_HEALING, "Trout Cooked"),
-             new StatKey(SALMON_COOKED, StatCategory.FOOD_AND_HEALING, "Salmon Cooked"),
-             new StatKey(LOBSTER_COOKED, StatCategory.FOOD_AND_HEALING, "Lobsters Cooked"),
-             new StatKey(SWORDFISH_COOKED, StatCategory.FOOD_AND_HEALING, "Swordfish Cooked"),
-             new StatKey(SHARK_COOKED, StatCategory.FOOD_AND_HEALING, "Sharks Cooked"),
-             new StatKey(MONKFISH_COOKED, StatCategory.FOOD_AND_HEALING, "Monkfish Cooked"),
-             new StatKey(KARAMBWAN_COOKED, StatCategory.FOOD_AND_HEALING, "Karambwans Cooked"),
-             new StatKey(ANGLERFISH_COOKED, StatCategory.FOOD_AND_HEALING, "Anglerfish Cooked"),
-             new StatKey(HADDOCK_COOKED, StatCategory.FOOD_AND_HEALING, "Haddock Cooked"),
-             new StatKey(GIANT_KRILL_COOKED, StatCategory.FOOD_AND_HEALING, "Giant Krill Cooked"),
-             new StatKey(YELLOWFIN_COOKED, StatCategory.FOOD_AND_HEALING, "Yellowfin Cooked"),
-             new StatKey(HALIBUT_COOKED, StatCategory.FOOD_AND_HEALING, "Halibut Cooked"),
-             new StatKey(BLUEFIN_COOKED, StatCategory.FOOD_AND_HEALING, "Bluefin Cooked"),
-             new StatKey(MARLIN_COOKED, StatCategory.FOOD_AND_HEALING, "Marlin Cooked"),
-             new StatKey(SEA_TURTLE_COOKED, StatCategory.FOOD_AND_HEALING, "Sea Turtles Cooked"),
-             new StatKey(DASHING_KEBBIT_COOKED, StatCategory.FOOD_AND_HEALING, "Dashing Kebbit Cooked"),
-             new StatKey(SUNLIGHT_ANTELOPE_COOKED, StatCategory.FOOD_AND_HEALING, "Sunlight Antelope Cooked"),
-             new StatKey(MOONLIGHT_ANTELOPE_COOKED, StatCategory.FOOD_AND_HEALING, "Moonlight Antelope Cooked"),
-             new StatKey(PYRE_FOX_COOKED, StatCategory.FOOD_AND_HEALING, "Pyre Fox Cooked"),
+             new StatKey(SHRIMP_COOKED, StatCategory.COOKING, "Shrimp Cooked"),
+             new StatKey(ANCHOVIES_COOKED, StatCategory.COOKING, "Anchovies Cooked"),
+             new StatKey(TROUT_COOKED, StatCategory.COOKING, "Trout Cooked"),
+             new StatKey(SALMON_COOKED, StatCategory.COOKING, "Salmon Cooked"),
+             new StatKey(LOBSTER_COOKED, StatCategory.COOKING, "Lobsters Cooked"),
+             new StatKey(SWORDFISH_COOKED, StatCategory.COOKING, "Swordfish Cooked"),
+             new StatKey(SHARK_COOKED, StatCategory.COOKING, "Sharks Cooked"),
+             new StatKey(MONKFISH_COOKED, StatCategory.COOKING, "Monkfish Cooked"),
+             new StatKey(KARAMBWAN_COOKED, StatCategory.COOKING, "Karambwans Cooked"),
+             new StatKey(ANGLERFISH_COOKED, StatCategory.COOKING, "Anglerfish Cooked"),
+             new StatKey(HADDOCK_COOKED, StatCategory.COOKING, "Haddock Cooked"),
+             new StatKey(GIANT_KRILL_COOKED, StatCategory.COOKING, "Giant Krill Cooked"),
+             new StatKey(YELLOWFIN_COOKED, StatCategory.COOKING, "Yellowfin Cooked"),
+             new StatKey(HALIBUT_COOKED, StatCategory.COOKING, "Halibut Cooked"),
+             new StatKey(BLUEFIN_COOKED, StatCategory.COOKING, "Bluefin Cooked"),
+             new StatKey(MARLIN_COOKED, StatCategory.COOKING, "Marlin Cooked"),
+             new StatKey(SEA_TURTLE_COOKED, StatCategory.COOKING, "Sea Turtles Cooked"),
+             new StatKey(DASHING_KEBBIT_COOKED, StatCategory.COOKING, "Dashing Kebbit Cooked"),
+             new StatKey(SUNLIGHT_ANTELOPE_COOKED, StatCategory.COOKING, "Sunlight Antelope Cooked"),
+             new StatKey(MOONLIGHT_ANTELOPE_COOKED, StatCategory.COOKING, "Moonlight Antelope Cooked"),
+             new StatKey(PYRE_FOX_COOKED, StatCategory.COOKING, "Pyre Fox Cooked"),
 
-             new StatKey(SHRIMP_BURNED, StatCategory.FOOD_AND_HEALING, "Shrimp Burned"),
-             new StatKey(ANCHOVIES_BURNED, StatCategory.FOOD_AND_HEALING, "Anchovies Burned"),
-             new StatKey(TROUT_BURNED, StatCategory.FOOD_AND_HEALING, "Trout Burned"),
-             new StatKey(SALMON_BURNED, StatCategory.FOOD_AND_HEALING, "Salmon Burned"),
-             new StatKey(LOBSTER_BURNED, StatCategory.FOOD_AND_HEALING, "Lobsters Burned"),
-             new StatKey(SWORDFISH_BURNED, StatCategory.FOOD_AND_HEALING, "Swordfish Burned"),
-             new StatKey(SHARK_BURNED, StatCategory.FOOD_AND_HEALING, "Sharks Burned"),
-             new StatKey(MONKFISH_BURNED, StatCategory.FOOD_AND_HEALING, "Monkfish Burned"),
-             new StatKey(KARAMBWAN_BURNED, StatCategory.FOOD_AND_HEALING, "Karambwans Burned"),
-             new StatKey(ANGLERFISH_BURNED, StatCategory.FOOD_AND_HEALING, "Anglerfish Burned"),
-             new StatKey(HADDOCK_BURNED, StatCategory.FOOD_AND_HEALING, "Haddock Burned"),
-             new StatKey(GIANT_KRILL_BURNED, StatCategory.FOOD_AND_HEALING, "Giant Krill Burned"),
-             new StatKey(YELLOWFIN_BURNED, StatCategory.FOOD_AND_HEALING, "Yellowfin Burned"),
-             new StatKey(HALIBUT_BURNED, StatCategory.FOOD_AND_HEALING, "Halibut Burned"),
-             new StatKey(BLUEFIN_BURNED, StatCategory.FOOD_AND_HEALING, "Bluefin Burned"),
-             new StatKey(MARLIN_BURNED, StatCategory.FOOD_AND_HEALING, "Marlin Burned"),
-             new StatKey(SEA_TURTLE_BURNED, StatCategory.FOOD_AND_HEALING, "Sea Turtles Burned"),
-             new StatKey(DASHING_KEBBIT_BURNED, StatCategory.FOOD_AND_HEALING, "Dashing Kebbit Burned"),
-             new StatKey(SUNLIGHT_ANTELOPE_BURNED, StatCategory.FOOD_AND_HEALING, "Sunlight Antelope Burned"),
-             new StatKey(MOONLIGHT_ANTELOPE_BURNED, StatCategory.FOOD_AND_HEALING, "Moonlight Antelope Burned"),
-             new StatKey(PYRE_FOX_BURNED, StatCategory.FOOD_AND_HEALING, "Pyre Fox Burned"),
+             new StatKey(SHRIMP_BURNED, StatCategory.COOKING, "Shrimp Burned"),
+             new StatKey(ANCHOVIES_BURNED, StatCategory.COOKING, "Anchovies Burned"),
+             new StatKey(TROUT_BURNED, StatCategory.COOKING, "Trout Burned"),
+             new StatKey(SALMON_BURNED, StatCategory.COOKING, "Salmon Burned"),
+             new StatKey(LOBSTER_BURNED, StatCategory.COOKING, "Lobsters Burned"),
+             new StatKey(SWORDFISH_BURNED, StatCategory.COOKING, "Swordfish Burned"),
+             new StatKey(SHARK_BURNED, StatCategory.COOKING, "Sharks Burned"),
+             new StatKey(MONKFISH_BURNED, StatCategory.COOKING, "Monkfish Burned"),
+             new StatKey(KARAMBWAN_BURNED, StatCategory.COOKING, "Karambwans Burned"),
+             new StatKey(ANGLERFISH_BURNED, StatCategory.COOKING, "Anglerfish Burned"),
+             new StatKey(HADDOCK_BURNED, StatCategory.COOKING, "Haddock Burned"),
+             new StatKey(GIANT_KRILL_BURNED, StatCategory.COOKING, "Giant Krill Burned"),
+             new StatKey(YELLOWFIN_BURNED, StatCategory.COOKING, "Yellowfin Burned"),
+             new StatKey(HALIBUT_BURNED, StatCategory.COOKING, "Halibut Burned"),
+             new StatKey(BLUEFIN_BURNED, StatCategory.COOKING, "Bluefin Burned"),
+             new StatKey(MARLIN_BURNED, StatCategory.COOKING, "Marlin Burned"),
+             new StatKey(SEA_TURTLE_BURNED, StatCategory.COOKING, "Sea Turtles Burned"),
+             new StatKey(DASHING_KEBBIT_BURNED, StatCategory.COOKING, "Dashing Kebbit Burned"),
+             new StatKey(SUNLIGHT_ANTELOPE_BURNED, StatCategory.COOKING, "Sunlight Antelope Burned"),
+             new StatKey(MOONLIGHT_ANTELOPE_BURNED, StatCategory.COOKING, "Moonlight Antelope Burned"),
+             new StatKey(PYRE_FOX_BURNED, StatCategory.COOKING, "Pyre Fox Burned"),
 
              // --- Thieving ---
              new StatKey(PICK_POCKETS, StatCategory.THIEVING, "Pickpockets"),
@@ -543,8 +629,34 @@ public class StatKeys {
              new StatKey(SUPERIOR_ZOMBIES_SUMMONED, StatCategory.COMBAT, "Superior Zombies Summoned"),
              new StatKey(GREATER_GHOSTS_SUMMONED, StatCategory.COMBAT, "Greater Ghosts Summoned"),
              new StatKey(GREATER_SKELETONS_SUMMONED, StatCategory.COMBAT, "Greater Skeletons Summoned"),
-             new StatKey(GREATER_ZOMBIES_SUMMONED, StatCategory.COMBAT, "Greater Zombies Summoned")
-     };
+             new StatKey(GREATER_ZOMBIES_SUMMONED, StatCategory.COMBAT, "Greater Zombies Summoned"),
+     });
+
+     public static String lampsUsedKey(Skill skill){
+            return skill.name().toLowerCase() + "LampsUsed";
+     }
+
+     public static String lampXpKey(Skill skill){
+            return skill.name().toLowerCase() + "LampXp";
+     }
+
+     /**
+      * Appends the lamp stats for every skill to the hand written stat list above.
+      */
+     private static StatKey[] withLampKeys(StatKey[] base){
+            List<StatKey> keys = new ArrayList<>(Arrays.asList(base));
+            keys.add(new StatKey(LAMPS_USED, StatCategory.LAMPS, "Lamps Used"));
+            keys.add(new StatKey(LAMP_XP, StatCategory.LAMPS, "XP Lamped"));
+            for (Skill skill : Skill.values()){
+                 //OVERALL is a pseudo skill in the enum, a lamp can never be used on it
+                 if (skill == Skill.OVERALL){
+                        continue;
+                 }
+                 keys.add(new StatKey(lampsUsedKey(skill), StatCategory.LAMPS, skill.getName() + " Lamps Used"));
+                 keys.add(new StatKey(lampXpKey(skill), StatCategory.LAMPS, skill.getName() + " XP Lamped"));
+            }
+            return keys.toArray(new StatKey[0]);
+     }
 
      public static final Map<String, StatCategory> KEY_TO_CATEGORY = Arrays.stream(ALL_KEYS)
              .collect(java.util.stream.Collectors.toMap(

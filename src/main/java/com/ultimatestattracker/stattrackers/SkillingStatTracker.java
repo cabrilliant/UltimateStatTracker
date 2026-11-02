@@ -32,6 +32,54 @@ public class SkillingStatTracker implements StatTracker{
             Pattern.compile("You manage to (?:mine|quarry) some (.+)\\.");
     private static final Pattern TANNER_PATTERN =
             Pattern.compile("^The tanner tans (your|\\d+) (.+?)(?: for you)?\\.$");
+    //matches both "...received an easy scroll box" and "...received an easy clue scroll"
+    private static final Pattern CLUE_MISSED_PATTERN = Pattern.compile(
+            "You have a sneaking suspicion that you would have received an? (\\w+) (?:clue )?scroll");
+    //matches "Your wish has been granted! You have been awarded 790 Prayer XP!"
+    //the lamp confirmation is required: a bare "you have been awarded ... XP!" can come
+    //from a quest or other reward, so it must not count as lamp xp
+    private static final Pattern LAMP_XP_PATTERN = Pattern.compile(
+            "(?s)Your wish has been granted!.*?You have been awarded ([\\d,]+) (\\w+) XP!");
+    //deep sea trawling from a sailing boat, the amount is spelled out: "You catch five bluefin!"
+    private static final Pattern TRAWLING_CATCH_PATTERN = Pattern.compile(
+            "You catch ([a-z0-9]+) (haddock|giant krill|yellowfin|halibut|bluefin|marlin)!");
+
+    //"You sort through the fremennik salvage." The name can be any of the salvage types,
+    //and the amount isn't always one, so the count and "the"/"some" are skipped over.
+    private static final Pattern SALVAGE_SORTED_PATTERN = Pattern.compile(
+            "(?i)You sort through (?:\\d+ )?(?:the |some |your )*([a-z' ]+?) salvage");
+
+    private static final Map<String, String> TRAWLING_FISH_BY_NAME = new HashMap<>();
+    static {
+        TRAWLING_FISH_BY_NAME.put("haddock", HADDOCK_CAUGHT);
+        TRAWLING_FISH_BY_NAME.put("giant krill", GIANT_KRILL_CAUGHT);
+        TRAWLING_FISH_BY_NAME.put("yellowfin", YELLOWFIN_CAUGHT);
+        TRAWLING_FISH_BY_NAME.put("halibut", HALIBUT_CAUGHT);
+        TRAWLING_FISH_BY_NAME.put("bluefin", BLUEFIN_CAUGHT);
+        TRAWLING_FISH_BY_NAME.put("marlin", MARLIN_CAUGHT);
+    }
+
+    private static final Map<String, String> SALVAGE_STAT_BY_NAME = new HashMap<>();
+    static {
+        SALVAGE_STAT_BY_NAME.put("small", SMALL_SALVAGE_SORTED);
+        SALVAGE_STAT_BY_NAME.put("fishy", FISHY_SALVAGE_SORTED);
+        SALVAGE_STAT_BY_NAME.put("barracuda", BARRACUDA_SALVAGE_SORTED);
+        SALVAGE_STAT_BY_NAME.put("large", LARGE_SALVAGE_SORTED);
+        SALVAGE_STAT_BY_NAME.put("plundered", PLUNDERED_SALVAGE_SORTED);
+        SALVAGE_STAT_BY_NAME.put("martial", MARTIAL_SALVAGE_SORTED);
+        SALVAGE_STAT_BY_NAME.put("fremennik", FREMENNIK_SALVAGE_SORTED);
+        SALVAGE_STAT_BY_NAME.put("opulent", OPULENT_SALVAGE_SORTED);
+    }
+
+    private static final Map<String, Integer> NUMBER_WORDS = new HashMap<>();
+    static {
+        String[] words = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+                "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen",
+                "nineteen", "twenty"};
+        for (int i = 0; i < words.length; i++) {
+            NUMBER_WORDS.put(words[i], i + 1);
+        }
+    }
 
     private int prevWeedCount = 0;
 
@@ -119,6 +167,17 @@ public class SkillingStatTracker implements StatTracker{
         BURNED_STAT_BY_NAME.put("pyre fox",            PYRE_FOX_BURNED);
     }
 
+    private static final Map<String, String> CLUE_TIER_STAT_BY_NAME = new HashMap<>();
+    static
+    {
+        CLUE_TIER_STAT_BY_NAME.put("beginner", BEGINNER_CLUE_SCROLLS_MISSED);
+        CLUE_TIER_STAT_BY_NAME.put("easy",     EASY_CLUE_SCROLLS_MISSED);
+        CLUE_TIER_STAT_BY_NAME.put("medium",   MEDIUM_CLUE_SCROLLS_MISSED);
+        CLUE_TIER_STAT_BY_NAME.put("hard",     HARD_CLUE_SCROLLS_MISSED);
+        CLUE_TIER_STAT_BY_NAME.put("expert",   EXPERT_CLUE_SCROLLS_MISSED);
+        CLUE_TIER_STAT_BY_NAME.put("master",   MASTER_CLUE_SCROLLS_MISSED);
+    }
+
     public SkillingStatTracker(StatStore statStore, Client client, XpTrackerService xpTrackerService)
     {
         this.statStore = statStore;
@@ -194,6 +253,10 @@ public class SkillingStatTracker implements StatTracker{
         final Matcher fishMatcher = FISH_CATCH_PATTERN.matcher(msg);
         final Matcher mineOrQuarrySomeMatcher = MINE_OR_QUARRY_SOME_PATTERN.matcher(msg);
         final Matcher tannerMatcher = TANNER_PATTERN.matcher(msg);
+        final Matcher clueMissedMatcher = CLUE_MISSED_PATTERN.matcher(msg);
+        final Matcher lampXpMatcher = LAMP_XP_PATTERN.matcher(msg);
+        final Matcher trawlingMatcher = TRAWLING_CATCH_PATTERN.matcher(msg);
+        final Matcher salvageSortedMatcher = SALVAGE_SORTED_PATTERN.matcher(msg);
         if (woodCutMatcher.matches())
         {
             log.debug("msg {} matches woodcutter", msg);
@@ -203,6 +266,27 @@ public class SkillingStatTracker implements StatTracker{
             {
                 log.debug("wood type chopped: {}", woodCutMatcher.group(1));
                 incrementTypedLogs(woodCutMatcher.group(1));
+            }
+        }
+
+        else if (trawlingMatcher.matches())
+        {
+            int amount = parseNumberWord(trawlingMatcher.group(1));
+            String fish = trawlingMatcher.group(2);
+            log.debug("msg {} matches trawling catch of {} x {}", msg, amount, fish);
+
+            if (amount > 0)
+            {
+                String fishStat = TRAWLING_FISH_BY_NAME.get(fish);
+                if (fishStat != null)
+                {
+                    statStore.incrementStatBy(fishStat, amount);
+                }
+                else
+                {
+                    log.debug("unknown trawling fish: {}", fish);
+                }
+                statStore.incrementStatBy(TRAWLING_FISH_CAUGHT, amount);
             }
         }
 
@@ -222,6 +306,52 @@ public class SkillingStatTracker implements StatTracker{
 
             statStore.incrementStat(ROCKS_MINED);
             incrementTypedMined(mineOrQuarrySomeMatcher.group(1));
+        }
+
+        else if (clueMissedMatcher.find())
+        {
+            log.debug("msg {} matches missed clue scroll", msg);
+            statStore.incrementStat(CLUE_SCROLLS_MISSED);
+
+            //tier is the word between "received a/an" and "scroll", so pull it from the match
+            String tier = clueMissedMatcher.group(1).toLowerCase();
+            String tierStat = CLUE_TIER_STAT_BY_NAME.get(tier);
+            if (tierStat != null)
+            {
+                log.debug("missed clue scroll tier: {}", tier);
+                statStore.incrementStat(tierStat);
+            }
+            else
+            {
+                log.debug("Unknown clue scroll tier parsed from message: {}", tier);
+            }
+        }
+
+        else if (lampXpMatcher.find())
+        {
+            int xp = Integer.parseInt(lampXpMatcher.group(1).replace(",", ""));
+            String skillName = lampXpMatcher.group(2);
+
+            Skill skill = null;
+            try
+            {
+                skill = Skill.valueOf(skillName.toUpperCase());
+            }
+            catch (IllegalArgumentException e)
+            {
+                log.debug("Unknown skill parsed from lamp message: {}", skillName);
+            }
+
+            log.debug("msg {} matches lamp award: {} xp in {}", msg, xp, skillName);
+
+            statStore.incrementStat(LAMPS_USED);
+            statStore.incrementStatBy(LAMP_XP, xp);
+
+            if (skill != null)
+            {
+                statStore.incrementStat(lampsUsedKey(skill));
+                statStore.incrementStatBy(lampXpKey(skill), xp);
+            }
         }
 
         else if(msg.contains("You pick the") && msg.contains("pocket") && !msg.contains("attempt"))
@@ -306,7 +436,17 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStat(BOWS_FLECTHED);
         }
 
-        else if (msg.contains("You cut the") && !msg.contains("chocolate"))
+        else if (msg.contains("You cut the pineapple"))
+        {
+            log.debug("msg {} matches pineapple cutting", msg);
+            //pineapples can be cut into rings or chunks. Neither is a gem, so this must be handled before gem cutting.
+            if (msg.contains("rings"))
+            {
+                statStore.incrementStat(PINEAPPLE_RINGS_CUT);
+            }
+        }
+
+        else if (msg.contains("You cut the") && !msg.contains("chocolate") && !msg.contains("pineapple"))
         {
             log.debug("msg {} matches gem cutting", msg);
             statStore.incrementStat(GEMS_CUT);
@@ -420,6 +560,15 @@ public class SkillingStatTracker implements StatTracker{
             }
         }
 
+        else if (msg.contains("blessing enabled you to catch an extra fish"))
+        {
+            log.debug("msg {} matches rada's blessing proc", msg);
+            statStore.incrementStat(RADAS_BLESSING_PROCS);
+            log.debug("extra fish caught {}", lastFishCaught);
+
+            incrementTypedFish(lastFishCaught);
+        }
+
         else if (msg.contains("catch an extra") && msg.contains("fish"))
         {
             log.debug("msg {} matches extra fish catch", msg);
@@ -446,9 +595,70 @@ public class SkillingStatTracker implements StatTracker{
             statStore.incrementStat(BLOODWOOD_SAP_BUCKETS_FILLED);
         }
 
+        else if (msg.contains("You release the wind mote"))
+        {
+            log.debug("msg {} matches wind mote release", msg);
+            statStore.incrementStat(WIND_MOTES_RELEASED);
+        }
+
+        else if (msg.contains("You trim the sails"))
+        {
+            log.debug("msg {} matches sail trimming", msg);
+            statStore.incrementStat(SAILS_TRIMMED);
+        }
+
+        else if (msg.contains("watching your crew work"))
+        {
+            log.debug("msg {} matches watching crew work", msg);
+            statStore.incrementStat(CREW_WORK_WATCHED);
+        }
+
+        else if (msg.contains("baited a nearby") && msg.contains("shoal"))
+        {
+            log.debug("msg {} matches shoal baiting", msg);
+            statStore.incrementStat(SHOALS_BAITED);
+        }
+
+        else if (msg.startsWith("You board") && !msg.contains("boarded"))
+        {
+            log.debug("msg {} matches boarding a boat", msg);
+            statStore.incrementStat(BOATS_BOARDED);
+        }
+
+        else if (msg.contains("reel in some") && msg.toLowerCase().contains("salvage"))
+        {
+            //the dredged message doesn't say which type it was, so this is a total only
+            log.debug("msg {} matches salvage dredged", msg);
+            statStore.incrementStat(SALVAGE_DREDGED);
+        }
+
+        else if (salvageSortedMatcher.find())
+        {
+            log.debug("msg {} matches salvage sorting", msg);
+            statStore.incrementStat(SALVAGE_SORTED);
+
+            String salvageName = salvageSortedMatcher.group(1).trim().toLowerCase();
+            String salvageStat = SALVAGE_STAT_BY_NAME.get(salvageName);
+            if (salvageStat != null)
+            {
+                log.debug("salvage type sorted: {}", salvageName);
+                statStore.incrementStat(salvageStat);
+            }
+            else
+            {
+                log.debug("unknown salvage type parsed from message: {}", salvageName);
+            }
+        }
+
+        else if (msg.toLowerCase().contains("nest falls out of the tree"))
+        {
+            log.debug("msg {} matches bird nest drop", msg);
+            statStore.incrementStat(BIRD_NESTS_DROPPED);
+        }
+
         //please always keep hunter last
         //its very generic and as such prone to eating other skilling messages like fishing.
-        else if ( (msg.contains("You've caught a") || msg.contains("You manage to catch") || msg.contains("You release the")) && !msg.contains("fish") && !msg.contains("shrimp") && !msg.contains("jar") )
+        else if ( (msg.contains("You've caught a") || msg.contains("You manage to catch") || msg.contains("You release the")) && !msg.contains("fish") && !msg.contains("shrimp") && !msg.contains("jar") && !msg.contains(" mote") )
         {
             log.debug("msg {} matches creature trapping", msg);
             statStore.incrementStat(CREATURES_TRAPPED);
@@ -456,6 +666,27 @@ public class SkillingStatTracker implements StatTracker{
 
         else{
             log.debug("Unmatched message {} ", msg);
+        }
+    }
+
+    private int parseNumberWord(String word)
+    {
+        if (word == null)
+        {
+            return 0;
+        }
+        if (word.equals("a") || word.equals("an"))
+        {
+            return 1;
+        }
+        try
+        {
+            return Integer.parseInt(word);
+        }
+        catch (NumberFormatException e)
+        {
+            Integer value = NUMBER_WORDS.get(word);
+            return value == null ? 0 : value;
         }
     }
 
@@ -571,7 +802,17 @@ public class SkillingStatTracker implements StatTracker{
 
     @Override
     public void onAnimationChanged(AnimationChanged event) {
+        Actor actor = event.getActor();
+        //only the local player's own animation counts, not other players' or npcs'
+        if (actor == null || actor != client.getLocalPlayer()) {
+            return;
+        }
 
+        //dragon harpoon special attack
+        if (actor.getAnimation() == 7393) {
+            log.debug("local player performed dragon harpoon spec");
+            statStore.incrementStat(DRAGON_HARPOON_SPECS);
+        }
     }
 
     private void processActions(Skill skill, String statKey){

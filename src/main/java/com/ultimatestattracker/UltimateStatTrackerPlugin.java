@@ -77,8 +77,24 @@ public class UltimateStatTrackerPlugin extends Plugin
 	public boolean loggedIn;
 	public boolean firstLogin = true;
 
-	public final String version = "1.1.4";
+	public final String version = "1.1.6";
 	private final String VERSION_KEY = "ustp.version";
+	private final String CONFIG_GROUP = "ultimatestattracker";
+	private final String SORT_ORDER_KEY = "ustp.sortOrder";
+
+	/**
+	 * Sort option last picked in the panel, so it can be restored next time the plugin starts.
+	 * The search filter is intentionally not persisted.
+	 */
+	public String getPanelSortOrder()
+	{
+		return configManager.getConfiguration(CONFIG_GROUP, SORT_ORDER_KEY);
+	}
+
+	public void setPanelSortOrder(String sortOrder)
+	{
+		configManager.setConfiguration(CONFIG_GROUP, SORT_ORDER_KEY, sortOrder);
+	}
 
 	public boolean isPerformanceMode()
 	{
@@ -245,6 +261,9 @@ public class UltimateStatTrackerPlugin extends Plugin
 		if (!config.performanceMode()) {
 			movementStatTracker.onAnimationChanged(event);
 		}
+
+		//animation based stats are not tick driven, so they stay enabled in performance mode
+		skillingStatTracker.onAnimationChanged(event);
 	}
 
 	@Subscribe

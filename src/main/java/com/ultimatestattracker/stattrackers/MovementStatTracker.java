@@ -4,6 +4,7 @@ import com.ultimatestattracker.StatStore;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
@@ -27,6 +28,7 @@ public class MovementStatTracker implements StatTracker{
     private int runEnergyEnabledSpriteId = 1070;
     private Widget runEnergyWidget = null;
 
+    public int traversalDebounce;
     private boolean ctrlHeld = false;
     private String lastOptionClicked;
 
@@ -60,6 +62,8 @@ public class MovementStatTracker implements StatTracker{
     
     @Override
     public void onMenuOptionClicked(MenuOptionClicked event) {
+        trackObjectInteractions(event);
+
         //have to handle diary teleports carefully
         if (event.getMenuTarget().toLowerCase().contains("teleport") &&
                 (! (event.getMenuOption().toLowerCase().contains("grand exchange")||
@@ -71,6 +75,40 @@ public class MovementStatTracker implements StatTracker{
         else {
             lastOptionClicked = event.getMenuOption().toLowerCase();
         }
+    }
+
+    private void trackObjectInteractions(MenuOptionClicked event) {
+        if (!isGameObjectAction(event.getMenuAction()) || traversalDebounce > 0) {
+            return;
+        }
+
+        String option = event.getMenuOption();
+        String target = event.getMenuTarget();
+        if (option == null || target == null) {
+            return;
+        }
+        target = Text.removeTags(target).toLowerCase();
+
+        if (option.equals("Open") && (target.contains("door") || target.contains("gate"))) {
+            statStore.incrementStat(DOORS_OPENED);
+            traversalDebounce = 2;
+        }
+        else if (option.equals("Close") && (target.contains("door") || target.contains("gate"))) {
+            statStore.incrementStat(DOORS_CLOSED);
+            traversalDebounce = 2;
+        }
+        else if (option.startsWith("Climb") && (target.contains("ladder") || target.contains("stair"))) {
+            statStore.incrementStat(LADDERS_STAIRS_CLIMBED);
+            traversalDebounce = 2;
+        }
+    }
+
+    private boolean isGameObjectAction(MenuAction action) {
+        return action == MenuAction.GAME_OBJECT_FIRST_OPTION
+                || action == MenuAction.GAME_OBJECT_SECOND_OPTION
+                || action == MenuAction.GAME_OBJECT_THIRD_OPTION
+                || action == MenuAction.GAME_OBJECT_FOURTH_OPTION
+                || action == MenuAction.GAME_OBJECT_FIFTH_OPTION;
     }
 
     @Override
@@ -99,6 +137,7 @@ public class MovementStatTracker implements StatTracker{
     //maybe just use animations
     @Override
     public void onGameTick(GameTick event) {
+        if (traversalDebounce > 0 ) traversalDebounce--;
         Player local = client.getLocalPlayer();
         if (local != null) {
             WorldPoint currentPos = local.getWorldLocation();

@@ -60,6 +60,11 @@ public class ItemStatTracker implements StatTracker{
             statStore.incrementStat(ITEMS_DROPPED);
             log.debug("Item drop clicked: {}", event.getMenuTarget());
         }
+        else if (Objects.equals(event.getMenuOption(), "Wear") || Objects.equals(event.getMenuOption(), "Wield"))
+        {
+            statStore.incrementStat(ITEMS_EQUIPPED);
+            log.debug("Item equip clicked: {}", event.getMenuTarget());
+        }
     }
 
     @Override
